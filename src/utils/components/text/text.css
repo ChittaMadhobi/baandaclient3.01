@@ -1,0 +1,136 @@
+fixed-height {
+  height: 500px;
+  width: 100%;
+  border-style: none;
+  padding-top: 10px;
+  padding-bottom: 0;
+}
+
+.space-at-top {
+  height: 20px;
+}
+
+.space-between-buttons {
+  height: 1px;
+}
+
+.control-btn-done {
+  width: 130px;
+  height: 35px;
+  padding-bottom: 5px;
+  padding-top: 5px;
+  background-color: #db0202;
+  color: white;
+  box-shadow: 3px 3px 2px 1px rgba(0, 0, 0, 0.6);
+}
+
+.control-btn-start {
+  width: 130px;
+  height: 35px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  background-color: #5b8209;
+  color: white;
+  box-shadow: 3px 3px 2px 1px rgba(0, 0, 0, 0.6);
+}
+
+.control-btn-preview {
+  width: 130px;
+  height: 35px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  background-color: #4c5e77;
+  color: white;
+  box-shadow: 3px 3px 2px 1px rgba(0, 0, 0, 0.6);
+}
+
+.control-btn-send {
+  width: 130px;
+  height: 35px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  background-color: #57774c;
+  color: white;
+  box-shadow: 3px 3px 2px 1px rgba(0, 0, 0, 0.6);
+}
+
+.control-btn-edit {
+  width: 130px;
+  height: 35px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  background-color: #4f557c;
+  color: white;
+  box-shadow: 3px 3px 2px 1px rgba(0, 0, 0, 0.6);
+}
+
+.space-beteween {
+  height: 1px;
+  width: 100%;
+}
+
+.control-btn-reset {
+  width: 130px;
+  height: 35px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  background-color: #ba5b5b;
+  color: white;
+  box-shadow: 3px 3px 2px 1px rgba(0, 0, 0, 0.6);
+}
+
+.control-btn-speechToTextMode {
+  width: 130px;
+  height: 35px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  background-color: #845202;
+  color: white;
+  box-shadow: 3px 3px 2px 1px rgba(0, 0, 0, 0.6);
+}
+
+.ctrl-background {
+  /* padding-top: 10px;
+  padding-bottom: 4px; */
+  background-color: gray;
+  height: 500px;
+  margin-top: -7px;
+}
+
+.ctrl-panel {
+  background-color: gray;
+  margin-left: -20px;
+  margin-top: -5px;
+  margin-bottom: 4px;
+  height: 495px;
+}
+
+.header-shadow {
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.9);
+}
+
+.the-box-background {
+  background-color: #282c34;
+  padding-left: 1px;
+  margin-left: none;
+}
+
+.speech-box-background {
+  height: 503px;
+  width: 100%;
+
+  padding: 10px 10px 10px 10px;
+}
+
+.editor-box {
+  height: 490px;
+  width: 100%;
+  background-color: white;
+  overflow: auto;
+  max-height: 490px;
+  padding-top: 3px;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-left: -10px;
+  border: 1px solid black;
+}

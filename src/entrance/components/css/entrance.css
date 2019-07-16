@@ -1,0 +1,150 @@
+.workarea-padding {
+  margin-top: 10px;
+  margin-left: 15px;
+  margin-right: 10px;
+  padding-top: 5px;
+  margin-bottom: 30px;
+  padding-bottom: 10px;
+}
+
+div.starthere-padding {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+div.top-padding-starthere {
+  padding-top: 10px;
+}
+
+div.fixedsize-starthere-pic {
+  height: 300px;
+  width: 100%;
+  background-color: rgb(245, 245, 228);
+  overflow: auto;
+  max-height: 300px;
+}
+
+div.demofixedsize {
+  height: 370px;
+  width: 100%;
+  background-color: rgb(245, 245, 228);
+  overflow: auto;
+}
+
+.landing-inner {
+  padding-top: 10px;
+}
+
+.btn-lobbychat {
+	width: 140px;
+	height: 28px;
+	padding-top: 4px;
+	padding-left: 5px;
+	margin-top: 3px;
+	margin-left: 23px;
+	padding-bottom: 9px;
+	background-color: #bec4ce;
+	border: none;
+	color: black;
+	font-size: 10pt;
+	box-shadow: 3px 3px 0px 0px #82b5ce;
+}
+
+div.btn-lobby-chat {
+  width: 65px;
+  height: 22px;
+  background-color: #04275e;
+  padding-top: 2px;
+	border: none;
+	color: white;
+	font-size: 9pt;
+	box-shadow: 2px 2px 0px 0px #82b5ce;
+}
+
+.btn-lobby-starthere {
+  width: 75px;
+  height: 22px;
+  background-color: #415447;
+  padding-top: 2px;
+	border: none;
+	color: white;
+	font-size: 9pt;
+	box-shadow: 2px 2px 0px 0px #82b5ce;
+}
+
+.btn-chat-to-lobby {
+  width: 170px;
+  height: 38px;
+  margin-left: -15px;
+  background-color: #04275e;
+  padding-top: 2px;
+	border: none;
+	color: white;
+	font-size: 9pt;
+	box-shadow: 2px 2px 0px 0px #82b5ce;
+}
+
+
+.btn-lobby-sx {
+  width: 180px;
+  height: 48px;
+  margin-left: -15px;
+  background-color: #465063;
+  padding-top: 2px;
+	border: none;
+	color: white;
+	font-size: 11pt;
+	box-shadow: 3px 3px 0px 0px #82b5ce;
+}
+
+.btn-lobby-coliving {
+  width: 180px;
+  height: 48px;
+  margin-left: -15px;
+  background-color: #a35508;
+  padding-top: 2px;
+	border: none;
+	color: white;
+	font-size: 11pt;
+	box-shadow: 3px 3px 0px 0px #635446;
+}
+
+.btn-lobby-agreement {
+  width: 180px;
+  height: 48px;
+  margin-left: -15px;
+  background-color: #0e722e;
+  padding-top: 2px;
+	border: none;
+	color: white;
+	font-size: 11pt;
+	box-shadow: 3px 3px 0px 0px #95b29f;
+}
+
+.btn-lobby-marketspace {
+  width: 180px;
+  height: 48px;
+  margin-left: -15px;
+  background-color: #042675;
+  padding-top: 2px;
+	border: none;
+	color: white;
+	font-size: 11pt;
+	box-shadow: 3px 3px 0px 0px #8b92a0;
+}
+
+.btn-lobby-nook {
+  width: 180px;
+  height: 48px;
+  margin-left: -15px;
+  background-color: #057a91;
+  padding-top: 2px;
+	border: none;
+	color: white;
+	font-size: 11pt;
+	box-shadow: 3px 3px 0px 0px #8ea8ad;
+}
+
+div.lobby-spaces{
+  height: 10px;
+}

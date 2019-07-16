@@ -1,0 +1,103 @@
+.fixed-height {
+  height: 500px;
+  width: 100%;
+  border-style: none;
+  padding-top: 10px;
+  padding-bottom: 0;
+}
+
+.space-at-top {
+  height: 20px;
+}
+
+div.recording-msg-space {
+  height: 180px;
+}
+
+.space-between-buttons {
+  height: 2px;
+}
+
+.control-btn-done {
+  width: 130px;
+  height: 35px;
+  padding-bottom: 5px;
+  padding-top: 5px;
+  background-color: #db0202;
+  color: white;
+  box-shadow: 3px 3px 2px 1px rgba(0, 0, 0, 0.6);
+}
+
+.control-btn-start {
+  width: 130px;
+  height: 35px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  background-color: #5b8209;
+  color: white;
+  box-shadow: 3px 3px 2px 1px rgba(0, 0, 0, 0.6);
+}
+
+.control-btn-preview {
+  width: 130px;
+  height: 35px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  background-color: #4c5e77;
+  color: white;
+  box-shadow: 3px 3px 2px 1px rgba(0, 0, 0, 0.6);
+}
+
+.control-btn-send {
+  width: 130px;
+  height: 35px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  background-color: #57774c;
+  color: white;
+  box-shadow: 3px 3px 2px 1px rgba(0, 0, 0, 0.6);
+}
+
+/* .ctrl-background {
+  padding-top: 10px;
+  padding-bottom: 4px;
+  background-color: gray;
+  height: 502px;
+  margin-top: 5px;
+  margin-left: -15px;
+} */
+
+.ctrl-panel-x {
+  background-color: gray;
+  margin-top: 2px;
+  margin-left: -10px;
+  height: 500px;
+}
+
+.header-shadow {
+  text-shadow: 2px 5px 5px rgba(0, 0, 0, 0.9);
+}
+
+.the-box-background {
+  background-color: #282c34;
+  padding-left: 1px;
+  margin-left: none;
+}
+
+.vedio-msg {
+  height: 50px;
+  width: 100%;
+  background-color: #efeada;
+  border: 1px solid black;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.recording-msg {
+  height: 500px;
+  width: 100%;
+  border-style: none;
+  background-color: black;
+  color: white;
+  padding: 50px;
+}
