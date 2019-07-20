@@ -1,0 +1,186 @@
+.lobby {
+  background-color: #e4d8cafb;
+}
+
+/* ---------- Header Section ---------- */
+.lobbyheader {
+  position: relative;
+  background: url("../../../images/banner3.jpg") no-repeat;
+  background-size: cover;
+  background-position: center;
+  height: 60px;
+  margin-top: -7px;
+  margin-bottom: 1px;
+  font-size: 30px;
+  padding-top: 0px;
+}
+
+.text_white {
+  color: #fff;
+  margin-top: 5px;
+  padding-top: 5px;
+}
+/* ------domains for create, join communities, dashboard etc. ----------------- */
+div.space-between-domains {
+  height: 10px;
+  border: none;
+}
+
+.domain-box {
+  position: relative;
+  text-align: center;
+  background: url("../../../images/blue.jpg") no-repeat;
+  background-size: cover;
+  background-position: center;
+  height: 210px;
+  width: 70%;
+  margin-top: 20px;
+  margin-bottom: 1px;
+  margin-left: 20%;
+}
+
+.domain-box-header-text {
+  padding-top: 10px;
+  font-size: 1.75em;
+  font-family: "Georgia", Times, serif;
+  font-weight: bold;
+  color: #dfecf2;
+}
+
+.domain-box-text {
+}
+/* ---------- Adjust based on medaia sizes ------------------ */
+/* For browser larger than 960 px */
+@media only screen and (min-width: 960px) {
+  .lobbyheader {
+    margin-top: -5px;
+    height: 70px;
+    font-size: 40px;
+    padding-top: -5px;
+  }
+}
+/* For browser larger than 1440 px */
+@media only screen and (min-width: 1440px) {
+  .lobbyheader {
+    margin-top: -5px;
+    height: 90px;
+    font-size: 50px;
+    padding-top: 1px;
+  }
+}
+/* For browser large sumo size - more than 2000 px - huge*/
+@media only screen and (min-width: 2000px) {
+  .lobbyheader {
+    margin-top: -5px;
+    height: 100px;
+    font-size: 60px;
+    padding-top: 1px;
+  }
+}
+
+/* styles for mobile browsers smaller than 480px; (iPhone small) */
+@media only screen and (max-device-width: 375px) {
+    .lobbyheader {
+      margin-top: -4px;
+      height: 30px;
+      font-size: 5px;
+      padding-bottom: 5px;
+    }
+    .domain-box {
+      height: 150px;
+      width: 80%;
+      margin-top: 10px;
+      margin-bottom: 1px;
+      margin-left: 10%;
+    }
+    .domain-box-header-text {
+      padding-top: 10px;
+      font-size: 0.5em;
+      font-family: "Georgia", Times, serif;
+      font-weight: bold;
+    color: #fff;
+    }
+    div.space-between-domains {
+      height: 1px;
+      border: none;
+    }
+  }
+
+/* styles for mobile browsers smaller than 480px; (iPhone +) */
+@media only screen and (max-device-width: 480px) {
+  .lobbyheader {
+    margin-top: -5px;
+    height: 30px;
+    font-size: 14px;
+    padding-bottom: 5px;
+  }
+  .domain-box {
+    height: 175px;
+    width: 80%;
+    margin-top: 10px;
+    margin-bottom: 1px;
+    margin-left: 10%;
+  }
+  .domain-box-header-text {
+    padding-top: 10px;
+    font-size: 0.8em;
+    font-family: "Georgia", Times, serif;
+    font-weight: bold;
+    color: #fff;
+  }
+  div.space-between-domains {
+    height: 9px;
+    border: none;
+  }
+}
+
+/* different techniques for iPad screening */
+@media only screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation: portrait) {
+  .lobbyheader {
+    margin-top: -5px;
+    height: 65px;
+    font-size: 32px;
+  }
+  .domain-box {
+    height: 195px;
+    width: 90%;
+    margin-top: 10px;
+    margin-bottom: 1px;
+    margin-left: 5%;
+  }
+  .domain-box-header-text {
+    padding-top: 10px;
+    font-size: 1.5em;
+    font-family: "Georgia", Times, serif;
+    font-weight: bold;
+    color: #dfecf2;
+  }
+  div.space-between-domains {
+    height: 20px;
+    border: none;
+  }
+}
+
+/* @media only screen and (min-width: 960px) {
+    styles for browsers larger than 960px;
+}
+@media only screen and (min-width: 1440px) {
+    styles for browsers larger than 1440px;
+}
+@media only screen and (min-width: 2000px) {
+    for sumo sized (mac) screens
+}
+@media only screen and (max-device-width: 480px) {
+   styles for mobile browsers smaller than 480px; (iPhone)
+}
+@media only screen and (device-width: 768px) {
+   default iPad screens
+}
+    different techniques for iPad screening
+@media only screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait) {
+  For portrait layouts only
+}
+
+@media only screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:landscape) {
+  For landscape layouts only
+} */

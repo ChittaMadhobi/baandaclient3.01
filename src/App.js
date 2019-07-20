@@ -49,9 +49,9 @@ class App extends Component {
         <Router>
           <div className="total-space">
             <div className="navbar-space">
-              <h6 className="text-center">
+              {/* <h6 className="text-center">
                 Build Together - Band Together - Bond Together
-              </h6>
+              </h6> */}
             </div>
             <Navbar />
 

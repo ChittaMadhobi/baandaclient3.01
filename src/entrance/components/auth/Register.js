@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom'; // We need this to redirect from authActions
-import classnames from 'classnames';
-import { connect } from 'react-redux';
-import { registerUser } from '../../../actions/authActions';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { withRouter } from "react-router-dom"; // We need this to redirect from authActions
+import classnames from "classnames";
+import { connect } from "react-redux";
+import { registerUser } from "../../../actions/authActions";
 
 class Register extends Component {
   // This deals with component state here.
@@ -11,10 +11,10 @@ class Register extends Component {
     super();
 
     this.state = {
-      name: '',
-      email: '',
-      password: '',
-      password2: '',
+      name: "",
+      email: "",
+      password: "",
+      password2: "",
       errors: {}
     };
 
@@ -24,7 +24,7 @@ class Register extends Component {
 
   componentDidMount() {
     if (this.props.auth.isAuthenticated) {
-      this.props.history.push('/lobby');
+      this.props.history.push("/lobby");
     }
   }
 
@@ -48,12 +48,20 @@ class Register extends Component {
       password2: this.state.password2
     };
 
-    this.props.registerUser(newUser, this.props.history); // 2nd parm enable redirection from actions
+    console.log("props.auth.message 1:", this.props.auth.message);
+    this.props.registerUser(newUser, this.props.history);
+    // 2nd parm enable redirection from actions. We are not using it here.
+    console.log("props.auth.message 2:", this.props.auth.message);
   }
 
   render() {
     const { errors } = this.props;
-    console.log('Register props:', this.props);
+    // console.log("Register props:", this.props);
+    // console.log("Errors:", errors);
+
+    let msg = (!this.props.auth.user.message) ?  
+              "Please check your email box to confirm the email." :
+              this.props.auth.user.message;
 
     return (
       <div className="register">
@@ -69,8 +77,8 @@ class Register extends Component {
                 <div className="form-group">
                   <input
                     type="text"
-                    className={classnames('form-control form-control-lg', {
-                      'is-invalid': errors.name
+                    className={classnames("form-control form-control-lg", {
+                      "is-invalid": errors.name
                     })}
                     placeholder="Name"
                     name="name"
@@ -84,8 +92,8 @@ class Register extends Component {
                 <div className="form-group">
                   <input
                     type="email"
-                    className={classnames('form-control form-control-lg', {
-                      'is-invalid': errors.email
+                    className={classnames("form-control form-control-lg", {
+                      "is-invalid": errors.email
                     })}
                     placeholder="Email Address"
                     name="email"
@@ -102,8 +110,8 @@ class Register extends Component {
                 <div className="form-group">
                   <input
                     type="password"
-                    className={classnames('form-control form-control-lg', {
-                      'is-invalid': errors.password
+                    className={classnames("form-control form-control-lg", {
+                      "is-invalid": errors.password
                     })}
                     placeholder="Password"
                     name="password"
@@ -117,8 +125,8 @@ class Register extends Component {
                 <div className="form-group">
                   <input
                     type="password"
-                    className={classnames('form-control form-control-lg', {
-                      'is-invalid': errors.password2
+                    className={classnames("form-control form-control-lg", {
+                      "is-invalid": errors.password2
                     })}
                     placeholder="Confirm Password"
                     name="password2"
@@ -130,10 +138,7 @@ class Register extends Component {
                   )}
                 </div>
                 <input type="submit" className="btn btn-info btn-block mt-4" />
-                <p className="text-center h6 text-muted">
-                  Please confirm your email, on successful registration, before
-                  logging in.
-                </p>
+                <p className="text-center h6 text-muted">{msg}</p>
               </form>
             </div>
           </div>
@@ -147,6 +152,7 @@ Register.propTypes = {
   registerUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
+  // message: PropTypes.object
 };
 
 // If we want any of the return values into our component then we have to create
