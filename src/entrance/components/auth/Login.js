@@ -22,14 +22,14 @@ class Login extends Component {
   }
 
   componentDidMount() {
-    console.log('In login -- component did mount');
+    // console.log('In login -- component did mount');
     if (this.props.auth.isAuthenticated) {
       this.props.history.push('/lobby');
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('In login -- component will receive props');
+    // console.log('In login -- component will receive props');
     if (nextProps.auth.isAuthenticated) {
       this.props.history.push('/lobby');
     }
@@ -56,13 +56,13 @@ class Login extends Component {
 
   onClickGoogle(e) {
     e.preventDefault();
-    console.log('Got into Google Auth onclick function');
+    // console.log('Got into Google Auth onclick function');
     this.props.googleLoginUser();
   }
 
   render() {
     const { errors } = this.props;
-    console.log('Login js Errors:', this.props.history.location.search);
+    // console.log('Login js Errors:', this.props.history.location.search);
 
     return (
       <div className="login">

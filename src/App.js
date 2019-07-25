@@ -15,12 +15,14 @@ import Login from "./entrance/components/auth/Login";
 import Register from "./entrance/components/auth/Register";
 import MyAccount from "./account/myAccount/MyAccount";
 
+import UserInitPersona from "./intelligence/components/persona/userInitPersona";
+
 import "./App.css";
 
 // Check for token
 if (localStorage.jwtToken) {
   // localStorage.clear();
-  console.log('localstorage jwtToken:', localStorage.jwtToken);
+  // console.log('localstorage jwtToken:', localStorage.jwtToken);
   // Set auth token header auth
   setAuthToken(localStorage.jwtToken);
   // Decode token and get user info and exp
@@ -61,6 +63,7 @@ class App extends Component {
               <Route exact path="/login" component={Login} />
               <Route exact path="/lobby" component={Lobby} />
               <Route exact path="/myaccount" component={MyAccount} />
+              <Route exact path="/userinitpersona" component={UserInitPersona} />
             </div>
             <Footer />
           </div>

@@ -3,12 +3,10 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
 import { hideModal } from "../../../../actions/modalActions";
-import "../../../css/localModal.css";
+import '../../../css/localModal.css';
 import "./css/entrance.css";
 
-import SiteMapPng from "./img/Site-map.png";
-
-class SiteMap extends Component {
+class StartHereModal extends Component {
   constructor(props) {
     super(props);
 
@@ -22,7 +20,7 @@ class SiteMap extends Component {
 
   closeModal(e) {
     e.preventDefault();
-    // console.log("closeModal.func : " + this.state.todotext);
+    console.log("closeModal.func : " + this.state.todotext);
     const modTask = {
       todotext: this.state.todotext
     };
@@ -35,46 +33,40 @@ class SiteMap extends Component {
   }
 
   render() {
-    // console.log("props :" + JSON.stringify(this.props));
+    console.log("props :" + JSON.stringify(this.props));
     //const { title, message, todotext } = this.props;
     const { user } = this.props.auth;
-    // console.log("user:" + JSON.stringify(user));
-    // const { title, message } = this.props;
+    console.log("user:" + JSON.stringify(user));
+    const { title, message } = this.props;
 
-    // console.log("title :" + title + " | message:" + message);
+    console.log("title :" + title + " | message:", message);
     return (
       <div className="container">
         <div className="modal-content-z">
           <div className="row text-center justify-content-center">
             <div className="modal-header">
               <h5>
-                Welcome{" "}
-                {/* <font color="blue">{this.props.auth.user.name} ...</font> */}
-                <font color="blue">{user.name} ...</font>
-                &nbsp;Service Offerings of the Baanda Bazar
+                Hello <font color="black">{this.props.auth.user.name}</font>
               </h5>
             </div>
           </div>
 
           <div className="modal-body">
-            <div>
+            <div className="fixedsize-start-here">
               <div className="row">
-                <div className="col">
-                  <div className="starthere-padding">
-                    <div className="siteplan-fixedsize">
-                      <div className="pictures">
-                        <img
-                          src={SiteMapPng}
-                          width="100%"
-                          height="100%"
-                          alt="..."
-                        />
-                      </div>
-                    </div>
+                <div className="col-12">
+                  <div className="start-here-msg">
+                    <font color="#f2d579" size="2">
+                      <p align="justify">
+                        <b>Context Setup</b>: It will take a long time and
+                        life-exchanges to experience the system. To provide a
+                        holistic experience, you would be experiencing this via
+                        a fictional character.
+                      </p>
+                    </font>
                   </div>
                 </div>
               </div>
-              <hr />
             </div>
           </div>
 
@@ -87,7 +79,7 @@ class SiteMap extends Component {
             >
               <strong>Close</strong> &nbsp;
               <div className="float-right">
-              <i class="fas fa-street-view"></i>
+                <i className="far fa-window-close" />
               </div>
             </button>
           </div>
@@ -97,7 +89,7 @@ class SiteMap extends Component {
   }
 }
 
-SiteMap.propTypes = {
+StartHereModal.propTypes = {
   hideModal: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired
 };
@@ -109,4 +101,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { hideModal }
-)(SiteMap);
+)(StartHereModal);

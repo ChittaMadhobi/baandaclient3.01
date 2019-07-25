@@ -10,12 +10,10 @@ import React, { Component } from "react";
 import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
 
-// import ModalContainer from '../../../modal/components/ModalContainer';
-// import { showModal, hideModal } from '../../../actions/modalActions';
-// import '../../../modal/css/localModal.css';
-// import '../../../modal/css/template.css';
-
-
+import ModalContainer from "../../../modal/components/ModalContainer";
+import { showModal, hideModal } from "../../../actions/modalActions";
+import "../../../modal/css/localModal.css";
+import "../../../modal/css/template.css";
 
 import "./Lobby.css";
 
@@ -23,53 +21,87 @@ class Lobby extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      dashboardFlag: false,
+    this.state = {  
+      dashboardFlag: true,
       isShowing: false
     };
+
+    this.openAlertModal = this.openAlertModal.bind(this);
   }
   componentDidMount() {
     if (!this.props.auth.isAuthenticated) {
       this.props.history.push("/login");
     }
+    // console.log('lobby didmount : this.props.auth.user:', this.props.auth.user);
+    if (!this.props.auth.user.isInitDone) {
+      // console.log('From lobby componentdidmount');
+      this.setState({
+        dashboardFlag: false
+      });
+    }
   }
 
-  openModalHandler = () => {
-    this.setState({
-      isShowing: true
-    });
-  };
-
-  closeModalHandler = () => {
-    this.setState({
-      isShowing: false
-    });
-  };
-
-  openSitePlanModal = () => {
-    // console.log('param : ' + param);
-    let msg = 'This could be Jit ID: ' ;
-    console.log(msg);
+  openAlertModal = param => e => {
+    // console.log('param : ' + param + ' user:' + this.props.auth.user.name)
+    // let msg = 'This could be Jit ID: ' + param
+    let msg = {
+      Header: "This is start here header",
+      Body: "This is start here body",
+      Footer: "This is the footer"
+    };
     this.props.showModal(
       {
         open: true,
-        title: 'Alert - Start Here Header',
+        title: "Alert - Start Here Header",
         message: msg,
         closeModal: this.closeModal
       },
-      'siteplan'
-    )
-  }
+      "startHere"
+    );
+  };
 
-  somefun = () => {
-    alert('This is a test');
-  }
+  createTeamHandler = () => {
+    alert("This is a test create");
+    if (!this.props.auth.user.isInitDone) {
+      // console.log('here I am 1');
+      this.props.history.push("/userinitpersona");
+    }
+  };
+
+  joinTeamHandler = () => {
+    alert("This is a test join");
+  };
+
+  dashboardHandler = () => {
+    alert("This is a test dashboard");
+  };
+
   render() {
+    const ans = "abcd";
     let teamUp = (
       <div className="domain-box">
         <div className="row">
           <div className="col text-center domain-box-header-text">
             Create Your Community - Team Up
+          </div>
+        </div>
+        <div className="row">
+          <div className="col">
+            <font color="white" size="3">
+              Businss, exchange, connect, live with personality chemistry  
+            </font>
+          </div>
+        </div>
+        <div className="space-between-domains" />
+        <div className="row">
+          <div className="col text-center domain-box-header-text">
+            <button
+              className="btn-lobby"
+              type="button"
+              onClick={this.createTeamHandler}
+            >
+              <b>Create</b>
+            </button>
           </div>
         </div>
       </div>
@@ -79,6 +111,25 @@ class Lobby extends Component {
         <div className="row">
           <div className="col text-center domain-box-header-text">
             Join a Community - Meet Up
+          </div>
+        </div>
+        <div className="row">
+          <div className="col">
+            <font color="white" size="3">
+              Search, browse, and be matched to your future togetherness   
+            </font>
+          </div>
+        </div>
+        <div className="space-between-domains" />
+        <div className="row">
+          <div className="col text-center domain-box-header-text">
+            <button
+              className="btn-lobby"
+              type="button"
+              onClick={this.joinTeamHandler}
+            >
+              <b>Search & Join</b>
+            </button>
           </div>
         </div>
       </div>
@@ -94,6 +145,25 @@ class Lobby extends Component {
               Engage in your Community - Dashboard
             </div>
           </div>
+          <div className="row">
+          <div className="col">
+            <font color="white" size="3">
+              Engage in your community activities    
+            </font>
+          </div>
+        </div>
+        <div className="space-between-domains" />
+        <div className="row">
+          <div className="col text-center domain-box-header-text">
+            <button
+              className="btn-lobby"
+              type="button"
+              onClick={this.dashboardHandler}
+            >
+              <b>Dashboard</b>
+            </button>
+          </div>
+        </div>
         </div>
       );
       spaceInbetween = (
@@ -123,22 +193,22 @@ class Lobby extends Component {
             </div>
           </div>
         </div>
-
-              {/* <button
-                type='button'
-                onClick={this.openSitePlanModal}
-              >
-                <b>Start Here</b>
-              </button> */}
-
         {spaceInbetween}
         {teamUp}
         {spaceInbetween}
         {meetup}
         {spaceInbetween}
         {dashboard}
-          
-        {/* <ModalContainer /> */}
+        <div className="col-12 text-center">
+          <button
+            className="btn-lobby-starthere"
+            type="button"
+            onClick={this.openAlertModal(ans)}
+          >
+            <b>Start Here</b>
+          </button>
+        </div>
+        <ModalContainer />
       </div>
     );
   }
@@ -152,18 +222,18 @@ const mapStateToProps = state => ({
   auth: state.auth
 });
 
-// const mapDispatchToProps = dispatch => ({
-//   hideModal: () => dispatch(hideModal()),
-//   showModal: (modalProps, modalType) => {
-//     console.log(
-//       'modalProps:' + JSON.stringify(modalProps) + '  |modalType:' + modalType
-//     )
-//     dispatch(showModal({ modalProps, modalType }))
-//   }
-// })
+const mapDispatchToProps = dispatch => ({
+  hideModal: () => dispatch(hideModal()),
+  showModal: (modalProps, modalType) => {
+    // console.log(
+    //   "modalProps:" + JSON.stringify(modalProps) + "  |modalType:" + modalType
+    // );
+    dispatch(showModal({ modalProps, modalType }));
+  }
+});
 
-// export default connect(
-//   mapStateToProps,
-//   mapDispatchToProps
-// )(Lobby)
-export default connect(mapStateToProps)(Lobby);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Lobby);
+// export default connect(mapStateToProps)(Lobby);

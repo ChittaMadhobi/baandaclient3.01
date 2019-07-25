@@ -6,6 +6,7 @@ const initialState = {
 };
 
 export default (state = initialState, action) => {
+  //console.log('modalReducer action:' + JSON.stringify(action));
   switch (action.type) {
     case ActionTypes.SHOW_MODAL:
       return {

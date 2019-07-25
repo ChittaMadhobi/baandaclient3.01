@@ -16,7 +16,7 @@ class SideDrawer extends Component {
 
   render() {
     const { isAuthenticated, user } = this.props.auth;
-    console.log('SideDrawer: user', user, ' isAuthenticated:', isAuthenticated + ' props:', this.props );
+    // console.log('SideDrawer: user', user, ' isAuthenticated:', isAuthenticated + ' props:', this.props );
     let drawerClasses = "side-drawer";
     if (this.props.show) {
       drawerClasses = "side-drawer open";

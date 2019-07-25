@@ -27,7 +27,7 @@ class Navbar extends Component {
     // console.log("onLogoutClick this.props.history:", this.props);
     this.setState({ sideDrawerOpen: false });
     this.props.logoutUser(this.props.history);
-    console.log("onLogoutClick this.props.history:", this.props);
+    // console.log("onLogoutClick this.props.history:", this.props);
     this.props.history.push("/login");
   };
 
@@ -47,20 +47,20 @@ class Navbar extends Component {
   };
 
   componentWillMount = () => {
-    console.log("componentWillMount Navbar this.props", this.props);
+    // console.log("componentWillMount Navbar this.props", this.props);
     var url = window.location.search.substring(1);
     var qArray = url.split("&");
     if (qArray.length > 0) {
       for (var i = 0; i < qArray.length; i++) {
         var pArr = qArray[i].split("=");
-        console.log(
-          "navbar i. pArr[0] & pArr[1] : " +
-            (i + 1) +
-            ". " +
-            pArr[0] +
-            " & " +
-            pArr[1]
-        );
+        // console.log(
+        //   "navbar i. pArr[0] & pArr[1] : " +
+        //     (i + 1) +
+        //     ". " +
+        //     pArr[0] +
+        //     " & " +
+        //     pArr[1]
+        // );
         if (pArr[0] === "type") {
           if (pArr[1] === "logout") {
             this.props.logoutUser(this.props.history);
@@ -86,7 +86,7 @@ class Navbar extends Component {
       return { sideDrawerOpen: !prevState.sideDrawerOpen };
     });
     let yy = localStorage.getItem("backdrop");
-    console.log("drawToggleClickHandler:" + yy);
+    // console.log("drawToggleClickHandler:" + yy);
     if (yy === "close") {
       this.setState({ sideDrawerOpen: false });
     }
@@ -97,15 +97,15 @@ class Navbar extends Component {
   };
 
   render() {
-    const { isAuthenticated, user } = this.props.auth;
-    console.log(
-      "Navbar isAuthenticate:",
-      isAuthenticated,
-      "  user:",
-      user,
-      " this.props.auth:",
-      this.props.auths
-    );
+    // const { isAuthenticated, user } = this.props.auth;
+    // console.log(
+    //   "Navbar isAuthenticate:",
+    //   isAuthenticated,
+    //   "  user:",
+    //   user,
+    //   " this.props.auth:",
+    //   this.props.auths
+    // );
 
     const toolbar = (
       <Toolbar

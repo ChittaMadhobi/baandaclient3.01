@@ -1,0 +1,15 @@
+div.fixedsize-start-here {
+  height: 400px;
+  width: 100%;
+  background-color: #1a3c72;
+  color: #fffaea;
+  overflow-x: hidden;
+  overflow-y: auto;
+  max-height: 400px;
+}
+
+div.start-here-msg {
+  padding-top: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
