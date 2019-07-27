@@ -8,6 +8,7 @@ import { default as modalTypes } from './index';
 const MODAL_TYPES = {
   // siteplan: modalTypes.siteplanModal,
   startHere: modalTypes.alertModalRcc,
+  infoModal: modalTypes.infoModalRcc
   // carouselMan: modalTypes.carouselMan,
   // socialMessage: modalTypes.socialMessage,
   // socialMirror: modalTypes.socialMirror,
@@ -48,7 +49,7 @@ class ModalContainer extends React.Component {
       return null;
     }
     const SpecifiedModal = MODAL_TYPES[this.props.modalType];
-    console.log('SpecifiedModal(props):' + JSON.stringify(this.props));
+    // console.log('SpecifiedModal(props):' + JSON.stringify(this.props));
     return (
       <div>
         <ReactModal

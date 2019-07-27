@@ -1,0 +1,63 @@
+div.fixedsize-start-here {
+  height: 400px;
+  width: 100%;
+  background-color: #1a3c72;
+  color: #fffaea;
+  overflow-x: hidden;
+  overflow-y: auto;
+  max-height: 400px;
+}
+
+div.start-here-msg {
+  padding-top: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.notes-text {
+  padding-top: 10px;
+  font-size: 1.75em;
+  /* font-family: "Georgia", Times, serif; */
+  font-weight: bold;
+  /* color: #dfecf2; */
+}
+
+.modal-header-text {
+  padding-top: 10px;
+  font-size: 1em;
+}
+
+@media only screen and (min-width: 960px) {
+  .notes-text {
+    font-size: 1.05em;
+  }
+}
+
+@media only screen and (min-width: 1440px) {
+  .notes-text {
+    font-size: 1.15em;
+  }
+}
+@media only screen and (min-width: 2000px) {
+  .notes-text {
+    font-size: 1.5em;
+  }
+}
+
+@media only screen and (max-device-width: 375px) {
+  .notes-text {
+    font-size: 0.60em;
+  }
+}
+
+@media only screen and (max-device-width: 480px) {
+  .notes-text {
+    font-size: 0.61em;
+  }
+}
+
+@media only screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation: portrait) {
+  .notes-text {
+    font-size: .9em;
+  }
+}

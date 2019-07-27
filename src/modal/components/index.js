@@ -5,6 +5,7 @@
 //import alertModalRcc from './AlertModalRCC';
 // import siteplanModal from './displays/entrance/SiteMap';
 import alertModalRcc from './displays/entrance/StartHereModal';
+import infoModalRcc from './displays/overview/InfoModal';
 // import carouselMan from './displays/nook/CarouselManual';
 // import socialMessage from './displays/nook/SocialCircleMessage';
 // import socialMirror from './displays/nook/SCMirrorModal';
@@ -26,6 +27,7 @@ import alertModalRcc from './displays/entrance/StartHereModal';
 const modalTypes = {
   // siteplanModal,
   alertModalRcc,
+  infoModalRcc,
   // carouselMan,
   // socialMessage,
   // socialMirror,

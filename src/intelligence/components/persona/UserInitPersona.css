@@ -1,0 +1,234 @@
+.pad_below {
+  padding-bottom: 5px;
+}
+
+.slidecontainer {
+  width: 100%;
+}
+
+.slider {
+  -webkit-appearance: none;
+  width: 90%;
+  height: 7px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.5;
+  -webkit-transition: 0.2s;
+  transition: opacity 0.2s;
+}
+
+.slider:hover {
+  opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 8px;
+  height: 20px;
+  background: #45590b;
+  cursor: pointer;
+}
+
+/* ================================================= */
+div.loader{
+  margin: auto;
+  width: 60%;
+  border: 3px solid #73AD21;
+  padding-left: 10px;
+}
+
+div.fixedsize_scroll {
+  height: 700px;
+  width: 110%;
+  margin-left: -5%; 
+  /* background-color: rgb(245, 245, 228); */
+  background-color: #f0e9df;
+  overflow-x: hidden;
+  overflow-y: auto; 
+  /* max-height: 100%; */
+}
+
+.btn-modal {
+  width: 100px; 
+  height: 32px;
+  background-color: #555f6b;
+    border: none;
+    color: white;
+    font-size: 9pt;
+  box-shadow: 3px 3px 0px 0px black;
+  border-radius: 5px;
+}
+
+.page-top {
+  margin-top: -8px;
+  padding-bottom: 10px;
+}
+
+.qa_header {
+  color: #18385e;
+  font-size: 16pt;
+  font-weight: 700;
+}
+
+.question-text {
+  padding-top: 2px;
+  font-size: 1.2em;
+  text-align: left;
+  color: #164e87;
+  font-weight: 600;
+}
+
+.table_header {
+  padding-bottom: 5px;
+}
+
+
+@media only screen and (min-width: 960px) {
+    /* styles for browsers larger than 960px; */
+    .qa_header {
+      /* margin-top: -5px;  */
+      color: #18385e;
+      font-size: 14pt;
+      font-weight: 700;
+    }
+    .question-text {
+      padding-top: 3px;
+      font-size: 1.1em;
+      text-align: left;
+      color: #164e87;
+      font-weight: 700;
+    }
+}
+@media only screen and (min-width: 1440px) {
+    /* styles for browsers larger than 1440px; */
+    .qa_header {
+      margin-top: -5px; 
+      color: #18385e;
+      font-size: 1.2em;
+      font-weight: 600;
+    }
+    .question-text {
+      padding-top: 3px;
+      font-size: 1.3em;
+      text-align: left;
+      color: #164e87;
+      font-weight: 700;
+    }
+}
+@media only screen and (min-width: 2000px) {
+    /* for sumo sized (mac) screens */
+    .question-text {
+      padding-top: 3px;
+      font-size: 1.3em;
+      text-align: left;
+      color: #164e87;
+      font-weight: 700;
+    }
+}
+@media only screen and (max-device-width: 480px) {
+   /* styles for mobile browsers smaller than 480px; (iPhone) */
+   .btn-modal {
+     width: 75px;
+     height: 27px;
+     font-size: 7pt;
+     padding-top: 2px;
+     border-radius: 4px;
+     box-shadow: 2px 2px 0px 0px black;
+   }
+   .qa_header {
+    margin-top: -5px; 
+    color: #18385e;
+    font-size: 9pt;
+    font-weight: 800;
+  }
+  div.fixedsize_scroll {
+    height: 530px;
+    margin-top: -12px;
+    margin-left: -14px;
+    width: 108%;
+    overflow: auto;
+    max-height: 530px;
+  }
+  .question-text {
+    padding-top: 2px;
+    font-size: .5em;
+    text-align: left;
+    color: #164e87;
+    font-weight: 700;
+  }
+  .table_header {
+    padding-bottom: 10px;
+    margin-top: -12px;
+  }
+  
+}
+@media only screen and (device-width: 768px) {
+   /* default iPad screens */
+   .btn-modal {
+    width: 90px;
+    height: 32px;
+    font-size: 9pt;
+    border-radius: 4px;
+  }
+
+  div.fixedsize_scroll {
+    height: 850px;
+    width: 110%;
+    margin-left: -5%; 
+    /* background-color: rgb(245, 245, 228); */
+    background-color: #f0e9df;
+    overflow-x: hidden;
+    overflow-y: auto; 
+    /* max-height: 100%; */
+  }
+  .question-text {
+    padding-top: 1px;
+    font-size: 12pt;
+    text-align: left;
+    color: #164e87;
+    font-weight: 700;
+  }
+}
+    /* different techniques for iPad screening */
+@media only screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait) {
+  /* For portrait layouts only */
+  .btn-modal {
+    width: 110px;
+    height: 35px;
+    font-size: 12pt;
+    border-radius: 4px;
+  }
+
+  div.fixedsize_scroll {
+    height: 1170px;
+    width: 110%;
+    margin-left: -5%; 
+    /* background-color: rgb(245, 245, 228); */
+    background-color: #f0e9df;
+    overflow-x: hidden;
+    overflow-y: auto; 
+    /* max-height: 100%; */
+  }
+  .question-text {
+    padding-top: 1px;
+    font-size: 18pt;
+    text-align: left;
+    color: #164e87;
+    font-weight: 900;
+  }
+
+  .table_header {
+    padding-bottom: 10px;
+    margin-top: 5px;
+  }
+
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 8px;
+    height: 12px;
+    background: #45590b;
+    cursor: pointer;
+  }
+}

@@ -21,14 +21,4 @@ export const hideModal = modTask => dispatch => {
   });
 };
 
-/*
-Done for rcc in POC. this would be used for axios based backend transfer too
 
-export const hideModal1 = modTask => dispatch => {
-  console.log('in hideModal1 ...:' + modTask.todotext);
-  dispatch({
-    type: ActionTypes.HIDE_MODAL
-  });
-}
-
-*/

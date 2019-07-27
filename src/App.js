@@ -15,7 +15,8 @@ import Login from "./entrance/components/auth/Login";
 import Register from "./entrance/components/auth/Register";
 import MyAccount from "./account/myAccount/MyAccount";
 
-import UserInitPersona from "./intelligence/components/persona/userInitPersona";
+import UserInitPersona from "./intelligence/components/persona/UserInitPersona";
+// import UserInitPersona from "./intelligence/components/persona/SliderTest";
 
 import "./App.css";
 
@@ -27,7 +28,7 @@ if (localStorage.jwtToken) {
   setAuthToken(localStorage.jwtToken);
   // Decode token and get user info and exp
   const decoded = jwt_decode(localStorage.jwtToken);
-  console.log('decoded jwttoken:', decoded);
+  // console.log('decoded jwttoken:', decoded);
   // Set user and isAuthenticated
   store.dispatch(setCurrentUser(decoded));
   // Check for expired token

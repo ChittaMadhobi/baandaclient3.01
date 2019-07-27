@@ -1,5 +1,6 @@
 .lobby {
-  background-color: #e4d8cafb;
+  /* background-color: #e4d8cafb; */
+  background-color: #f2e7d5;
 }
 
 .btn-lobby {
@@ -9,7 +10,20 @@
   padding-top: 2px;
 	border: none;
 	color: white;
-	font-size: 14pt;
+  font-size: 14pt;
+  border-radius: 4px;
+	box-shadow: 3px 3px 0px 0px black;
+}
+
+.btn-lobby-starthere {
+  width: 100px; 
+  height: 32px;
+  background-color: #555f6b;
+  /* padding-top: 0px; */
+	border: none;
+	color: white;
+  font-size: 12pt;
+  border-radius: 3px;
 	box-shadow: 3px 3px 0px 0px black;
 }
 
@@ -47,7 +61,7 @@ div.space-between-domains {
   width: 70%;
   margin-top: 20px;
   margin-bottom: 1px;
-  margin-left: 20%;
+  margin-left: 15%;
 }
 
 .domain-box-header-text {
@@ -140,7 +154,7 @@ div.space-between-domains {
     color: #fff;
   }
   div.space-between-domains {
-    height: 9px;
+    height: 7px;
     border: none;
   }
 }

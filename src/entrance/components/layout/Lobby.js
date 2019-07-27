@@ -61,9 +61,7 @@ class Lobby extends Component {
   };
 
   createTeamHandler = () => {
-    alert("This is a test create");
     if (!this.props.auth.user.isInitDone) {
-      // console.log('here I am 1');
       this.props.history.push("/userinitpersona");
     }
   };
@@ -88,7 +86,7 @@ class Lobby extends Component {
         <div className="row">
           <div className="col">
             <font color="white" size="3">
-              Businss, exchange, connect, live with personality chemistry  
+              Do businss, offer services and products, co-live and more ...   
             </font>
           </div>
         </div>
@@ -116,7 +114,7 @@ class Lobby extends Component {
         <div className="row">
           <div className="col">
             <font color="white" size="3">
-              Search, browse, and be matched to your future togetherness   
+              Search, browse, and be matched for a happy togetherness   
             </font>
           </div>
         </div>
