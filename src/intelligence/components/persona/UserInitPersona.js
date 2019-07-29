@@ -10,6 +10,7 @@ import "../../../modal/css/localModal.css";
 import "../../../modal/css/template.css";
 
 import ReactLoading from "react-loading";
+import { personaCalc } from '../../calculations/personaCalc';
 
 import "./UserInitPersona.css";
 // stripeKey={process.env.REACT_APP_STRIPE_KEY}
@@ -23,7 +24,10 @@ class UserInitPersona extends Component {
 
     this.state = {
       list: [],
-      isLoading: false
+      isLoading: false,
+      personaInitDone: false,
+      pqa_msg:
+        "Please score all quations to procees. No score should be zero (0)."
       // INITIAL_STATE
     };
   }
@@ -46,8 +50,8 @@ class UserInitPersona extends Component {
             step: "Step 2: ",
             stepNote:
               "Please tell me your physical (geo) location and contacts. This will help me assist you intelligently"
-          },
-          
+          }
+
           // {
           //   step: "Step 3: ",
           //   stepNote:
@@ -95,6 +99,7 @@ class UserInitPersona extends Component {
       if (retdata.data) {
         let noOfRecs = retdata.data.length;
         for (var i = 0; i < noOfRecs; i++) {
+          if (i === 0) console.log("retdata.data:", retdata.data);
           // slider[i] = {
           //   seq_no: retdata.data[i].seq_no,
           //   q: retdata.data[i].question,
@@ -103,7 +108,9 @@ class UserInitPersona extends Component {
           value = {
             seq_no: retdata.data[i].seq_no,
             q: retdata.data[i].question,
-            v: retdata.data[i].score
+            v: retdata.data[i].score,
+            inversion_flag: retdata.data[i].inversion_flag,
+            persona_category: retdata.data[i].persona_category
           };
           this.addItem(value);
         }
@@ -143,7 +150,9 @@ class UserInitPersona extends Component {
           tempitem = {
             seq_no: item.seq_no,
             q: item.q,
-            v: parseInt(val)
+            v: parseInt(val),
+            inversion_flag: item.inversion_flag,
+            persona_category: item.persona_category
           };
           return tempitem;
         } else {
@@ -154,8 +163,19 @@ class UserInitPersona extends Component {
     });
   };
 
+  handleWIPSave = () => {
+    alert("handleWIPSave");
+    let retVal = personaCalc(this.props.auth.user.baandaId, this.state.list);
+    console.log('retVal:', retVal);
+    if (!retVal.status) {
+      this.setState({
+        pqa_msg: 'You have ' + retVal.noLeft + ' questions left to complete. To continnue later, click home from navbar or complete and click Save again.' 
+      })
+    }
+  };
+
   render() {
-    // console.log('this.props:', this.props.auth);
+    console.log("this.props:", this.props.auth);
 
     let loading;
     if (this.state.isLoading) {
@@ -175,14 +195,38 @@ class UserInitPersona extends Component {
       );
     }
 
+    let buttonPanel;
+    if (!this.state.personaInitDone) {
+      // WIP button
+      buttonPanel = (
+        <div>
+          <div className="row">
+            <div className="col-8 pqa_msg">
+              <p align="justify">{this.state.pqa_msg}</p>
+            </div>
+            <div className="col-4">
+              <button
+                className="btn_pqa"
+                type="button"
+                onClick={this.handleWIPSave}
+              >
+                <b>Save</b>
+              </button>
+            </div>
+          </div>
+          <div className="pqa_btn_space" />
+        </div>
+      );
+    } else {
+      console.log("ready to calculate &&&&&&&&&&&&&&&&&&&");
+    }
+
     let qpanel = (
       <div className="fixedsize_scroll">
         {this.state.list.map((item, i) => (
           <div key={i}>
             <div className="question-text">
-              <font size="2">
-                {item.seq_no}.&nbsp;{item.q}{" "}
-              </font>
+              {item.seq_no}.&nbsp;{item.q}{" "}
             </div>
             <div className="slidecontainer">
               <input
@@ -202,6 +246,8 @@ class UserInitPersona extends Component {
             </div>
           </div>
         ))}
+        <hr />
+        {buttonPanel}
       </div>
     );
 
@@ -232,13 +278,20 @@ class UserInitPersona extends Component {
         </div>
         {loading}
         <div className="row table_header">
-          <div className="col-6 text-left">
-            <font color="#ed1111">Disagree</font>
+          <div className="col-3 text-left">
+            <font color="#ed1111">
+              <b>Disagree</b>
+            </font>
           </div>
-          {/* <div className="col-3 text-center"><font color="#ed6d11">Disagree</font></div>
-            <div className="col-3 text-center"><font color="#63800e">Agree</font></div> */}
-          <div className="col-6 text-right">
-            <font color="#45590b">Agree</font>
+          <div className="col-6 text-left">
+            <font color="" black>
+              <b>Read as: I ...</b>
+            </font>
+          </div>
+          <div className="col-3 text-right">
+            <font color="#45590b">
+              <b>Agree</b>
+            </font>
           </div>
         </div>
         {qpanel}
