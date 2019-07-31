@@ -33,13 +33,24 @@ class InfoModal extends Component {
   }
 
   render() {
-    console.log("props InfoModal:" + JSON.stringify(this.props.message));
+    // console.log("props InfoModal:" + JSON.stringify(this.props.message));
     const header = this.props.message.Header;
 
-    const steps = this.props.message.Body.steps;
-    console.log("steps len:", steps.length);
+    // const steps = this.props.message.Body.steps;
+    // console.log("steps len:", steps.length);
 
-    let summary, step1, step1Msg, step2, step2Msg, step3, step3Msg, step4, step4Msg, footnote;
+    let summary,
+      step1,
+      step1Msg,
+      step2,
+      step2Msg,
+      step3,
+      step3Msg,
+      step4,
+      step4Msg,
+      step5,
+      step5Msg,
+      footnote;
     if (this.props.message.Body.oneLineSummary) {
       summary = this.props.message.Body.oneLineSummary;
     }
@@ -48,43 +59,51 @@ class InfoModal extends Component {
       step1Msg = this.props.message.Body.steps[0].stepNote;
     }
     if (this.props.message.Body.steps[1]) {
-        step2 = this.props.message.Body.steps[1].step;
-        step2Msg = this.props.message.Body.steps[1].stepNote;
+      step2 = this.props.message.Body.steps[1].step;
+      step2Msg = this.props.message.Body.steps[1].stepNote;
     }
     if (this.props.message.Body.steps[2]) {
-        step3 = this.props.message.Body.steps[2].step;
-        step3Msg = this.props.message.Body.steps[2].stepNote;
+      step3 = this.props.message.Body.steps[2].step;
+      step3Msg = this.props.message.Body.steps[2].stepNote;
     }
     if (this.props.message.Body.steps[3]) {
-        step4 = this.props.message.Body.steps[3].step;
-        step4Msg = this.props.message.Body.steps[3].stepNote;
+      step4 = this.props.message.Body.steps[3].step;
+      step4Msg = this.props.message.Body.steps[3].stepNote;
+    }
+    if (this.props.message.Body.steps[4]) {
+      step5 = this.props.message.Body.steps[4].step;
+      step5Msg = this.props.message.Body.steps[4].stepNote;
     }
 
     footnote = this.props.message.Body.footnote;
-    
 
-    console.log(
-      "summary:",
-      summary,
-      " step1:",
-      step1,
-      " step1Msg:",
-      step1Msg,
-      " step2:",
-      step2,
-      "step2Msg",
-      step2Msg,
-      " step3:",
-      step3,
-      " step3Msg:",
-      step3Msg,
-      " step4:",
-      step4,
-      " step4Msg:",
-      step4Msg,
-      " footnote:",
-      footnote
-    );
+    // console.log(
+    //   "summary:",
+    //   summary,
+    //   " step1:",
+    //   step1,
+    //   " step1Msg:",
+    //   step1Msg,
+    //   " step2:",
+    //   step2,
+    //   "step2Msg",
+    //   step2Msg,
+    //   " step3:",
+    //   step3,
+    //   " step3Msg:",
+    //   step3Msg,
+    //   " step4:",
+    //   step4,
+    //   " step4Msg:",
+    //   step5Msg,
+    //   " step4:",
+    //   step5,
+    //   " step5Msg:",
+    //   step5Msg,
+
+    //   " footnote:",
+    //   footnote
+    // );
 
     return (
       <div className="container">
@@ -98,12 +117,6 @@ class InfoModal extends Component {
 
           <div className="modal-body">
             <div className="fixedsize-start-here">
-              {/* <div className="text-center">
-                <font color="white" size="3">
-                  <b>Info Modal </b>
-                </font>
-              </div> */}
-
               <div className="row">
                 <div className="col-12">
                   <div className="start-here-msg">
@@ -112,25 +125,36 @@ class InfoModal extends Component {
                         {summary}
                       </p>
                     </font>
-                    <font color="#ededd1">  
-                      <p align="justify" className="notes-text">
-                        <b>{step1}</b>{step1Msg}
+                    <hr />
+                    <font color="#ededd1">
+                      <p className="notes-text">
+                        <b>{step1}</b>:&nbsp;
+                        {step1Msg}
                       </p>
-                      <p align="justify" className="notes-text">
-                        <b>{step2}</b>{step2Msg}
+                      <p className="notes-text">
+                        <b>{step2}</b>:&nbsp;
+                        {step2Msg}
                       </p>
-                      <p align="justify" className="notes-text">
-                        <b>{step3}</b>{step3Msg}
+                      <p className="notes-text">
+                        <b>{step3}</b>:&nbsp;
+                        {step3Msg}
                       </p>
-                      <p align="justify" className="notes-text">
-                        <b>{step4}</b>{step4Msg}
+                      <p className="notes-text">
+                        <b>{step4}</b>:&nbsp;
+                        {step4Msg}
                       </p>
-
+                      <p className="notes-text">
+                        <b>{step5}</b>:&nbsp;
+                        {step5Msg}
+                      </p>
                     </font>
+                    <hr />
                     <font color="#abd9ed">
-                      Notes:&nbsp;
                       <p align="justify" className="notes-text">
-                        {footnote}
+                        <font size="2">
+                          <b>Notes:&nbsp;</b>
+                        </font>
+                        <font color="white">{footnote}</font>
                       </p>
                     </font>
                   </div>

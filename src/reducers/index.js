@@ -4,9 +4,11 @@ import { combineReducers } from 'redux';
 import authReducer from './authReducer';
 import errorReducer from './errorReducer';
 import modal from './modalReducer';
+import personaReducer from './personaReducer'
 
 export default combineReducers({
   auth: authReducer,
   errors: errorReducer,
-  modal: modal 
+  modal: modal,
+  persona: personaReducer 
 });

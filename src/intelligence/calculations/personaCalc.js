@@ -1,5 +1,13 @@
-export function personaCalc(baandaid, inputScores) {
-//   console.log("Inside personaCalc - input param: ", inputScores);
+import axios from 'axios';
+
+// import { loginUser } from '../../../actions/authActions';
+// import { personaUpdate } from '../../actions/personaAction';
+
+const baandaServer = process.env.REACT_APP_BAANDA_SERVER;
+const personaapi = '/routes/users/postUserPersonaScore'
+
+export async function personaCalc(baandaid, inputScores) {
+  console.log("Inside personaCalc - input param: ", inputScores);
   // Comment to check git
   let scoringDone = true;
   let leftToAns = 0;
@@ -38,16 +46,14 @@ export function personaCalc(baandaid, inputScores) {
     };
   }
 
-  //   calculatePersona(inputScores);
-  //   saveInDB('yyy');
   let toUpdateData = {
-      baandid: baandaid,
-      personaList: updateScore,
+      baandaid: baandaid,
+      personalList: updateScore,
       ocean: calcState.persona
   }
 
-  let ret = saveInDB(toUpdateData);
-  console.log('ret: ', ret);
+  let ret = await saveInDB(toUpdateData);
+  console.log('saveInDB ret: ', ret);
 //   console.log("calcState:", calcState);
   return calcState;
 }
@@ -107,7 +113,21 @@ function calculatePersona(theList) {
   return persona;
 }
 
-function saveInDB(toUpdatePersonaData) {
+async function saveInDB(toUpdatePersonaData) {
   console.log("saveInDB: ", toUpdatePersonaData);
-  return true;
+  let response = true;
+  try {
+    let url = baandaServer + personaapi;  
+    let dbresponse = await axios.post(url, toUpdatePersonaData);
+    if (!dbresponse) {
+        throw new Error('No syntax error but did not update DB properly.');
+    }  
+    
+    console.log('Got dbresponse... for  debugging only.:', dbresponse);
+  } catch(err) {
+    console.log('Error (personaCalc SaveInDB:', err);
+    response = false;
+  }
+ 
+  return response;
 }

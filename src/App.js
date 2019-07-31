@@ -16,7 +16,9 @@ import Register from "./entrance/components/auth/Register";
 import MyAccount from "./account/myAccount/MyAccount";
 
 import UserInitPersona from "./intelligence/components/persona/UserInitPersona";
-// import UserInitPersona from "./intelligence/components/persona/SliderTest";
+import ShowPersona from './intelligence/components/persona/ShowPersona';
+
+import Dashboard from './dashboard/components/dashboardMain/dashboard';
 
 import "./App.css";
 
@@ -65,6 +67,9 @@ class App extends Component {
               <Route exact path="/lobby" component={Lobby} />
               <Route exact path="/myaccount" component={MyAccount} />
               <Route exact path="/userinitpersona" component={UserInitPersona} />
+              <Route exact path="/mirror" component={ShowPersona} />
+
+              <Route exact path="/dashboard" component={Dashboard} />
             </div>
             <Footer />
           </div>

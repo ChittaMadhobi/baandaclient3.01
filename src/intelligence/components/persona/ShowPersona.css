@@ -1,0 +1,259 @@
+div.fixedsize-persona {
+  height: 700px;
+  width: 110%;
+  /* margin-right: -10px; */
+  margin-left: -50px;
+  color: #fffaea;
+  overflow-x: hidden;
+  overflow-y: auto;
+  max-height: 1200px;
+}
+
+.heading_text {
+  font-size: 1.3em;
+  font-weight: 700;
+}
+
+.chart_size {
+  height: 420px;
+  width: 450px;
+  padding-left: 35px;
+  padding-right: 20px;
+  padding-top: 3px;
+  margin-top: 20px;
+  margin-right: 10px;
+  padding-bottom: 20px;
+}
+
+.btn_perona_modal {
+  width: 100px;
+  height: 32px;
+  background-color: #415447;
+  padding-top: 2px;
+  border: none;
+  color: white;
+  font-size: 12pt;
+  border-radius: 4px;
+  box-shadow: 2px 2px 0px 0px black;
+  margin-top: -4px;
+}
+
+.btn_done {
+  width: 80px;
+  height: 32px;
+  background-color: #733e19;
+  padding-top: 2px;
+  border: none;
+  color: white;
+  font-size: 12pt;
+  border-radius: 4px;
+  box-shadow: 2px 2px 0px 0px black;
+  margin-top: -4px; 
+}
+
+.chart_position {
+  margin: auto;
+  width: 70%;
+  height: 600px;
+  border: 3px solid green;
+  padding: 10px;
+}
+
+.date-size {
+  font-size: 1.2em;
+}
+
+.message_text {
+  color: black;
+  font-size: 1em;
+  font-weight: 600px;
+}
+
+.bottom_message_text {
+  color: black;
+  font-size: 1em;
+  font-weight: 600px;
+}
+
+.spaces_below {
+  height: 50px;
+}
+
+@media only screen and (min-width: 960px) {
+  div.fixedsize-persona {
+    height: 710px;
+    margin-top: -10px;
+    /* background-color: white; */
+  }
+
+  .chart_position {
+    margin: auto;
+    width: 40%;
+    height: 490px;
+    border: none;
+    padding: 10px;
+  }
+
+  .date-size {
+    font-size: 0.65em;
+  }
+
+  .heading_text {
+    font-size: 1em;
+    font-weight: 700;
+  }
+}
+@media only screen and (min-width: 1440px) {
+  div.fixedsize-persona {
+    height: 710px;
+    margin-top: -10px;
+    /* background-color: white; */
+  }
+
+  .chart_position {
+    margin: auto;
+    width: 40%;
+    height: 490px;
+    border: none;
+    padding: 10px;
+  }
+
+  .date-size {
+    font-size: 0.65em;
+  }
+
+  .heading_text {
+    font-size: 1em;
+    font-weight: 700;
+  }
+}
+
+@media only screen and (min-width: 2000px) {
+}
+
+@media only screen and (max-device-width: 480px) {
+
+  div.fixedsize-persona {
+    height: 610px;
+    width: 100%;
+    margin-left: -10px;
+    margin-top: -10px;
+    /* background-color: white; */
+  }
+
+  .chart_size {
+    height: 200px;
+    width: 200px;
+  }
+
+  .chart_position {
+    margin: auto;
+    width: 80%;
+    height: 280px;
+    border: none;
+    padding: 5px;
+  }
+
+  .date-size {
+    font-size: .75em;
+  }
+
+  .heading_text {
+    font-size: 1em;
+    font-weight: 700;
+  }
+
+  .bottom_message_text {
+    color: black;
+    font-size: .75em;
+    font-weight: 600px;
+  }
+
+  .btn_perona_modal {
+    width: 85px;
+    height: 30px;
+    padding-top: 2px;
+    border: none;
+    color: white;
+    font-size: 11pt;
+    border-radius: 4px;
+    box-shadow: 2px 2px 0px 0px black;
+    margin-top: -4px;
+    margin-left: -10px;
+  }
+
+  .message_text {
+    color: black;
+    font-size: .8em;
+    font-weight: 600px;
+  }
+
+  .btn_done {
+    width: 60px;
+    height: 28px;
+    font-size: 10pt;
+    border-radius: 4px;
+    margin-top: 18px; 
+  }
+}
+
+@media only screen and (device-width: 768px) {
+  div.fixedsize-persona {
+    height: 510px;
+    margin-top: -10px;
+    /* background-color: white; */
+  }
+
+  .chart_position {
+    margin: auto;
+    width: 90%;
+    height: 490px;
+    border: none;
+    padding: 10px;
+  }
+
+  .date-size {
+    font-size: 1.2em;
+  }
+}
+/* different techniques for iPad screening */
+@media only screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation: portrait) {
+  div.fixedsize-persona {
+    height: 880px;
+    margin-top: -10px;
+    /* background-color: white; */
+  }
+
+  .chart_position {
+    margin: auto;
+    width: 70%;
+    height: 490px;
+    border: none;
+    padding: 10px;
+  }
+
+  .date-size {
+    font-size: 1.2em;
+  }
+
+  .btn_perona_modal {
+    width: 100px;
+    height: 30px;
+    padding-top: 2px;
+    border: none;
+    color: white;
+    font-size: 12pt;
+    border-radius: 4px;
+    box-shadow: 2px 2px 0px 0px black;
+    margin-top: -4px;
+  }
+
+  .heading_text {
+    font-size: 1.3em;
+    font-weight: 700;
+  }
+}
+
+/* @media only screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:landscape) {
+  
+} */

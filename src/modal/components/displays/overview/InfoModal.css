@@ -1,11 +1,11 @@
 div.fixedsize-start-here {
-  height: 400px;
+  height: 450px;
   width: 100%;
   background-color: #1a3c72;
   color: #fffaea;
   overflow-x: hidden;
   overflow-y: auto;
-  max-height: 400px;
+  max-height: 450px;
 }
 
 div.start-here-msg {
@@ -16,7 +16,7 @@ div.start-here-msg {
 
 .notes-text {
   padding-top: 10px;
-  font-size: 1.75em;
+  font-size: .9em;
   /* font-family: "Georgia", Times, serif; */
   font-weight: bold;
   /* color: #dfecf2; */
@@ -30,18 +30,18 @@ div.start-here-msg {
 
 @media only screen and (min-width: 960px) {
   .notes-text {
-    font-size: 1.05em;
+    font-size: .9em;
   }
 }
 
 @media only screen and (min-width: 1440px) {
   .notes-text {
-    font-size: 1.15em;
+    font-size: .9em;
   }
 }
 @media only screen and (min-width: 2000px) {
   .notes-text {
-    font-size: 1.5em;
+    font-size: .90em;
   }
 }
 

@@ -33,6 +33,7 @@ class Lobby extends Component {
       this.props.history.push("/login");
     }
     // console.log('lobby didmount : this.props.auth.user:', this.props.auth.user);
+    console.log('this.props.auth.user.isInitDone:', this.props.auth.user.isInitDone);
     if (!this.props.auth.user.isInitDone) {
       // console.log('From lobby componentdidmount');
       this.setState({
@@ -72,6 +73,7 @@ class Lobby extends Component {
 
   dashboardHandler = () => {
     alert("This is a test dashboard");
+    this.props.history.push("/dashboard");
   };
 
   render() {
@@ -126,7 +128,7 @@ class Lobby extends Component {
               type="button"
               onClick={this.joinTeamHandler}
             >
-              <b>Search & Join</b>
+              <b>Join</b>
             </button>
           </div>
         </div>
@@ -158,7 +160,7 @@ class Lobby extends Component {
               type="button"
               onClick={this.dashboardHandler}
             >
-              <b>Dashboard</b>
+              <b>Engage</b>
             </button>
           </div>
         </div>

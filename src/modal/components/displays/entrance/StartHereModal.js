@@ -63,20 +63,22 @@ class StartHereModal extends Component {
                   <div className="start-here-msg">
                     <font color="#ededd1">
                       <p align="justify" className="notes-text">
-                        <b>Step 1:"</b> I will ask some basic questions so I can
-                        assist the special and unique you (faster you respond
-                        better it is. Don't think ... use your feelings) -
+                        <b>Start&nbsp;:</b> I will ask some basic questions so I can
+                        assist the special and unique you (your persona). Faster you respond
+                        better it is. Don't think, use your feelings. This is the initiation and
+                        will not be asked again after you complete.  
                       </p>
+                      <hr />
                       <p align="justify" className="notes-text">
-                        <b>Step 2: </b> Create your unique community to chase
+                        <b>Step 1: </b> Create your unique community to chase
                         your dreams with people like you.
                       </p>
                       <p align="justify" className="notes-text">
-                        <b>Step 3: </b> Search, matche and join communities
+                        <b>Step 2: </b> Search, matche and join communities
                         where you want to be.
                       </p>
                       <p align="justify" className="notes-text">
-                        <b>Step 4: </b> Engage, work, play, interact, trust,
+                        <b>Step 3: </b> Engage, work, play, interact, trust,
                         share reputations ... and more
                       </p>
                     </font>

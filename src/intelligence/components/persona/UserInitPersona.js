@@ -5,17 +5,20 @@ import axios from "axios";
 
 import ModalContainer from "../../../modal/components/ModalContainer";
 import { showModal, hideModal } from "../../../actions/modalActions";
-
 import "../../../modal/css/localModal.css";
 import "../../../modal/css/template.css";
+import { setQAInitDone } from "../../../actions/authActions";
 
 import ReactLoading from "react-loading";
-import { personaCalc } from '../../calculations/personaCalc';
+
+import { personaCalc } from "../../calculations/personaCalc";
+
 
 import "./UserInitPersona.css";
 // stripeKey={process.env.REACT_APP_STRIPE_KEY}
 const baandaServer = process.env.REACT_APP_BAANDA_SERVER;
 const PERSONA_QUESTION_API_POST = "/routes/users/getUserPersonaQ";
+let userData = {};
 // let slider = []; // Persona Initial Questions
 
 class UserInitPersona extends Component {
@@ -25,7 +28,8 @@ class UserInitPersona extends Component {
     this.state = {
       list: [],
       isLoading: false,
-      personaInitDone: false,
+      allQuestionsAnsweredFlag: false,
+      showPersonaReport: false,
       pqa_msg:
         "Please score all quations to procees. No score should be zero (0)."
       // INITIAL_STATE
@@ -33,7 +37,7 @@ class UserInitPersona extends Component {
   }
 
   openAlertModal = param => e => {
-    console.log("param : " + param + " user:" + this.props.auth.user.name);
+    // console.log("param : " + param + " user:" + this.props.auth.user.name);
     // let msg = 'This could be Jit ID: ' + param
     let msg = {
       Header: "First Impression - Persona & Profile",
@@ -59,7 +63,7 @@ class UserInitPersona extends Component {
           // }
         ],
         footnote:
-          "More genuine you are, better I would be able to assist you. None of your information shared with anyone unless you explicitly ask me to (Baanda promise). Think, as if you just met me and sharing me about your inner being (persona)."
+          "More genuine you are, better I would be able to assist you. None of your information will be shared with anyone unless you explicitly ask me to (Baanda promise). Think, as if you just met me and sharing me about your inner being (persona). Progressively, I will try to know more of your spirit and assist you uiquely."
       },
       Footer: "This is the footer"
     };
@@ -73,12 +77,21 @@ class UserInitPersona extends Component {
       "infoModal"
     );
   };
-
-  async componentWillMount() {
+  // Try to see if backbutton cannot be used. 
+  componentWillUnmount() {
+    this.props.history.goForward();
+  }
+  async componentDidMount() {
     if (this.props.auth.isAuthenticated) {
-      await this.addToSlider(this.props.auth.user.baandaId);
+      // Do this only if users's isInitDone is false.
+      if (!this.props.auth.user.isInitDone) {
+        await this.addToSlider(this.props.auth.user.baandaId);
+      } else {
+        // Go to lobby. Excepting from the URL manipulation, flow should not even reach here from lobby.
+        this.props.history.push("/lobby");
+      }
     } else {
-      console.log("Go to login page");
+      // console.log("Go to login page");
       this.props.history.push("/login");
     }
   }
@@ -99,12 +112,6 @@ class UserInitPersona extends Component {
       if (retdata.data) {
         let noOfRecs = retdata.data.length;
         for (var i = 0; i < noOfRecs; i++) {
-          if (i === 0) console.log("retdata.data:", retdata.data);
-          // slider[i] = {
-          //   seq_no: retdata.data[i].seq_no,
-          //   q: retdata.data[i].question,
-          //   v: retdata.data[i].score
-          // };
           value = {
             seq_no: retdata.data[i].seq_no,
             q: retdata.data[i].question,
@@ -116,7 +123,6 @@ class UserInitPersona extends Component {
         }
         return retdata.data;
       } else {
-        // console.log("No data received");
         throw new Error(
           "Did not receive questions from server. Please report to info@baanda.com"
         );
@@ -126,17 +132,6 @@ class UserInitPersona extends Component {
       return false;
     }
   };
-
-  // openPersonaQAModal = () => {
-  //   alert("Open modal for what is this?");
-  // };
-
-  //   handleChange = e => {
-  //     // console.log("e:", e.target.value, "  ", e.target.id, " ");
-  //     this.setState({
-  //       value: e.target.value
-  //     });
-  //   };
 
   handleChangeSlide = e => {
     let id = e.target.id;
@@ -163,19 +158,41 @@ class UserInitPersona extends Component {
     });
   };
 
-  handleWIPSave = () => {
-    alert("handleWIPSave");
-    let retVal = personaCalc(this.props.auth.user.baandaId, this.state.list);
-    console.log('retVal:', retVal);
+  handleWIPSave = async () => {
+    let retVal = await personaCalc(
+      this.props.auth.user.baandaId,
+      this.state.list
+    );
+    // console.log("retVal:", retVal);
     if (!retVal.status) {
       this.setState({
-        pqa_msg: 'You have ' + retVal.noLeft + ' questions left to complete. To continnue later, click home from navbar or complete and click Save again.' 
-      })
+        pqa_msg:
+          "You have " +
+          retVal.noLeft +
+          " questions left to complete. To continue later, click home from navbar or complete and click Save again."
+      });
+    } else {
+      // Trying to call action -> reducer to update store's isInitDone=true
+      userData = this.props.auth.user;
+      this.props.setQAInitDone();
+
+      this.setState({
+        pqa_msg:
+          "Thank you for completing. Click Mirror button for the first impression. This will be available in your Engage panel.",
+        allQuestionsAnsweredFlag: true
+      });
     }
   };
 
+  handleShowPersona = () => {
+
+    // mirror will show the current persona from here and from dashboard.
+    // this.props.history.push("/mirror");
+    this.props.history.push("/mirror");
+  };
+
   render() {
-    console.log("this.props:", this.props.auth);
+    // console.log("this.props:", this.props.auth);
 
     let loading;
     if (this.state.isLoading) {
@@ -196,7 +213,7 @@ class UserInitPersona extends Component {
     }
 
     let buttonPanel;
-    if (!this.state.personaInitDone) {
+    if (!this.state.allQuestionsAnsweredFlag) {
       // WIP button
       buttonPanel = (
         <div>
@@ -218,7 +235,25 @@ class UserInitPersona extends Component {
         </div>
       );
     } else {
-      console.log("ready to calculate &&&&&&&&&&&&&&&&&&&");
+      buttonPanel = (
+        <div>
+          <div className="row">
+            <div className="col-8 pqa_msg">
+              <p align="justify">{this.state.pqa_msg}</p>
+            </div>
+            <div className="col-4">
+              <button
+                className="btn_pqa"
+                type="button"
+                onClick={this.handleShowPersona}
+              >
+                <b>Mirror</b>
+              </button>
+            </div>
+          </div>
+          <div className="pqa_btn_space" />
+        </div>
+      );
     }
 
     let qpanel = (
@@ -266,14 +301,6 @@ class UserInitPersona extends Component {
             >
               <b>What is this?</b>
             </button>
-            {/* <button
-              className="btn-modal"
-              type="button"
-              onClick={this.openAlertModal}
-            >
-              <b>What is this?</b>
-            </button>{" "}
-            &nbsp; */}
           </div>
         </div>
         {loading}
@@ -284,7 +311,7 @@ class UserInitPersona extends Component {
             </font>
           </div>
           <div className="col-6 text-left">
-            <font color="" black>
+            <font color="black">
               <b>Read as: I ...</b>
             </font>
           </div>
@@ -316,12 +343,11 @@ const mapDispatchToProps = dispatch => ({
     //   "modalProps:" + JSON.stringify(modalProps) + "  |modalType:" + modalType
     // );
     dispatch(showModal({ modalProps, modalType }));
-  }
+  },
+  setQAInitDone: () => dispatch(setQAInitDone(userData))
 });
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(UserInitPersona);
-
-// export default userInitPersona;

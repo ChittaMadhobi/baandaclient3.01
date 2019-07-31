@@ -53,6 +53,8 @@ div.start-here-msg {
 @media only screen and (max-device-width: 480px) {
   .notes-text {
     font-size: 0.61em;
+    padding-bottom: -5px;
+    margin-bottom: -5px;
   }
 }
 

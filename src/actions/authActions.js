@@ -2,7 +2,7 @@ import axios from "axios";
 import setAuthToken from "../utils/setAuthToken";
 import jwt_decode from "jwt-decode";
 
-import { GET_ERRORS, SET_CURRENT_USER, SET_MSG_TRANSFER } from "./types";
+import { GET_ERRORS, SET_CURRENT_USER, SET_MSG_TRANSFER, SET_INITQA_DONE } from "./types";
 import { REGISTER_API_POST, LOGIN_API_POST } from "./api";
 
 // stripeKey={process.env.REACT_APP_STRIPE_KEY}
@@ -64,7 +64,7 @@ export const loginUser = userData => dispatch => {
       // console.log("authAction loginUser err:", err);
       dispatch({
         type: GET_ERRORS,
-        payload: err.response.data
+        payload: err.response.data 
       });
     });
 
@@ -85,6 +85,22 @@ export const setMsgTransfer = returnMessage => {
     payload: returnMessage
   };
 };
+
+export const setQAInitDone = (user) => {
+  console.log('setQAInitDone user:', user);
+  console.log('user.isInitDone 1:', user.isInitDone);
+  user.isInitDone = true;
+  console.log('setQAInitDone user 2:', user);
+  console.log('user.isInitDone 2:', user.isInitDone);
+  // let token = localStorage.getItem("jwtToken");
+  // let decoded = jwt_decode(token);
+  // console.log('setQAInitDone:', decoded);
+ 
+  return {
+    type: SET_INITQA_DONE,
+    payload: user
+  }
+}
 
 // Log user out
 export const logoutUser = () => dispatch => {

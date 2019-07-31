@@ -5,6 +5,9 @@ export const SET_CURRENT_USER = 'SET_CURRENT_USER';
 // Messaging from one component to another
 export const SET_MSG_TRANSFER = 'SET_MSG_TRANSFER';
 
+// Init questions answered
+export const SET_INITQA_DONE = "SET_INITQA_DONE"
+
 // Tasklist Action Types
 // export const ADD_TODO = 'ADD_TODO';
 // export const TOGGLE_TODO = 'TOGGLE_TODO';

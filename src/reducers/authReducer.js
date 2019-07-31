@@ -1,6 +1,10 @@
 import isEmpty from "../utils/isEmpty";
 
-import { SET_CURRENT_USER, SET_MSG_TRANSFER } from "../actions/types";
+import {
+  SET_CURRENT_USER,
+  SET_MSG_TRANSFER,
+  SET_INITQA_DONE
+} from "../actions/types";
 
 const initialState = {
   isAuthenticated: false,
@@ -17,6 +21,13 @@ export default function(state = initialState, action) {
       };
     case SET_MSG_TRANSFER:
       return {
+        user: action.payload
+      };
+    // Added this to see what happens  
+    case SET_INITQA_DONE:
+      return {
+        ...state,
+        isAuthenticated: !isEmpty(action.payload),
         user: action.payload
       };
     default:
