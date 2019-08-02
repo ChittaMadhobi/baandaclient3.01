@@ -56,6 +56,11 @@ div.start-here-msg {
     padding-bottom: -5px;
     margin-bottom: -5px;
   }
+
+  .modal-header-text {
+    padding-top: 10px;
+    font-size: .9em;
+  }
 }
 
 @media only screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation: portrait) {

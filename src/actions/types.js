@@ -6,7 +6,8 @@ export const SET_CURRENT_USER = 'SET_CURRENT_USER';
 export const SET_MSG_TRANSFER = 'SET_MSG_TRANSFER';
 
 // Init questions answered
-export const SET_INITQA_DONE = "SET_INITQA_DONE"
+export const SET_INITQA_DONE = "SET_INITQA_DONE";
+export const SET_INITPROFILE_DONE = "SET_INITPROFILE_DONE";
 
 // Tasklist Action Types
 // export const ADD_TODO = 'ADD_TODO';

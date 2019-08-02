@@ -45,8 +45,7 @@ class StartHereModal extends Component {
         <div className="modal-content-z">
           <div className="row text-center justify-content-center">
             <div className="modal-header-text">
-              Hello <font color="black">{this.props.auth.user.name}</font> ... I
-              am your Baanda <font size="2">(friend)</font>
+               <h5>Baanda Home Overview</h5>
             </div>
           </div>
 

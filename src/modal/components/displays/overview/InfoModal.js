@@ -111,7 +111,7 @@ class InfoModal extends Component {
           <div className="row text-center justify-content-center">
             <div className="modal-header-text">
               {/* Overview of header here ...{" "} */}
-              <font color="black">{header}</font>
+              <font color="black"><h5>{header}</h5></font>
             </div>
           </div>
 
@@ -128,27 +128,27 @@ class InfoModal extends Component {
                     <hr />
                     <font color="#ededd1">
                       <p className="notes-text">
-                        <b>{step1}</b>:&nbsp;
+                        <b>{step1}</b>&nbsp;
                         {step1Msg}
                       </p>
                       <p className="notes-text">
-                        <b>{step2}</b>:&nbsp;
+                        <b>{step2}</b>&nbsp;
                         {step2Msg}
                       </p>
                       <p className="notes-text">
-                        <b>{step3}</b>:&nbsp;
+                        <b>{step3}</b>&nbsp;
                         {step3Msg}
                       </p>
                       <p className="notes-text">
-                        <b>{step4}</b>:&nbsp;
+                        <b>{step4}</b>&nbsp;
                         {step4Msg}
                       </p>
                       <p className="notes-text">
-                        <b>{step5}</b>:&nbsp;
+                        <b>{step5}</b>&nbsp;
                         {step5Msg}
                       </p>
                     </font>
-                    <hr />
+
                     <font color="#abd9ed">
                       <p align="justify" className="notes-text">
                         <font size="2">

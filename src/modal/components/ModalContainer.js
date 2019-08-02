@@ -6,17 +6,8 @@ import ReactModal from 'react-modal';
 import { default as modalTypes } from './index';
 
 const MODAL_TYPES = {
-  // siteplan: modalTypes.siteplanModal,
   startHere: modalTypes.alertModalRcc,
   infoModal: modalTypes.infoModalRcc
-  // carouselMan: modalTypes.carouselMan,
-  // socialMessage: modalTypes.socialMessage,
-  // socialMirror: modalTypes.socialMirror,
-  // financialMirror: modalTypes.financialMirror,
-  // sxPursuits: modalTypes.sxPursuits,
-  // sxMessage: modalTypes.sxMessage,
-  // sxProject: modalTypes.sxProject,
-  // cfIntel: modalTypes.cfIntel
 };
 
 const mapStateToProps = state => ({

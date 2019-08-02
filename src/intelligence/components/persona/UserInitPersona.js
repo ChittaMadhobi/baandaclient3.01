@@ -291,7 +291,7 @@ class UserInitPersona extends Component {
         <div className="row page-top">
           <div className="col-3">&nbsp;</div>
           <div className="col-6">
-            <div className="qa_header">Personality, Geolocation & Contacts</div>
+            <div className="qa_header">Your Personality</div>
           </div>
           <div className="col-3">
             <button

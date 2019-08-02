@@ -18,7 +18,9 @@ import MyAccount from "./account/myAccount/MyAccount";
 import UserInitPersona from "./intelligence/components/persona/UserInitPersona";
 import ShowPersona from './intelligence/components/persona/ShowPersona';
 
-import Dashboard from './dashboard/components/dashboardMain/dashboard';
+import Dashboard from './dashboard/components/dashboardMain/Dashboard';
+import CreateComm from './communityCreate/components/CommCreate';
+import JoinComm from './communityJoin/components/CommunityJoin';
 
 import "./App.css";
 
@@ -70,6 +72,8 @@ class App extends Component {
               <Route exact path="/mirror" component={ShowPersona} />
 
               <Route exact path="/dashboard" component={Dashboard} />
+              <Route exact path="/createcommunity" component={CreateComm} />
+              <Route exact path="/joincommunity" component={JoinComm} />
             </div>
             <Footer />
           </div>

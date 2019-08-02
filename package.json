@@ -25,6 +25,7 @@
     "react-modal": "^3.5.1",
     "react-moment": "^0.7.7",
     "react-multimedia-capture": "^1.2.1",
+    "react-phone-number-input": "^2.3.21",
     "react-redux": "^5.0.7",
     "react-router-dom": "^5.0.0",
     "react-scripts": "^3.0.1",

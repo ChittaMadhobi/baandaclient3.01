@@ -7,7 +7,7 @@ const baandaServer = process.env.REACT_APP_BAANDA_SERVER;
 const personaapi = '/routes/users/postUserPersonaScore'
 
 export async function personaCalc(baandaid, inputScores) {
-  console.log("Inside personaCalc - input param: ", inputScores);
+  // console.log("Inside personaCalc - input param: ", inputScores);
   // Comment to check git
   let scoringDone = true;
   let leftToAns = 0;
@@ -26,7 +26,7 @@ export async function personaCalc(baandaid, inputScores) {
       leftToAns++;
     }
   });
-  console.log("scoringDone: ", scoringDone, " leftToAns:", leftToAns);
+  // console.log("scoringDone: ", scoringDone, " leftToAns:", leftToAns);
 
   if (scoringDone) {
     // if true then send the assessment back after storing in DB
@@ -34,7 +34,7 @@ export async function personaCalc(baandaid, inputScores) {
     calcState = {
       status: true,
       noLeft: leftToAns,
-      persona: calcPersona
+      persona: calcPersona,
     };
   } else {
     // Store work in progress scores in DB.
@@ -42,18 +42,20 @@ export async function personaCalc(baandaid, inputScores) {
     calcState = {
       status: false,
       noLeft: leftToAns,
-      persona: {}
+      persona: {},
     };
   }
 
   let toUpdateData = {
       baandaid: baandaid,
       personalList: updateScore,
-      ocean: calcState.persona
+      ocean: calcState.persona,
+      initDone: scoringDone
   }
 
-  let ret = await saveInDB(toUpdateData);
-  console.log('saveInDB ret: ', ret);
+  await saveInDB(toUpdateData);
+  
+  // console.log('saveInDB ret: ', ret);
 //   console.log("calcState:", calcState);
   return calcState;
 }
@@ -109,12 +111,12 @@ function calculatePersona(theList) {
     A: a,
     N: n
   };
-  console.log("xx: ", persona);
+  // console.log("xx: ", persona);
   return persona;
 }
 
 async function saveInDB(toUpdatePersonaData) {
-  console.log("saveInDB: ", toUpdatePersonaData);
+  // console.log("saveInDB: ", toUpdatePersonaData);
   let response = true;
   try {
     let url = baandaServer + personaapi;  
@@ -123,7 +125,7 @@ async function saveInDB(toUpdatePersonaData) {
         throw new Error('No syntax error but did not update DB properly.');
     }  
     
-    console.log('Got dbresponse... for  debugging only.:', dbresponse);
+    // console.log('Got dbresponse... for  debugging only.:', dbresponse);
   } catch(err) {
     console.log('Error (personaCalc SaveInDB:', err);
     response = false;

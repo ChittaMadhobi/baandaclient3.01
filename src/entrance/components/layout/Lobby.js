@@ -9,6 +9,7 @@
 import React, { Component } from "react";
 import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 
 import ModalContainer from "../../../modal/components/ModalContainer";
 import { showModal, hideModal } from "../../../actions/modalActions";
@@ -28,7 +29,7 @@ class Lobby extends Component {
 
     this.openAlertModal = this.openAlertModal.bind(this);
   }
-  componentDidMount() {
+  componentWillMount() {
     if (!this.props.auth.isAuthenticated) {
       this.props.history.push("/login");
     }
@@ -64,20 +65,27 @@ class Lobby extends Component {
   createTeamHandler = () => {
     if (!this.props.auth.user.isInitDone) {
       this.props.history.push("/userinitpersona");
-    }
+    } else if (!this.props.auth.user.isInitProfileDone){
+      this.props.history.push("/createcommunity")
+    } 
   };
 
   joinTeamHandler = () => {
-    alert("This is a test join");
+    if (!this.props.auth.user.isInitDone) {
+      this.props.history.push("/userinitpersona");
+    } else {
+      this.props.history.push("/joincommunity")
+    }
   };
 
   dashboardHandler = () => {
-    alert("This is a test dashboard");
+    // Go to Dashboard
     this.props.history.push("/dashboard");
   };
 
   render() {
-    const ans = "abcd";
+    console.log('this.props: ', this.props);
+   
     let teamUp = (
       <div className="domain-box">
         <div className="row">
@@ -203,9 +211,9 @@ class Lobby extends Component {
           <button
             className="btn-lobby-starthere"
             type="button"
-            onClick={this.openAlertModal(ans)}
+            onClick={this.openAlertModal("tokenInput")}
           >
-            <b>Start Here</b>
+            <b>What is this?</b>
           </button>
         </div>
         <ModalContainer />
@@ -232,8 +240,8 @@ const mapDispatchToProps = dispatch => ({
   }
 });
 
-export default connect(
+export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(Lobby);
-// export default connect(mapStateToProps)(Lobby);
+)(Lobby));
+

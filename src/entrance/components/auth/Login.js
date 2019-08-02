@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from "react-router-dom";
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 //import { Link } from 'react-router-dom';
@@ -111,35 +112,7 @@ class Login extends Component {
                   {errors.emailConfirm}
                 </div>
               )}
-              <div className="text-center">
-                {/* <span>
-                  <h4 className="mb-3 mt-3">
-                    <strong> OR </strong>{' '}
-                  </h4>{' '}
-                </span> */}
-                {/* <button
-                  className="btn btn-secondary btn-block mt-4"
-                  onClick={this.onClickGoogle.bind(this)}
-                >
-                  Login with Google <i className="fa fa-globe extraClass" />
-                </button> */}
-                {/*<font color="red">
-                  Google Auth is deactivated (to be activated soon).
-                </font> */}
-              </div>
-
               <div className="textspaceTop" />
-              {/* <div>
-                <Link
-                  to="/baandaReception"
-                  className="btn btn-outline-primary btn-block"
-                >
-                  <strong>Browse Job Posts & Listings</strong>
-                </Link>
-              </div>
-              <p className="text-center">
-                <i>Login / Signup / Browse listings </i>
-              </p> */}
               <div className="textspaceTop" />
             </div>
           </div>
@@ -161,12 +134,8 @@ const mapStateToProps = state => ({
   errors: state.errors
 });
 
-export default connect(
+export default withRouter(connect(
   mapStateToProps,
   { loginUser }
-)(Login);
+)(Login));
 
-// export default connect(
-//   mapStateToProps,
-//   { loginUser, googleLoginUser }
-// )(Login);

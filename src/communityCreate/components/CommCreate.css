@@ -1,0 +1,72 @@
+div.fixedsize_createProfile {
+  height: 770px;
+  width: 100%;
+  margin-top: -3px;
+  padding-left: 25px;
+  padding-top: 10px;
+  /* margin-left: -12px; */
+  background-color: white;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.btn-modal_create {
+  width: 100px;
+  height: 32px;
+  background-color: #555f6b;
+  border: none;
+  color: white;
+  font-size: 9pt;
+  box-shadow: 3px 3px 0px 0px black;
+  border-radius: 5px;
+}
+
+@media only screen and (min-width: 960px) {
+  /* styles for browsers larger than 960px; */
+}
+@media only screen and (min-width: 1440px) {
+  /* styles for browsers larger than 1440px; */
+}
+@media only screen and (min-width: 2000px) {
+  /* for sumo sized (mac) screens */
+}
+@media only screen and (max-device-width: 480px) {
+  /* styles for mobile browsers smaller than 480px; (iPhone) */
+  div.fixedsize_createProfile {
+    height: 550px;
+    width: 90%;
+    margin-top: -3px;
+    padding-left: 25px;
+    padding-top: 10px;
+    margin-left: -12px;
+    /* margin-right: 11px; */
+    width: 108%;
+  }
+
+  .btn-modal_create {
+    width: 80px;
+    height: 28px;
+    font-size: 7pt;
+  }
+}
+@media only screen and (device-width: 768px) {
+  /* default iPad screens */
+  div.fixedsize_createProfile {
+    height: 850px;
+    width: 110%;
+    margin-left: -5%;
+  }
+}
+/* different techniques for iPad screening */
+@media only screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation: portrait) {
+  /* For portrait layouts only */
+  div.fixedsize_createProfile {
+    height: 1170px;
+    width: 110%;
+    margin-left: -5%;
+  }
+}
+
+/* @media only screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:landscape) {
+  For landscape layouts only
+} */

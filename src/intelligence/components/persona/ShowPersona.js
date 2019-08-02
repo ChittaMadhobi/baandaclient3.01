@@ -74,11 +74,16 @@ class ShowPersona extends Component {
         );
       }
       // console.log("persona:", scores.data.personalInfo.persona.A);
-      this.setStateForSpider(scores.data.personalInfo.persona);
+      this.setStateForSpider(scores.data.persona);
     } catch (err) {
       console.log("didMount err:", err);
     }
     // console.log("this.state.date:", this.state.date);
+  }
+
+  // For mitigating back button
+  componentWillUnmount() {
+    this.props.history.goForward();
   }
 
   // Get the persona scores from DB
