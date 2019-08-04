@@ -72,7 +72,19 @@ div.space-between-domains {
   color: #dfecf2;
 }
 
-.domain-box-text {
+.panel_text {
+  font-size: 1em;
+  color: #cee4ed;
+  font-weight: 700;
+}
+
+.joinMsg {
+  color: #aefaa2;
+  /* border: 1px solid #aefaa2; */
+  font-size: .75em;
+  margin-top: 15px;
+  height: 30px;
+  padding-top: 4px;
 }
 /* ---------- Adjust based on medaia sizes ------------------ */
 /* For browser larger than 960 px */
@@ -137,6 +149,18 @@ div.space-between-domains {
     margin-top: 5px;
     margin-bottom: 5px;
   }
+
+  .panel_text {
+    font-size: .65em;
+    font-weight: 600;
+  }
+
+  .joinMsg {
+    font-size: .6em;
+    margin-top: 15px;
+    height: 20px;
+    padding-top: 3px;
+  }
 }
 
 /* styles for mobile browsers smaller than 480px; (iPhone +) */
@@ -181,6 +205,18 @@ div.space-between-domains {
     margin-top: 5px;
     margin-bottom: 5px;
   }
+
+  .panel_text {
+    font-size: .75em;
+    font-weight: 600;
+  }
+
+  .joinMsg {
+    font-size: .55em;
+    margin-top: 15px;
+    height: 20px;
+    padding-top: 2px;
+  }
 }
 
 /* different techniques for iPad screening */
@@ -207,6 +243,13 @@ div.space-between-domains {
   div.space-between-domains {
     height: 20px;
     border: none;
+  }
+
+  .joinMsg {
+    font-size: .7em;
+    margin-top: 15px;
+    height: 25px;
+    padding-top: 4px;
   }
 }
 

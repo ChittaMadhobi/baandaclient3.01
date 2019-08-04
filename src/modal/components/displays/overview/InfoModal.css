@@ -18,7 +18,7 @@ div.start-here-msg {
   padding-top: 10px;
   font-size: .9em;
   /* font-family: "Georgia", Times, serif; */
-  font-weight: bold;
+  /* font-weight: bold; */
   /* color: #dfecf2; */
 }
 
@@ -26,6 +26,15 @@ div.start-here-msg {
   padding-top: 10px;
   font-size: 1.5em;
   font-weight: 700;
+}
+
+hr.format {
+  color: white;
+  background-color: rgba(218, 229, 232, 0.5);
+  margin-top: 20px;
+  margin-bottom: 1px;
+  margin-left: 5px;
+  margin-right: 5px;
 }
 
 @media only screen and (min-width: 960px) {
@@ -36,18 +45,18 @@ div.start-here-msg {
 
 @media only screen and (min-width: 1440px) {
   .notes-text {
-    font-size: .9em;
+    font-size: 1em;
   }
 }
 @media only screen and (min-width: 2000px) {
   .notes-text {
-    font-size: .90em;
+    font-size: 1em;
   }
 }
 
 @media only screen and (max-device-width: 375px) {
   .notes-text {
-    font-size: 0.6em;
+    font-size: 0.7em;
   }
   .modal-header-text {
     font-size: 0.5em;
@@ -56,7 +65,7 @@ div.start-here-msg {
 
 @media only screen and (max-device-width: 480px) {
   .notes-text {
-    font-size: 0.61em;
+    font-size: 0.75em;
   }
   .modal-header-text {
     font-size: 0.6em;

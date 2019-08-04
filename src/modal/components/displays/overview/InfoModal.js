@@ -111,7 +111,9 @@ class InfoModal extends Component {
           <div className="row text-center justify-content-center">
             <div className="modal-header-text">
               {/* Overview of header here ...{" "} */}
-              <font color="black"><h5>{header}</h5></font>
+              <font color="black">
+                <h5>{header}</h5>
+              </font>
             </div>
           </div>
 
@@ -119,41 +121,40 @@ class InfoModal extends Component {
             <div className="fixedsize-start-here">
               <div className="row">
                 <div className="col-12">
-                  <div className="start-here-msg">
+                  <div className="start-here-msg notes-text">
                     <font color="white">
-                      <p align="justify" className="notes-text">
-                        {summary}
-                      </p>
+                      <p align="justify">{summary}</p>
                     </font>
                     <hr />
                     <font color="#ededd1">
-                      <p className="notes-text">
+                      <p align="justify">
                         <b>{step1}</b>&nbsp;
                         {step1Msg}
                       </p>
-                      <p className="notes-text">
+                      <p align="justify">
                         <b>{step2}</b>&nbsp;
                         {step2Msg}
                       </p>
-                      <p className="notes-text">
+                      <p align="justify">
                         <b>{step3}</b>&nbsp;
                         {step3Msg}
                       </p>
-                      <p className="notes-text">
+                      <p align="justify">
                         <b>{step4}</b>&nbsp;
                         {step4Msg}
                       </p>
-                      <p className="notes-text">
+                      <p align="justify">
                         <b>{step5}</b>&nbsp;
                         {step5Msg}
                       </p>
                     </font>
+                  </div>
 
+                  <hr className="format" />
+                  <div className="start-here-msg notes-text">
                     <font color="#abd9ed">
-                      <p align="justify" className="notes-text">
-                        <font size="2">
-                          <b>Notes:&nbsp;</b>
-                        </font>
+                      <p align="justify">
+                        <b>Notes:&nbsp;</b>
                         <font color="white">{footnote}</font>
                       </p>
                     </font>

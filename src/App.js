@@ -22,6 +22,9 @@ import Dashboard from './dashboard/components/dashboardMain/Dashboard';
 import CreateComm from './communityCreate/components/CommCreate';
 import JoinComm from './communityJoin/components/CommunityJoin';
 
+// persona & profiles
+import InitialProfile from './intelligence/components/persona/InitialProfile';
+
 import "./App.css";
 
 // Check for token
@@ -74,6 +77,8 @@ class App extends Component {
               <Route exact path="/dashboard" component={Dashboard} />
               <Route exact path="/createcommunity" component={CreateComm} />
               <Route exact path="/joincommunity" component={JoinComm} />
+
+              <Route exact path="/profilemgmt" component={InitialProfile} />
             </div>
             <Footer />
           </div>

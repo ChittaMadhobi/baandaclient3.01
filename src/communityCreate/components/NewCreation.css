@@ -1,0 +1,122 @@
+div.fixedsize_create_comm {
+  height: 700px;
+  width: 100%;
+  /* background-color: white; */
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.input_text {
+  font-size: 1em;
+  color: #445d85;
+}
+
+.input_textarea {
+  font-size: 0.1em;
+}
+
+.input_textarea {
+  font-size: 1em;
+}
+
+.main {
+  width: 100%;
+  /* background: gray; */
+  /* display: inline; */
+  margin-left: -4px;
+  padding-right: 10px;
+  margin-right: 5px;
+}
+
+.main > textarea {
+  width: inherit;
+  /* margin-left: -5px;
+  padding-right: 10px; */
+}
+
+.radio-fonts {
+  font-size: 1em;
+}
+
+.intent-select {
+  font-size: 1em;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-bottom: 5px;
+}
+
+@media only screen and (min-width: 960px) {
+  .main {
+    width: 90%;
+    /* background: gray; */
+    /* display: inline; */
+  }
+
+  .main > textarea {
+    width: inherit;
+    margin-left: 5px;
+  }
+}
+@media only screen and (min-width: 1440px) {
+  /* styles for browsers larger than 1440px; */
+}
+@media only screen and (min-width: 2000px) {
+  /* for sumo sized (mac) screens */
+}
+@media only screen and (max-device-width: 480px) {
+  /* styles for mobile browsers smaller than 480px; (iPhone) */
+  div.fixedsize_create_comm {
+    height: 530px;
+    margin-top: 2px;
+    padding-right: 10px;
+    padding-top: 2px;
+    padding-left: 2px;
+    width: 103%;
+  }
+
+  .input_text {
+    font-size: 0.75em;
+  }
+
+  .input_textarea {
+    font-size: 0.85em;
+  }
+
+  .radio-fonts {
+    font-size: 0.7em;
+  }
+
+  .intent-select {
+    font-size: .75em;
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+
+  /* .main {
+    font-size: .8em;
+  }
+
+  .main > textarea {
+    width: inherit;
+    margin-left: 5px;
+    margin-bottom: -5px;
+  } */
+}
+@media only screen and (device-width: 768px) {
+  /* default iPad screens */
+  div.fixedsize_create_comm {
+    height: 900px;
+    width: 110%;
+    margin-left: 5px;
+    padding-left: 10px;
+  }
+}
+/* different techniques for iPad screening */
+@media only screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation: portrait) {
+  /* For portrait layouts only */
+  div.fixedsize_create_comm {
+    height: 870px;
+    width: 109%;
+    margin-left: -30px;
+  }
+}

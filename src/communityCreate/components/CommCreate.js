@@ -8,8 +8,9 @@ import { showModal, hideModal } from "../../actions/modalActions";
 import "../../modal/css/localModal.css";
 import "../../modal/css/template.css";
 
-// import InitialProfile from "../../intelligence/components/persona/InitialProfile";
-import InitialProfile from '../../intelligence/components/persona/InitialProfile';
+import EditCreation from "./EditCreation";
+import NewCreation from "./NewCreation";
+
 import "./CommCreate.css";
 
 class CommCreate extends Component {
@@ -17,63 +18,153 @@ class CommCreate extends Component {
     super(props);
 
     this.state = {
-      name: ""
+      name: "",
+
+      infoModalContent: {
+        Header: "",
+        Body: {
+          oneLineSummary: "",
+          steps: [
+            // Max five elements for now
+            {
+              step: "",
+              stepNote: ""
+            }
+          ],
+          footnote: ""
+        },
+        Footer: "" // optional
+      },
+      createFlag: true,
+      editFlag: false
     };
   }
 
+  // =========== Modal content creation functions
+  // ++++++++ Create what-is-this button
+  createInfoHandler = async () => {
+    await this.setState({
+      infoModalContent: {}
+    });
+    await this.setState({
+      infoModalContent: {
+        Header: "Overview - Create or Edit",
+        Body: {
+          oneLineSummary:
+            "In this module you will be creating or editing communities and catalogs, then review and publish.",
+          steps: [
+            {
+              step: "Point A:",
+              stepNote:
+                "Provide a unique name for your reference and a caption for others to see. You will be guided progressively."
+            },
+            {
+              step: "Point B:",
+              stepNote:
+                "Communities may be for your business (good, service, expertise), form customer communities. You may be looking for expertise (help-wated) or offer service/expertise."
+            },
+            {
+              step: "Point C: ",
+              stepNote:
+                "Communities may be to find right people with harmony, aligned chemistry, for co-living and/or co-working. You may be developer, architect, or other custom fecilitate to aid emerging co-living needs of the society."
+            },
+            {
+              step: "Point D: ",
+              stepNote:
+                "You can form groups of family and/or friends for fun activitis, hobbies, adventures ... Imagine, world of togetherness awaits you."
+            }
+          ],
+          footnote:
+            "In the creation of communities, you are the author, entrepreneure, and dreamer. You may be an individual or a small group. For a  group, start solo and pass authority to selected few. For HOME page, click Home on navbar or side-drawer."
+        },
+        Footer: ""
+      }
+    });
+    console.log("infoModalContent: ", this.state.infoModalContent);
+    this.openAlertModal();
+  };
+
   openAlertModal = () => {
-    // console.log("param : " + param + " user:" + this.props.auth.user.name);
-    // let msg = 'This could be Jit ID: ' + param
-    let msg = {
-      Header: "Creation Overview",
-      Body: {
-        oneLineSummary: "In this module you will be creating communities and market space for your goods & services. The initial minimal profile will be asked once.",
-        steps: [
-          {
-            step: "Step 1.",
-            stepNote:
-              "Create a community. This may be virtual (to find like spirited people) or geo-location based for activities. It may be for co-living, co-workinng, schools, and/or even forming a customer community for your small business." 
-          },
-          {
-            step: "Step 2: ",
-            stepNote:
-              "You can create a catalog that details your offerings. This catalog is not inventory and not necessarily for business. It may be a skill you want to pass on."
-          },
-          {
-            step: "Step 3: ",
-            stepNote:
-              "You can associate sub-communities to a bigger community. For example, you may have several groups of same class in a semister. Students of a semister can be part of a school."
-          },
-          {
-            step: "Step 4: ",
-            stepNote:
-              "You can offer your good and services to public or to a group. How you release it, when you release what aspects is up to you. You will do that in your Dashboard (Engage button in your home page)."
-          }
-        ],
-        footnote: "In the creation of communities, you are the author and entrepreneure. It is possible that few of you decided to start something together. One of you can start and pass on the adminstrative right to other few of your core team for anyone to work on the community as adminstrators. If you have any question, plese ask in the Ask-Baanda button in your Engage module."
-      },
-      Footer: "This is the footer"
-    };
     this.props.showModal(
       {
         open: true,
         title: "Alert - Start Here Header",
-        message: msg,
+        message: this.state.infoModalContent, // message: msg,
         closeModal: this.closeModal
       },
       "infoModal"
     );
   };
+
+  // Handle Edit Button
+  editHandler = async () => {
+    await this.setState({
+      createFlag: false,
+      editFlag: true
+    });
+  };
+
+  newHandler = async () => {
+    await this.setState({
+      createFlag: true,
+      editFlag: false
+    });
+  };
+
   render() {
     console.log("comm create this props auth:", this.props.auth);
 
-    let initProfilePanel = null;
-
-    if (!this.props.auth.user.isInitProfileDone) {
-      initProfilePanel = (
-        // <div className="fixedsize_createProfile">
+    let createEditToggleButton;
+    let creationPanel;
+    if (this.state.createFlag) {
+      createEditToggleButton = (
         <div>
-          <InitialProfile />
+          <button
+            className="btn-modal_create"
+            type="button"
+            onClick={this.createInfoHandler}
+          >
+            <b>Info</b>
+          </button>
+          &nbsp;&nbsp;
+          <button
+            className="btn-modal_create"
+            type="button"
+            onClick={this.editHandler}
+          >
+            <b>Edit</b>
+          </button>
+        </div>
+      );
+      creationPanel = (
+        <div>
+          <NewCreation />
+        </div>
+      );
+    }
+    if (this.state.editFlag) {
+      createEditToggleButton = (
+        <div>
+          <button
+            className="btn-modal_create"
+            type="button"
+            onClick={this.createInfoHandler}
+          >
+            <b>Info</b>
+          </button>
+          &nbsp;&nbsp;
+          <button
+            className="btn-modal_create"
+            type="button"
+            onClick={this.newHandler}
+          >
+            <b>New</b>
+          </button>
+        </div>
+      );
+      creationPanel = (
+        <div>
+          <EditCreation />
         </div>
       );
     }
@@ -82,19 +173,11 @@ class CommCreate extends Component {
       <div>
         <div className="row page-top">
           <div className="col-8 dash_header">
-            Create Communities & Offerings
+            Create & Edit Communities
           </div>
-          <div className="col-4">
-            <button
-              className="btn-modal_create"
-              type="button"
-              onClick={this.openAlertModal}
-            >
-              <b>What is this?</b>
-            </button>
-          </div>
+          <div className="col-4">{createEditToggleButton}</div>
         </div>
-        {initProfilePanel}
+        {creationPanel}
         <ModalContainer />
       </div>
     );

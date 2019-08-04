@@ -45,7 +45,7 @@ class StartHereModal extends Component {
         <div className="modal-content-z">
           <div className="row text-center justify-content-center">
             <div className="modal-header-text">
-               <h5>Baanda Home Overview</h5>
+              <h5>Baanda Home Overview</h5>
             </div>
           </div>
 
@@ -59,38 +59,42 @@ class StartHereModal extends Component {
 
               <div className="row">
                 <div className="col-12">
-                  <div className="start-here-msg">
-                    <font color="#ededd1">
-                      <p align="justify" className="notes-text">
-                        <b>Start&nbsp;:</b> I will ask some basic questions so I can
-                        assist the special and unique you (your persona). Faster you respond
-                        better it is. Don't think, use your feelings. This is the initiation and
-                        will not be asked again after you complete.  
-                      </p>
-                      <hr />
-                      <p align="justify" className="notes-text">
-                        <b>Step 1: </b> Create your unique community to chase
-                        your dreams with people like you.
-                      </p>
-                      <p align="justify" className="notes-text">
-                        <b>Step 2: </b> Search, matche and join communities
-                        where you want to be.
-                      </p>
-                      <p align="justify" className="notes-text">
-                        <b>Step 3: </b> Engage, work, play, interact, trust,
-                        share reputations ... and more
-                      </p>
-                    </font>
+                  <div className="start-here-msg notes-text">
+                    {/* <font color="#ededd1"> */}
+                    <p align="justify">
+                      <b>Start&nbsp;:</b> I will ask some basic questions so I
+                      can assist the special and unique you (your persona).
+                      Faster you respond better it is. Don't think, use your
+                      feelings. This is the initiation and will not be asked
+                      again after you complete.
+                    </p>
+                    <hr />
+                    <p align="justify">
+                      <b>Step 1: </b> Create your unique community to chase your
+                      dreams with people like you.
+                    </p>
+                    <p align="justify">
+                      <b>Step 2: </b> Search, matche and join communities where
+                      you want to be.
+                    </p>
+                    <p align="justify">
+                      <b>Step 3: </b> Engage, work, play, interact, trust, share
+                      reputations ... and more
+                    </p>
+                    {/* </font> */}
+                   
+                  </div>
+                  <hr className="format" />
+                  <div className="start-here-msg notes-text">
                     <font color="#abd9ed">
-                      Notes:
-                      <p align="justify" className="notes-text">
-                        The core idea and vision of Baanda (your friend) is to
-                        let you thrive in life with others who are compatible
-                        with your persona, spirit, position in life ... for a
-                        happier life of togetherness. It is all about soulful
-                        collaboration with trustful relations and not having to
-                        face life alone. Allow me to be your friend and let's
-                        make this a happier planet to live in.
+                      <p align="justify">
+                        Notes: The core idea and vision of Baanda (your friend)
+                        is to let you thrive in life with others who are
+                        compatible with your persona, spirit, position in life
+                        ... for a happier life of togetherness. It is all about
+                        soulful collaboration with trustful relations and not
+                        having to face life alone. Allow me to be your friend
+                        and let's make this a happier planet to live in.
                       </p>
                     </font>
                   </div>

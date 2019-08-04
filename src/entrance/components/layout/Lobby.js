@@ -22,7 +22,7 @@ class Lobby extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {  
+    this.state = {
       dashboardFlag: true,
       isShowing: false
     };
@@ -34,7 +34,7 @@ class Lobby extends Component {
       this.props.history.push("/login");
     }
     // console.log('lobby didmount : this.props.auth.user:', this.props.auth.user);
-    console.log('this.props.auth.user.isInitDone:', this.props.auth.user.isInitDone);
+    // console.log('this.props.auth.user.isInitDone:', this.props.auth.user.isInitDone);
     if (!this.props.auth.user.isInitDone) {
       // console.log('From lobby componentdidmount');
       this.setState({
@@ -64,40 +64,51 @@ class Lobby extends Component {
 
   createTeamHandler = () => {
     if (!this.props.auth.user.isInitDone) {
+      // Create initial persona
       this.props.history.push("/userinitpersona");
-    } else if (!this.props.auth.user.isInitProfileDone){
-      this.props.history.push("/createcommunity")
-    } 
+    } else if (!this.props.auth.user.isInitProfileDone) {
+      // Create  initial profile
+      this.props.history.push("/profilemgmt");
+    } else {
+      // Go and create/edit communities to author & publish
+      this.props.history.push("/createcommunity");
+    }
   };
 
   joinTeamHandler = () => {
     if (!this.props.auth.user.isInitDone) {
+      // Create initial persona
       this.props.history.push("/userinitpersona");
+    } else if (!this.props.auth.user.isInitProfileDone) {
+      // Create  initial profile
+      this.props.history.push("/profilemgmt");
     } else {
-      this.props.history.push("/joincommunity")
+      // Go and create/edit communities to author & publish
+      this.props.history.push("/joincommunity");
     }
   };
 
   dashboardHandler = () => {
-    // Go to Dashboard
+    // Go to Dashboard (engage)
     this.props.history.push("/dashboard");
   };
 
   render() {
-    console.log('this.props: ', this.props);
-   
+    // console.log('this.props: ', this.props);
+    let joinMsg = "2 Invites, 1 Match";
+    let dashMsg = "3 New Messages";
+
     let teamUp = (
       <div className="domain-box">
+        {" "}
         <div className="row">
           <div className="col text-center domain-box-header-text">
-            Create Your Community - Team Up
+            Create Community - Team Up
           </div>
         </div>
         <div className="row">
-          <div className="col">
-            <font color="white" size="3">
-              Do businss, offer services and products, co-live and more ...   
-            </font>
+          <div className="col panel_text">
+            Co-op, Co-live, Co-serve & Co-Fun
           </div>
         </div>
         <div className="space-between-domains" />
@@ -118,14 +129,12 @@ class Lobby extends Component {
       <div className="domain-box">
         <div className="row">
           <div className="col text-center domain-box-header-text">
-            Join a Community - Meet Up
+            Join Communities - Meet Up
           </div>
         </div>
         <div className="row">
-          <div className="col">
-            <font color="white" size="3">
-              Search, browse, and be matched for a happy togetherness   
-            </font>
+          <div className="col panel_text">
+            Search, Browse, Matched, & Connect
           </div>
         </div>
         <div className="space-between-domains" />
@@ -140,6 +149,11 @@ class Lobby extends Component {
             </button>
           </div>
         </div>
+        <div className="row">
+          <div className="col-7">&nbsp;</div>
+          <div className="col-4 joinMsg text-right">{joinMsg}</div>
+          <div className="col-1">&nbsp;</div>
+        </div>
       </div>
     );
 
@@ -150,27 +164,30 @@ class Lobby extends Component {
         <div className="domain-box">
           <div className="row">
             <div className="col text-center domain-box-header-text">
-              Engage in your Community - Dashboard
+              Engage - The Dashboard
             </div>
           </div>
           <div className="row">
-          <div className="col">
-            <font color="white" size="3">
-              Engage in your community activities    
-            </font>
+            <div className="col panel_text">
+              Communicate, Reflect, Serve & more ...
+            </div>
           </div>
-        </div>
-        <div className="space-between-domains" />
-        <div className="row">
-          <div className="col text-center domain-box-header-text">
-            <button
-              className="btn-lobby"
-              type="button"
-              onClick={this.dashboardHandler}
-            >
-              <b>Engage</b>
-            </button>
+          <div className="space-between-domains" />
+          <div className="row">
+            <div className="col text-center domain-box-header-text">
+              <button
+                className="btn-lobby"
+                type="button"
+                onClick={this.dashboardHandler}
+              >
+                <b>Engage</b>
+              </button>
+            </div>
           </div>
+          <div className="row">
+          <div className="col-7">&nbsp;</div>
+          <div className="col-4 joinMsg text-right">{dashMsg}</div>
+          <div className="col-1">&nbsp;</div>
         </div>
         </div>
       );
@@ -213,7 +230,7 @@ class Lobby extends Component {
             type="button"
             onClick={this.openAlertModal("tokenInput")}
           >
-            <b>What is this?</b>
+            <b>Overview</b>
           </button>
         </div>
         <ModalContainer />
@@ -240,8 +257,9 @@ const mapDispatchToProps = dispatch => ({
   }
 });
 
-export default withRouter(connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Lobby));
-
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Lobby)
+);
