@@ -1,7 +1,7 @@
 export const optionsIntent = [
   {
     value: "Business",
-    label: "Business Type (Services, Good, Co-ops...)"
+    label: "Business Type (Service, Good, Knwoledge, Co-op...)"
   },
   {
     value: "Co-live",

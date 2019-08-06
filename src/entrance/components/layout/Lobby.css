@@ -57,7 +57,7 @@ div.space-between-domains {
   background: url("../../../images/blue.jpg") no-repeat;
   background-size: cover;
   background-position: center;
-  height: 205px;
+  height: 180px;
   width: 70%;
   margin-top: 20px;
   margin-bottom: 1px;
@@ -85,6 +85,10 @@ div.space-between-domains {
   margin-top: 15px;
   height: 30px;
   padding-top: 4px;
+}
+
+.bottom_spaces {
+  height: 30px;;
 }
 /* ---------- Adjust based on medaia sizes ------------------ */
 /* For browser larger than 960 px */
@@ -172,7 +176,7 @@ div.space-between-domains {
     padding-bottom: 5px;
   }
   .domain-box {
-    height: 145px;
+    height: 135px;
     width: 80%;
     margin-top: 10px;
     margin-bottom: 1px;
@@ -227,7 +231,7 @@ div.space-between-domains {
     font-size: 32px;
   }
   .domain-box {
-    height: 193px;
+    height: 210px;
     width: 90%;
     margin-top: 10px;
     margin-bottom: 1px;

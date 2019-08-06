@@ -24,7 +24,8 @@ class Lobby extends Component {
 
     this.state = {
       dashboardFlag: true,
-      isShowing: false
+      isShowing: false,
+      disabled: false
     };
 
     this.openAlertModal = this.openAlertModal.bind(this);
@@ -118,6 +119,7 @@ class Lobby extends Component {
               className="btn-lobby"
               type="button"
               onClick={this.createTeamHandler}
+              style={{ cursor: this.state.disabled ? "default" : "pointer" }}
             >
               <b>Create</b>
             </button>
@@ -144,6 +146,7 @@ class Lobby extends Component {
               className="btn-lobby"
               type="button"
               onClick={this.joinTeamHandler}
+              style={{ cursor: this.state.disabled ? "default" : "pointer" }}
             >
               <b>Join</b>
             </button>
@@ -179,6 +182,7 @@ class Lobby extends Component {
                 className="btn-lobby"
                 type="button"
                 onClick={this.dashboardHandler}
+                style={{ cursor: this.state.disabled ? "default" : "pointer" }}
               >
                 <b>Engage</b>
               </button>
@@ -224,15 +228,18 @@ class Lobby extends Component {
         {meetup}
         {spaceInbetween}
         {dashboard}
+        <hr />
         <div className="col-12 text-center">
           <button
             className="btn-lobby-starthere"
             type="button"
             onClick={this.openAlertModal("tokenInput")}
+            style={{ cursor: this.state.disabled ? "default" : "pointer" }}
           >
             <b>Overview</b>
           </button>
         </div>
+        <div className="bottom_spaces" />
         <ModalContainer />
       </div>
     );
