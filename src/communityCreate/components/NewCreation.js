@@ -18,6 +18,8 @@ import { optionsBizIntent } from "./data/bizOptions";
 import { optionsColiveIntent } from "./data/coliveOptions";
 import { optionsFunstuffIntent } from "./data/funstuffOptions";
 
+import Review from './Review';
+
 import "./NewCreation.css";
 import cosmicDoorway from "./image/cosmicDoorway.jpg";
 
@@ -39,7 +41,6 @@ class NewCreation extends Component {
       commCaption: "", // input text 15 - to 50
       commDescription: "", // input textarea 50 to 1000 chars
       joinProcess: "Private", // Radio Button
-      searchWords: [], // String, comma dellimited, max
       intent: "", // This is drop down
       subIntent: "",
       fileUploads: [
@@ -63,7 +64,8 @@ class NewCreation extends Component {
       fileNameToDisplay: "",
       disabled: false,
 
-      reviewFlag: false
+      reviewFlag: false,
+      reviewObject: {}
     };
 
     this.fileInputRef = React.createRef();
@@ -221,11 +223,30 @@ class NewCreation extends Component {
   };
 
   reviewBeforeSave = async () => {
-    alert("review before save");
+    
+    let revobj = {
+      commName: this.state.commName,
+      commCaption: this.state.commCaption,
+      commDescription: this.state.commDescription,
+      joinProcess: this.state.joinProcess,
+      intent: this.state.intent, // This is drop down
+      subIntent: this.state.subIntent,
+      fileUploads: this.state.fileUploads,
+      picCaption: this.state.picCaption,
+    }
     await this.setState({
-      reviewFlag: true
-    })
+      reviewFlag: true,
+      saveReviewMsg: "To be available in your dashboard for details setup, please Publish first.",
+      reviewObject: revobj
+    });
+
   };
+
+  editCreation = async () => {
+    await this.setState({
+      reviewFlag: false
+    })
+  }
 
   render() {
     console.log("this.state: ", this.state);
@@ -266,9 +287,9 @@ class NewCreation extends Component {
       </div>
     );
 
-    let saveRiviewButtons;
+    let saveReviewPanel;
     if (!this.state.reviewFlag) {   // Edit mode
-      saveRiviewButtons = (
+      saveReviewPanel = (
         <div>
           <button
             className="btn-savereview"
@@ -290,7 +311,27 @@ class NewCreation extends Component {
         </div>
       );
     } else {
-      // Review mode. 
+      saveReviewPanel = (
+        <div>
+          <button
+            className="btn-savereview"
+            type="button"
+            onClick={this.editCreation}
+            style={{ cursor: this.state.disabled ? "default" : "pointer" }}
+          >
+            <b>Edit</b>
+          </button>
+          &nbsp;&nbsp;
+          <button
+            className="btn-savereview"
+            type="button"
+            // onClick={this.reviewBeforeSave}
+            style={{ cursor: this.state.disabled ? "default" : "pointer" }}
+          >
+            <b>Publish</b>
+          </button>
+        </div>
+      );
     }
 
     let uploadpanel;
@@ -498,17 +539,31 @@ class NewCreation extends Component {
           <div className="col-7 save_review_msg">
             {this.state.saveReviewMsg}
           </div>
-          <div className="col-5">{saveRiviewButtons}</div>
+          <div className="col-5">{saveReviewPanel}</div>
         </div>
         <div className="spacing" />
       </div>
     );
 
+    let reviewPanel;
+    reviewPanel = (
+      <div>
+        <div><Review reviewObj={this.state.reviewObject}/></div>
+        <div className="row">
+          <div className="col-7 save_review_msg">
+            {this.state.saveReviewMsg}
+          </div>
+          <div className="col-5">{saveReviewPanel}</div>
+        </div>
+        <div className="spacing" />
+      </div>
+    )
+
     let showPanel;
     if (!this.state.reviewFlag) {
       showPanel = <div>{topInputPanel}</div>;
     } else {
-      showPanel = <div>You will review your work now</div>
+      showPanel = <div>{reviewPanel}</div>
     }
 
     return (
