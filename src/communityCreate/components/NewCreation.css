@@ -15,13 +15,37 @@ div.fixedsize_create_comm {
   font-size: 1em;
 }
 
+.field_msg{
+  font-size: .8em;
+}
+
+p.intent_msg {
+  font-size: .8em;
+  margin-bottom: 1px;
+  margin-top: 5px;
+  padding-left: 5px;
+}
+
 .input_text_creation_caption {
   margin-left: -10px;
   padding-left: 30px;
 }
 
+.input_text_searchtags {
+  margin-top: 5px;
+  margin-left: 6px;
+  padding-left: 10px;
+  /* padding-right: 4px; */
+}
+
 .save_review_msg {
   font-size: 1em;
+  color: black;
+}
+
+.save_review_msg_err {
+  font-size: 1em;
+  color: red;
 }
 
 .input_textarea_pic_caption {
@@ -29,7 +53,6 @@ div.fixedsize_create_comm {
   width: 100%;
   margin-top: -12px;
 }
-
 
 .main {
   width: 100%;
@@ -91,7 +114,8 @@ div.fixedsize_create_comm {
   opacity: 0.5;
 }
 
-.btn-savereview {
+/* #136128 */
+.btn-savereview_xx {
   width: 100px;
   height: 32px;
   background-color: #136128;
@@ -101,6 +125,7 @@ div.fixedsize_create_comm {
   box-shadow: 3px 3px 0px 0px black;
   border-radius: 5px;
 }
+
 
 .file_load_btn_positions {
   margin-top: 10px;
@@ -121,7 +146,7 @@ div.fixedsize_create_comm {
   margin-left: 15%;
   margin-top: 30px;
   padding-left: 3px;
-  box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.5), 0 5px 15px 0 rgba(0, 0, 0, 0.08);
+  box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.5), 0 5px 15px 0 rgba(0, 0, 0, 0.08);
 }
 
 .Icon {
@@ -174,9 +199,11 @@ div.fixedsize_create_comm {
 @media only screen and (min-width: 1440px) {
   /* styles for browsers larger than 1440px; */
 }
+
 @media only screen and (min-width: 2000px) {
   /* for sumo sized (mac) screens */
 }
+
 @media only screen and (max-device-width: 480px) {
   /* styles for mobile browsers smaller than 480px; (iPhone) */
   div.fixedsize_create_comm {
@@ -189,11 +216,27 @@ div.fixedsize_create_comm {
   }
 
   .input_text {
-    font-size: 0.75em;
+    font-size: 0.9em;
+  }
+
+  .input_text_creation_caption {
+    margin-left: -10px;
+    padding-left: 20px;
   }
 
   .input_textarea {
     font-size: 0.85em;
+  }
+
+  .input_text_searchtags {
+    margin-top: -10px;
+    margin-left: 6px;
+    padding-left: 10px;
+    /* padding-right: 4px; */
+  }
+
+  .field_msg{
+    font-size: .7em;
   }
 
   .radio-fonts {
@@ -219,7 +262,7 @@ div.fixedsize_create_comm {
     opacity: 0.5;
   }
 
-  .btn-savereview {
+  .btn-savereview_xx {
     width: 50px;
     height: 28px;
     font-size: 8pt;
@@ -281,13 +324,41 @@ div.fixedsize_create_comm {
   }
 
   .save_review_msg {
+    font-size: 0.7em;
+  }
+
+  .save_review_msg_err {
     font-size: .7em;
+    color: red;
   }
 
   .spacing {
     height: 20px;
   }
 }
+
+@media only screen and (max-device-width: 320px) {
+  /* styles for browsers larger than 320px iphone5 /SE; */
+
+  .btn-savereview_xx {
+    width: 40px;
+    height: 26px;
+    font-size: 7pt;
+  }
+
+  .dropzone {
+    height: 100px;
+    width: 130px;
+    font-size: 0.75em;
+    padding-bottom: 1px;
+    margin-top: -15px;
+    padding-left: 5px;
+    margin-left: 5%;
+    margin-top: 20px;
+  }
+
+}
+
 @media only screen and (device-width: 768px) {
   /* default iPad screens */
   div.fixedsize_create_comm {
@@ -331,7 +402,7 @@ div.fixedsize_create_comm {
   }
 
   p.pic_caption_msg {
-    font-size: .9em;
+    font-size: 0.9em;
     margin-top: -5px;
   }
 
@@ -343,7 +414,7 @@ div.fixedsize_create_comm {
     border-radius: 5px;
   }
 
-  .btn-savereview {
+  .btn-savereview_xx {
     width: 110px;
     height: 34px;
     font-size: 10pt;
@@ -355,5 +426,4 @@ div.fixedsize_create_comm {
     margin-left: -4px;
     padding-left: 5px;
   }
-  
 }

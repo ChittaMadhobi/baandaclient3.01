@@ -1,0 +1,92 @@
+.review_text {
+  font-size: 0.75em;
+}
+
+.picture_review_card {
+  height: 180px;
+  width: 280px;
+  background-color: #dde7eb;
+  border: none;
+  border-radius: 10%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  font-size: 16px;
+  padding-bottom: 1px;
+  margin-left: 5%;
+  margin-top: 30px;
+  padding-left: 3px;
+  box-shadow: 0 10px 15px 0 rgba(0, 0, 0, 0.5), 0 5px 15px 0 rgba(0, 0, 0, 0.08);
+}
+
+.top_of_card_rev {
+  margin-top: -10px;
+  padding-bottom: -3px;
+  margin-bottom: 3px;
+  font-weight: 600;
+}
+
+.icon_rev {
+  opacity: 0.3;
+  height: 160px;
+  width: 250px;
+}
+
+@media only screen and (min-width: 960px) {
+}
+@media only screen and (min-width: 1440px) {
+  /* styles for browsers larger than 1440px; */
+}
+@media only screen and (min-width: 2000px) {
+  /* for sumo sized (mac) screens */
+}
+@media only screen and (max-device-width: 480px) {
+  /* styles for mobile browsers smaller than 480px; (iPhone) */
+  .picture_review_card {
+    height: 180px;
+    width: 250px;
+    font-size: 16px;
+    padding-bottom: 1px;
+    margin-left: 15%;
+    margin-top: 1px;
+    margin-bottom: 10px;
+    padding-left: 3px;
+  }
+
+  .top_of_card_rev {
+    margin-top: -10px;
+    padding-bottom: -3px;
+    margin-bottom: 3px;
+    font-weight: 400;
+  }
+
+  .icon_rev {
+    margin-top: 20px;
+    opacity: 1;
+    height: 130px;
+    width: 180px;
+  }
+}
+
+@media only screen and (max-device-width: 320px) {
+  /* styles for browsers larger than 320px iphone5; */
+  .picture_review_card {
+    height: 170px;
+    width: 240px;
+    font-size: 16px;
+    padding-bottom: 1px;
+    margin-left: 9%;
+    margin-top: 1px;
+    margin-bottom: 10px;
+    padding-left: 3px;
+  }
+}
+
+@media only screen and (device-width: 768px) {
+  /* default iPad screens */
+}
+/* different techniques for iPad screening */
+@media only screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation: portrait) {
+  /* For portrait layouts only */
+}

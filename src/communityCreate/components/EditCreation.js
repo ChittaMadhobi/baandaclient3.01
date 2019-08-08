@@ -4,7 +4,10 @@ class EditCreation extends Component {
     render() {
         return (
             <div>
-                <h3>Edit Creation</h3>
+                <p align="justify">
+                    <b>Name: </b>
+
+                </p>
             </div>
         );
     }

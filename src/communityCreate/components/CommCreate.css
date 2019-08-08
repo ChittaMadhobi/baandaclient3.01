@@ -10,7 +10,7 @@ div.fixedsize_createProfile {
   overflow-y: auto;
 }
 
-.btn-modal_create {
+.btn-modal_create_n {
   width: 100px;
   height: 32px;
   background-color: #555f6b;
@@ -43,12 +43,23 @@ div.fixedsize_createProfile {
     width: 108%;
   }
 
-  .btn-modal_create {
+  .btn-modal_create_n {
     width: 40px;
     height: 28px;
     font-size: 7pt;
   }
 }
+
+@media only screen and (max-device-width: 320px) {
+  /* styles for browsers larger than 320px iphone5; */
+
+  .btn-modal_create_n {
+    width: 33px;
+    height: 27px;
+    font-size: 7pt;
+  }
+}
+
 @media only screen and (device-width: 768px) {
   /* default iPad screens */
   div.fixedsize_createProfile {

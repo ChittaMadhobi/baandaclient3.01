@@ -18,10 +18,11 @@ import { optionsBizIntent } from "./data/bizOptions";
 import { optionsColiveIntent } from "./data/coliveOptions";
 import { optionsFunstuffIntent } from "./data/funstuffOptions";
 
-import Review from './Review';
+import Review from "./Review";
 
 import "./NewCreation.css";
 import cosmicDoorway from "./image/cosmicDoorway.jpg";
+
 
 // const baandaServer = process.env.REACT_APP_BAANDA_SERVER;
 
@@ -54,10 +55,11 @@ class NewCreation extends Component {
         }
       ],
       picCaption: "",
+      searchTags: "",
       uploadFileType: "",
       uploadBtnClicked: false,
       uploadMsg: "",
-      saveReviewMsg: "Save progressively. Upon Review you can Publish.",
+      saveReviewMsg: "Save when complete. Upon Review to Publish. You can Edit later even post publishing.",
 
       hightlight: false,
       currFilename: "",
@@ -65,7 +67,22 @@ class NewCreation extends Component {
       disabled: false,
 
       reviewFlag: false,
-      reviewObject: {}
+      reviewObject: {},
+
+      commNameErrFlag: false,
+      commCaptionErrFlag: false,
+      commDecriptionErrFlag: false,
+      intentErrFlg: false,
+      commNameMsg: "A reference name (5-to-20 Chars).",
+      commCaptionMsg: "A caption for others (15-to-50 chars).",
+      commDescriptionMsg: "Describe your community - (min:50 max:1000 chars)",
+      intentMsg: "Select an intent & focus for the community.",
+      searchTagMsg: "Search tags comma (,) delimited (max 100 Chars).",
+      picCaptionMsg: "",
+
+      saveValidFlag: false,
+      reviewValidFlag: false,
+      publishValidFlag: false
     };
 
     this.fileInputRef = React.createRef();
@@ -88,18 +105,18 @@ class NewCreation extends Component {
       accessKeyId: awsAccessKeyId,
       secretAccessKey: awsSecretAccessKey
     };
-    console.log("Uplading file: ", this.state.currFilename);
-    console.log("config: ", config);
-    let index;
-    // pic=0, vedio=1, & audio=2 -- only three kinds are allowed  now.
-    if (this.state.uploadFileType === "pic") {
-      index = 0;
-    } else if (this.state.uploadFileType === "vedio") {
-      index = 1;
-    } else {
-      index = 2;
-    }
-    console.log("index :", index);
+    // console.log("Uplading file: ", this.state.currFilename);
+    // console.log("config: ", config);
+    // let index;
+    // // pic=0, vedio=1, & audio=2 -- only three kinds now & pic is active.
+    // if (this.state.uploadFileType === "pic") {
+    //   index = 0;
+    // } else if (this.state.uploadFileType === "vedio") {
+    //   index = 1;
+    // } else {
+    //   index = 2;
+    // }
+    // console.log("index :", index);
     try {
       let data = await ReactS3.uploadFile(this.state.currFilename, config);
       let s3fileObject = {
@@ -110,6 +127,10 @@ class NewCreation extends Component {
         caption: this.state.picCaption,
         s3Url: data.location
       };
+      let filename;
+      if (s3fileObject.key) {
+        filename = s3fileObject.key.split(/(\\|\/)/g).pop();
+      }
       console.log("Data:", data, " s3fileObject:", s3fileObject);
       // this.setState(prevState => ({
       //   fileUploads: {
@@ -119,7 +140,10 @@ class NewCreation extends Component {
       await this.setState({
         fileUploads: update(this.state.fileUploads, {
           0: { $set: s3fileObject }
-        })
+        }),
+        fileNameToDisplay: filename + " successfully upload",
+        saveReviewMsg:
+          "File uploaded. Please Save. Review and publish now, or later when ready."
       });
     } catch (err) {
       console.log("uploadng Error:", err);
@@ -136,14 +160,22 @@ class NewCreation extends Component {
     // if (fullPath) {
     //   filename = fullPath.split(/(\\|\/)/g).pop()
     // }
-
+    let index;
+    // pic=0, vedio=1, & audio=2 -- only three kinds now & pic is active.
+    if (this.state.uploadFileType === "pic") {
+      index = 0;
+    } else if (this.state.uploadFileType === "vedio") {
+      index = 1;
+    } else {
+      index = 2;
+    }
     const files = evt.target.files;
     await this.setState({
-      currFilename: files[0],
-      fileNameToDisplay: "Ready to upload: " + files[0].name
+      currFilename: files[index],
+      fileNameToDisplay: "Ready to upload: " + files[index].name
     });
 
-    console.log("filename:", this.state.fileNameToDisplay);
+    // console.log("filename:", this.state.fileNameToDisplay);
     // In case, in future we allow multifile upload
     // if (this.props.onFilesAdded) {
     //   const array = this.fileListToArray(files);
@@ -222,8 +254,106 @@ class NewCreation extends Component {
     });
   };
 
+  saveCreation = async () => {
+    let valid = await this.saveValidation();
+    if (valid) {
+      alert("We call API to save work in progress");
+      await this.setState({
+        saveValidFlag: false,
+        saveReviewMsg: "Save when complete. Upon Review to Publish. You can Edit later even post publishing."
+      });
+    } else {
+      await this.setState({
+        saveValidFlag: true,
+        saveReviewMsg:
+          "Error: Your entries need to be valid to save. Check field level errors."
+      });
+    }
+  };
+
+  // Validate whether the form can be saved even partially.
+  saveValidation = async () => {
+    let isValid = true;
+    let v = this.state.commName.trim().length;
+    if (v < 5) {
+      console.log("in commName  v < 5: ", v);
+      await this.setState({
+        commNameMsg: "The name is short. Should be between 5 to 20.",
+        commNameErrFlag: true
+      });
+      isValid = false;
+    } else {
+      await this.setState({
+        commNameMsg: "A reference name (5-to-20 Chars).",
+        commNameErrFlag: false
+      });
+    }
+    v = this.state.commCaption.trim().length;
+    if (v < 15) {
+      await this.setState({
+        commCaptionMsg: "The caption is short. Should be between 15 to 50.",
+        commCaptionErrFlag: true
+      });
+      isValid = true;
+    } else {
+      await this.setState({
+        commCaptionMsg: "A caption for others (15-to-50 chars).",
+        commCaptionErrFlag: false
+      });
+    }
+    v = this.state.commDescription.trim().length;
+    if (v < 15) {
+      await this.setState({
+        commDescriptionMsg:
+          "Description is short. Should be between 50 to 1000. Now lenght is " +
+          this.state.commDescription.trim().length,
+        commDecriptionErrFlag: true
+      });
+      isValid = false;
+    } else {
+      await this.setState({
+        commDescriptionMsg: "Describe your community - (min:50 max:1000 chars)",
+        commDecriptionErrFlag: false
+      });
+    }
+
+    if ( !this.state.intent && !this.state.subIntent) {
+      await this.setState({
+        intentMsg: "Must select the intent and focus of your community.",
+        intentErrFlag: true
+      });
+      isValid = false;
+    } else {
+      await this.setState({
+        intentMsg: "Select an intent & focus for the community.",
+        intentErrFlag: false
+      });
+    }
+    return isValid;
+  };
+
+  // Validate whethere the form is ready for publishing
+  publishComm = async () => {
+    alert('About to publish ... validate');
+    let valid = await this.saveValidation();
+    if (valid) {
+      alert("We call API to save & publish work in progress.");
+      // Here we need to push one to the lobby
+      // this.props.history.push('/lobby');
+      await this.setState({
+        saveValidFlag: false,
+        saveReviewMsg: "Successfully published. This will be available in your Engage (Dashboard). "
+      });
+    } else {
+      await this.setState({
+        saveValidFlag: true,
+        saveReviewMsg:
+          "The Creation is incomplete. Please Edit, Save to check errors, fix and then publish."
+      });
+    }
+  };
+
   reviewBeforeSave = async () => {
-    
     let revobj = {
       commName: this.state.commName,
       commCaption: this.state.commCaption,
@@ -232,24 +362,26 @@ class NewCreation extends Component {
       intent: this.state.intent, // This is drop down
       subIntent: this.state.subIntent,
       fileUploads: this.state.fileUploads,
+      searchTags: this.state.searchTags,
       picCaption: this.state.picCaption,
-    }
+      // readyToPublish: false
+    };
     await this.setState({
       reviewFlag: true,
-      saveReviewMsg: "To be available in your dashboard for details setup, please Publish first.",
+      saveReviewMsg:
+        "To be available in your dashboard for details setup, please Publish first.",
       reviewObject: revobj
     });
-
   };
 
   editCreation = async () => {
     await this.setState({
       reviewFlag: false
-    })
-  }
+    });
+  };
 
   render() {
-    console.log("this.state: ", this.state);
+    console.log("this.state create: ", this.state);
     // console.log('accesskey:' , awsAccessKeyId);
 
     let fileLoadBtn;
@@ -288,11 +420,12 @@ class NewCreation extends Component {
     );
 
     let saveReviewPanel;
-    if (!this.state.reviewFlag) {   // Edit mode
+    if (!this.state.reviewFlag) {
+      // Edit mode
       saveReviewPanel = (
         <div>
           <button
-            className="btn-savereview"
+            className="btn-savereview_xx"
             type="button"
             onClick={this.saveCreation}
             style={{ cursor: this.state.disabled ? "default" : "pointer" }}
@@ -301,7 +434,7 @@ class NewCreation extends Component {
           </button>
           &nbsp;&nbsp;
           <button
-            className="btn-savereview"
+            className="btn-savereview_xx"
             type="button"
             onClick={this.reviewBeforeSave}
             style={{ cursor: this.state.disabled ? "default" : "pointer" }}
@@ -314,7 +447,7 @@ class NewCreation extends Component {
       saveReviewPanel = (
         <div>
           <button
-            className="btn-savereview"
+            className="btn-savereview_xx"
             type="button"
             onClick={this.editCreation}
             style={{ cursor: this.state.disabled ? "default" : "pointer" }}
@@ -323,9 +456,9 @@ class NewCreation extends Component {
           </button>
           &nbsp;&nbsp;
           <button
-            className="btn-savereview"
+            className="btn-savereview_xx"
             type="button"
-            // onClick={this.reviewBeforeSave}
+            onClick={this.publishComm}
             style={{ cursor: this.state.disabled ? "default" : "pointer" }}
           >
             <b>Publish</b>
@@ -373,10 +506,10 @@ class NewCreation extends Component {
                 spellCheck="true"
                 className="input_textarea_pic_caption"
                 onChange={this.onChange}
-                value={this.state.commDecription}
+                value={this.state.picCaption}
                 required
               />
-              <p className="pic_caption_msg">** Caption (10 to 50 chars)</p>
+              <p className="pic_caption_msg">{this.state.picCaptionMsg}</p>
               <p className="pic_caption_msg">
                 <b>{this.state.fileNameToDisplay}</b>
               </p>
@@ -450,9 +583,15 @@ class NewCreation extends Component {
               className="input_text"
               placeholder="A unique reference name ..."
             />
-            <small className="input_text">
-              <p>A reference name (5-to-20 Chars).</p>
-            </small>
+            <div
+              className={`${
+                !this.state.commNameErrFlag
+                  ? "save_review_msg"
+                  : "save_review_msg_err"
+              }`}
+            >
+              <p>{this.state.commNameMsg}</p>
+            </div>
           </div>
           <div className="col-md-6 input_text_creation_caption">
             <input
@@ -465,9 +604,15 @@ class NewCreation extends Component {
               className="input_text"
               placeholder="A enticing caption for others ..."
             />
-            <small className="input_text">
-              <p>A caption for others (15-to-50 chars).</p>
-            </small>
+            <div
+              className={`${
+                !this.state.commCaptionErrFlag
+                  ? "save_review_msg"
+                  : "save_review_msg_err"
+              }`}
+            >
+              <p>{this.state.commCaptionMsg}</p>
+            </div>
           </div>
         </div>
         <div className="row">
@@ -481,12 +626,18 @@ class NewCreation extends Component {
               spellCheck="true"
               className="input_textarea"
               onChange={this.onChange}
-              value={this.state.commDecription}
+              value={this.state.commDescription}
               required
             />
-            <small>
-              <p>** Describe your community - (min:50 max:1000 chars)</p>
-            </small>
+            <div
+              className={`${
+                !this.state.commDecriptionErrFlag
+                  ? "save_review_msg"
+                  : "save_review_msg_err"
+              }`}
+            >
+              <p>{this.state.commDescriptionMsg}</p>
+            </div>
           </div>
         </div>
         <div className="row">
@@ -518,6 +669,9 @@ class NewCreation extends Component {
             </div>
           </div>
         </div>
+        <p align="justify" className="intent_msg">
+          Please select your intent and intent's focus:
+        </p>
         <div className="row">
           <div className="col-md-6">
             <Select
@@ -530,14 +684,46 @@ class NewCreation extends Component {
           </div>
           <div className="col-md-6">{subIntentPanel}</div>
         </div>
+        <div
+          className={`${
+            !this.state.intentErrFlag ? "save_review_msg" : "save_review_msg_err"
+          }`}
+        >
+          <p>{this.state.intentMsg}</p>
+        </div>
+        <div className="row">
+          <div className="col input_text_searchtags">
+            <input
+              name="searchTags"
+              type="text"
+              value={this.state.searchTags}
+              onChange={this.onChange}
+              size="48"
+              maxLength="100"
+              className="input_text"
+              placeholder="Comma delimited search words or phrases ..."
+            />
+            <small className="field_msg">
+              <p>{this.state.searchTagMsg}</p>
+            </small>
+          </div>
+        </div>
         <div className="row">
           <div className="col">{fileLoadBtn}</div>
         </div>
         <div>{uploadpanel}</div>
         <hr />
         <div className="row">
-          <div className="col-7 save_review_msg">
-            {this.state.saveReviewMsg}
+          <div className="col-7">
+            <div
+              className={`${
+                !this.state.saveValidFlag
+                  ? "save_review_msg"
+                  : "save_review_msg_err"
+              }`}
+            >
+              {this.state.saveReviewMsg} 
+            </div>
           </div>
           <div className="col-5">{saveReviewPanel}</div>
         </div>
@@ -548,22 +734,32 @@ class NewCreation extends Component {
     let reviewPanel;
     reviewPanel = (
       <div>
-        <div><Review reviewObj={this.state.reviewObject}/></div>
+        <div>
+          <Review reviewObj={this.state.reviewObject} />
+        </div>
         <div className="row">
-          <div className="col-7 save_review_msg">
-            {this.state.saveReviewMsg}
+          <div className="col-7">
+            <div
+              className={`${
+                !this.state.saveValidFlag
+                  ? "save_review_msg"
+                  : "save_review_msg_err"
+              }`}
+            >
+              {this.state.saveReviewMsg} 
+            </div>
           </div>
           <div className="col-5">{saveReviewPanel}</div>
         </div>
         <div className="spacing" />
       </div>
-    )
+    );
 
     let showPanel;
     if (!this.state.reviewFlag) {
       showPanel = <div>{topInputPanel}</div>;
     } else {
-      showPanel = <div>{reviewPanel}</div>
+      showPanel = <div>{reviewPanel}</div>;
     }
 
     return (

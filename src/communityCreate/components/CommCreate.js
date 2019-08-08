@@ -120,7 +120,7 @@ class CommCreate extends Component {
       createEditToggleButton = (
         <div>
           <button
-            className="btn-modal_create"
+            className="btn-modal_create_n"
             type="button"
             onClick={this.createInfoHandler}
           >
@@ -128,7 +128,7 @@ class CommCreate extends Component {
           </button>
           &nbsp;&nbsp;
           <button
-            className="btn-modal_create"
+            className="btn-modal_create_n"
             type="button"
             onClick={this.editHandler}
           >
@@ -146,7 +146,7 @@ class CommCreate extends Component {
       createEditToggleButton = (
         <div>
           <button
-            className="btn-modal_create"
+            className="btn-modal_create_n"
             type="button"
             onClick={this.createInfoHandler}
           >
@@ -154,7 +154,7 @@ class CommCreate extends Component {
           </button>
           &nbsp;&nbsp;
           <button
-            className="btn-modal_create"
+            className="btn-modal_create_n"
             type="button"
             onClick={this.newHandler}
           >

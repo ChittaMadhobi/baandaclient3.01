@@ -223,6 +223,48 @@ div.space-between-domains {
   }
 }
 
+@media only screen and (max-device-width: 320px) {
+  /* styles for browsers larger than 320px iphone5; */
+
+  .domain-box {
+    height: 115px;
+    width: 80%;
+    margin-top: 10px;
+    margin-bottom: 1px;
+    margin-left: 10%;
+  }
+
+  .joinMsg {
+    font-size: .44em;
+    margin-top: 15px;
+    height: 20px;
+    padding-top: 2px;
+  }
+
+  .btn-lobby {
+    width: 85px;
+    height: 28px;
+    color: white;
+    font-size: 9pt;
+    border-radius: 4px;
+    margin-bottom: -5px;
+    box-shadow: 3px 3px 0px 0px black;
+  }
+
+  .btn-lobby-starthere {
+    width: 80px;
+    height: 26px;
+    font-size: 9pt;
+    margin-top: -5px;
+    margin-bottom: 5px;
+  }
+
+  div.space-between-domains {
+    height: 0px;
+    border: none;
+  }
+}
+
 /* different techniques for iPad screening */
 @media only screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation: portrait) {
   .lobbyheader {
