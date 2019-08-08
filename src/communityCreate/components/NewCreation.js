@@ -700,7 +700,7 @@ class NewCreation extends Component {
               onChange={this.onChange}
               size="48"
               maxLength="100"
-              className="input_text"
+              className="input_text_search"
               placeholder="Comma delimited search words or phrases ..."
             />
             <small className="field_msg">
