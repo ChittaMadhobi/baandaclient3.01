@@ -23,6 +23,11 @@ import Review from "./Review";
 import "./NewCreation.css";
 import cosmicDoorway from "./image/cosmicDoorway.jpg";
 
+// **********************************************************
+// NOTE: FOR ALL STRING INPUT/ TEXT/TEXTAREA, REPLACE EXTRA SPACES in STRINGS
+// via
+// string.replace(/\s+/g, ' ').trim()
+// *************************** IMPORTANT *************************
 
 // const baandaServer = process.env.REACT_APP_BAANDA_SERVER;
 
@@ -59,7 +64,7 @@ class NewCreation extends Component {
       uploadFileType: "",
       uploadBtnClicked: false,
       uploadMsg: "",
-      saveReviewMsg: "Save when complete. Upon Review to Publish. You can Edit later even post publishing.",
+      saveReviewMsg: "Please Review and Publish if satisfied. You can Edit later even post publishing.",
 
       hightlight: false,
       currFilename: "",
@@ -79,6 +84,8 @@ class NewCreation extends Component {
       intentMsg: "Select an intent & focus for the community.",
       searchTagMsg: "Search tags comma (,) delimited (max 100 Chars).",
       picCaptionMsg: "",
+      picturesMsg: "Please upload a picture and provide a caption.",
+      pictureErrFlag: false,
 
       saveValidFlag: false,
       reviewValidFlag: false,
@@ -254,13 +261,13 @@ class NewCreation extends Component {
     });
   };
 
-  saveCreation = async () => {
+  checkCreationInputs = async () => {
     let valid = await this.saveValidation();
     if (valid) {
-      alert("We call API to save work in progress");
+      // alert("We call API to save work in progress");
       await this.setState({
         saveValidFlag: false,
-        saveReviewMsg: "Save when complete. Upon Review to Publish. You can Edit later even post publishing."
+        saveReviewMsg: "Please Review and Publish if satisfied. You can Edit later even post publishing."
       });
     } else {
       await this.setState({
@@ -329,6 +336,24 @@ class NewCreation extends Component {
         intentErrFlag: false
       });
     }
+
+    if ( this.state.fileUploads[0].s3Url === '' || this.state.fileUploads[0].caption === '' ) {
+      await this.setState({
+        pictureMsg: "Must upload a picture and provide a caption.",
+        pictureErrFlag: true
+      });
+      isValid = false;
+    } else {
+      await this.setState({
+        pictureMsg: "Upload a picture and provide a caption.",
+        pictureErrFlag: false
+      });
+    }
+
+    // picturesMsg
+    // pictureErrFlag
+    console.log('fileUploads:', this.state.fileUploads, ' length:', this.state.fileUploads.length);
+    console.log('s3Url:', this.state.fileUploads[0].s3Url, ' caption:', this.state.fileUploads[0].caption);
     return isValid;
   };
 
@@ -427,10 +452,10 @@ class NewCreation extends Component {
           <button
             className="btn-savereview_xx"
             type="button"
-            onClick={this.saveCreation}
+            onClick={this.checkCreationInputs}
             style={{ cursor: this.state.disabled ? "default" : "pointer" }}
           >
-            <b>Save</b>
+            <b>Validate</b>
           </button>
           &nbsp;&nbsp;
           <button
@@ -527,6 +552,15 @@ class NewCreation extends Component {
               </span>
             </div>
           </div>
+          <div
+              className={`${
+                !this.state.pictureErrFlag
+                  ? "save_review_msg pic_msg_placement"
+                  : "save_review_msg_err pic_msg_placement"
+              }`}
+            >
+              <p>{this.state.picturesMsg}</p>
+            </div>
         </div>
       );
     }
@@ -762,12 +796,22 @@ class NewCreation extends Component {
       showPanel = <div>{reviewPanel}</div>;
     }
 
+    // let testpanel = (
+    //   <div>
+    //     <p align="justify">1. It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</p>
+    //     <p align="justify">2. It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</p>
+    //     <p align="justify">3. It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</p>
+    //     <p align="justify">4. It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</p>
+
+    //   </div>
+    // )
     return (
       <div>
         {/* <div className="text-center">
           <h6>New Community</h6>
         </div> */}
         <div className="fixedsize_create_comm text-center">{showPanel}</div>
+        {/* <div className="fixedsize_create_comm_x">{testpanel}</div> */}
         <ModalContainer />
       </div>
     );

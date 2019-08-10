@@ -1,7 +1,7 @@
 export const optionsIntent = [
   {
     value: "Business",
-    label: "Business Type (Service, Good, Knwoledge, Co-op...)"
+    label: "Business Type (Service, Good, Learning, Co-op...)"
   },
   {
     value: "Co-live",
@@ -10,25 +10,11 @@ export const optionsIntent = [
   {
     value: "Fun-Stuff",
     label: "Fun-stuff Type (Family, Friends, Hobbies...)"
-  }
+  },
+  // {
+  //   value: "Movements",
+  //   label: "Social, Political, Environmental Co-movements"
+  // }
 ];
 
-// export const optionsBizIntent = [
-//   {
-//     value: "Learning",
-//     label: "Learning (Schools, Apprentice, Groups ...)"
-//   },
-//   {
-//     value: "HelpWanted",
-//     label: "Help-wanted (Request Services)"
-//   },
-//   {
-//     value: "HelpProvider",
-//     label: "Help-Provider (Skills, Experience, Solo/Group)"
-//   },
 
-//   {
-//     value: "Catalog",
-//     label: "Catalog (Good & Services for your Business)"
-//   }
-// ];

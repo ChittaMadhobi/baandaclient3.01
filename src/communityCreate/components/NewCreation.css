@@ -2,6 +2,7 @@ div.fixedsize_create_comm {
   height: 700px;
   width: 100%;
   /* background-color: white; */
+  margin-left: -4px;
   overflow-x: hidden;
   overflow-y: auto;
 }
@@ -191,6 +192,13 @@ p.intent_msg {
 .spacing {
   height: 30px;
 }
+
+.pic_msg_placement {
+  margin-top: 15px;
+  margin-left: 10px;
+}
+
+/* Media specific adjustments */
 @media only screen and (min-width: 960px) {
   .main {
     width: 90%;
@@ -214,12 +222,14 @@ p.intent_msg {
 @media only screen and (max-device-width: 480px) {
   /* styles for mobile browsers smaller than 480px; (iPhone) */
   div.fixedsize_create_comm {
-    height: 530px;
+    height: 550px;
     margin-top: 2px;
+    /* background-color: lightblue; */
     padding-right: 10px;
     padding-top: 2px;
     padding-left: 2px;
     width: 103%;
+    overflow: auto;
   }
 
   .input_text {
@@ -346,7 +356,7 @@ p.intent_msg {
   }
 
   .spacing {
-    height: 20px;
+    height: 50px;
   }
 }
 
@@ -354,9 +364,10 @@ p.intent_msg {
   /* styles for browsers larger than 320px iphone5 /SE; */
 
   .btn-savereview_xx {
-    width: 40px;
+    width: 45px;
     height: 26px;
     font-size: 7pt;
+    padding-right: -1px;
   }
 
   .input_text_search {
