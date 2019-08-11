@@ -5,7 +5,7 @@ import { withRouter } from "react-router-dom";
 import update from "react-addons-update";
 
 import ReactS3 from "react-s3";
-// import axios from "axios";
+import axios from "axios";
 
 import ModalContainer from "../../modal/components/ModalContainer";
 import { showModal, hideModal } from "../../actions/modalActions";
@@ -36,7 +36,9 @@ const awsSecretAccessKey = process.env.REACT_APP_SECRET_ACCESS_KEY;
 const awsRegion = process.env.REACT_APP_AWS_REGION;
 const s3BucketName = process.env.REACT_APP_S3_BUCKET_NAME;
 
-// import cosmicDoorway from "./image/Cloud-Vectors.jpg";
+const baandaServer = process.env.REACT_APP_BAANDA_SERVER;
+const checkifexistsAPI = "/routes/create/ifCommunityExists?"; // This is a GET
+const saveNewCommunityAPI = "/routes/create/saveNewCommunity"; // This is a POST
 
 class NewCreation extends Component {
   constructor(props) {
@@ -64,7 +66,8 @@ class NewCreation extends Component {
       uploadFileType: "",
       uploadBtnClicked: false,
       uploadMsg: "",
-      saveReviewMsg: "Please Review and Publish if satisfied. You can Edit later even post publishing.",
+      saveReviewMsg:
+        "Please Review and Publish if satisfied. You can Edit later even post publishing.",
 
       hightlight: false,
       currFilename: "",
@@ -89,7 +92,8 @@ class NewCreation extends Component {
 
       saveValidFlag: false,
       reviewValidFlag: false,
-      publishValidFlag: false
+      publishValidFlag: false,
+      savedFlag: false
     };
 
     this.fileInputRef = React.createRef();
@@ -264,16 +268,16 @@ class NewCreation extends Component {
   checkCreationInputs = async () => {
     let valid = await this.saveValidation();
     if (valid) {
-      // alert("We call API to save work in progress");
       await this.setState({
         saveValidFlag: false,
-        saveReviewMsg: "Please Review and Publish if satisfied. You can Edit later even post publishing."
+        saveReviewMsg:
+          "Please Review and Publish if satisfied. You can Edit later even post publishing."
       });
     } else {
       await this.setState({
         saveValidFlag: true,
         saveReviewMsg:
-          "Error: Your entries need to be valid to save. Check field level errors."
+          "Your entries need to be valid to save. Check field level errors."
       });
     }
   };
@@ -283,7 +287,7 @@ class NewCreation extends Component {
     let isValid = true;
     let v = this.state.commName.trim().length;
     if (v < 5) {
-      console.log("in commName  v < 5: ", v);
+      // console.log("in commName  v < 5: ", v);
       await this.setState({
         commNameMsg: "The name is short. Should be between 5 to 20.",
         commNameErrFlag: true
@@ -295,6 +299,22 @@ class NewCreation extends Component {
         commNameErrFlag: false
       });
     }
+
+    if (isValid) {
+      // check if bthis.props.auth.user.baandaId +  this.state.commName.trim()
+      // exists in DB
+      // console.log('!isValid: ', isValid);
+      let check = await this.checkIfExists();
+      if (!check) {
+        isValid = false;
+        await this.setState({
+          commNameMsg:
+            "The name already exists. Try a new name or click Edit to modify.",
+          commNameErrFlag: true
+        });
+      }
+    }
+
     v = this.state.commCaption.trim().length;
     if (v < 15) {
       await this.setState({
@@ -324,7 +344,7 @@ class NewCreation extends Component {
       });
     }
 
-    if ( !this.state.intent && !this.state.subIntent) {
+    if (!this.state.intent && !this.state.subIntent) {
       await this.setState({
         intentMsg: "Must select the intent and focus of your community.",
         intentErrFlag: true
@@ -337,7 +357,10 @@ class NewCreation extends Component {
       });
     }
 
-    if ( this.state.fileUploads[0].s3Url === '' || this.state.fileUploads[0].caption === '' ) {
+    if (
+      this.state.fileUploads[0].s3Url === "" ||
+      this.state.fileUploads[0].caption === ""
+    ) {
       await this.setState({
         pictureMsg: "Must upload a picture and provide a caption.",
         pictureErrFlag: true
@@ -350,24 +373,89 @@ class NewCreation extends Component {
       });
     }
 
-    // picturesMsg
-    // pictureErrFlag
-    console.log('fileUploads:', this.state.fileUploads, ' length:', this.state.fileUploads.length);
-    console.log('s3Url:', this.state.fileUploads[0].s3Url, ' caption:', this.state.fileUploads[0].caption);
     return isValid;
+  };
+
+  // Call API to check if baandaid+commName exists.
+  checkIfExists = async () => {
+    let ifExists = true;
+    let params =
+      "baandaid=" +
+      this.props.auth.user.baandaId +
+      "&commName=" +
+      this.state.commName;
+    let url = baandaServer + checkifexistsAPI + params;
+    // console.log('get url:' , url);
+    try {
+      let ret = await axios.get(url);
+      if (ret.data.status === "Fail") {
+        // console.log('msg:', ret.data.Msg);
+        throw new Error(`Commname already exists`);
+      }
+      // else {
+      //   console.log('ret msg:', ret.data.status);
+      // }
+    } catch (err) {
+      // console.log('err:', err.message);
+      ifExists = false;
+    }
+
+    return ifExists;
+  };
+
+  // Call API to save community
+  savePublishInDB = async () => {
+    // saveNewCommunityAPI
+    let url = baandaServer + saveNewCommunityAPI;
+    let commData = {
+      baandaid: this.props.auth.user.baandaId,
+      commName: this.state.commName,
+      commCaption: this.state.commCaption,
+      commDescription: this.state.commDescription,
+      intent: this.state.intent.value,
+      focus: this.state.subIntent.value,
+      searchWords: this.state.searchTags,
+      joiningProcess: this.state.joinProcess,
+      fileUploads: {
+        key: this.state.fileUploads[0].key,
+        type: this.state.fileUploads[0].contentType,
+        s3Url: this.state.fileUploads[0].s3Url,
+        caption: this.state.fileUploads[0].caption
+      }
+    };
+    console.log("url:", url);
+    console.log("commData:", JSON.stringify(commData));
+    try {
+      let ret = await axios.post(url, commData);
+      if (ret.length === 0) {
+        throw new Error(
+          "Did not save ... something wrong. Check with engineers."
+        );
+      } else {
+        await this.setState({
+          savedFlag: true,
+          saveReviewMsg:
+            "Successfully published. Work on it via Engage panel in Home. Click Close to complete."
+        });
+      }
+    } catch (err) {}
   };
 
   // Validate whethere the form is ready for publishing
   publishComm = async () => {
-    alert('About to publish ... validate');
     let valid = await this.saveValidation();
     if (valid) {
-      alert("We call API to save & publish work in progress.");
+      try {
+        await this.savePublishInDB();
+      } catch (err) {
+        console.log("publish comm err:", err);
+      }
       // Here we need to push one to the lobby
       // this.props.history.push('/lobby');
       await this.setState({
         saveValidFlag: false,
-        saveReviewMsg: "Successfully published. This will be available in your Engage (Dashboard). "
+        saveReviewMsg:
+          "Successfully published. This will be available in your Engage (Dashboard). "
       });
     } else {
       await this.setState({
@@ -377,6 +465,11 @@ class NewCreation extends Component {
       });
     }
   };
+
+  // Redirect to Home / lobby
+  savedNowClose = () => {
+    this.props.history.push('/lobby');
+  }
 
   reviewBeforeSave = async () => {
     let revobj = {
@@ -388,7 +481,7 @@ class NewCreation extends Component {
       subIntent: this.state.subIntent,
       fileUploads: this.state.fileUploads,
       searchTags: this.state.searchTags,
-      picCaption: this.state.picCaption,
+      picCaption: this.state.picCaption
       // readyToPublish: false
     };
     await this.setState({
@@ -406,7 +499,7 @@ class NewCreation extends Component {
   };
 
   render() {
-    console.log("this.state create: ", this.state);
+    // console.log("this.state create: ", this.state);
     // console.log('accesskey:' , awsAccessKeyId);
 
     let fileLoadBtn;
@@ -469,27 +562,42 @@ class NewCreation extends Component {
         </div>
       );
     } else {
-      saveReviewPanel = (
-        <div>
-          <button
-            className="btn-savereview_xx"
-            type="button"
-            onClick={this.editCreation}
-            style={{ cursor: this.state.disabled ? "default" : "pointer" }}
-          >
-            <b>Edit</b>
-          </button>
-          &nbsp;&nbsp;
-          <button
-            className="btn-savereview_xx"
-            type="button"
-            onClick={this.publishComm}
-            style={{ cursor: this.state.disabled ? "default" : "pointer" }}
-          >
-            <b>Publish</b>
-          </button>
-        </div>
-      );
+      if (!this.state.savedFlag) {
+        saveReviewPanel = (
+          <div>
+            <button
+              className="btn-savereview_xx"
+              type="button"
+              onClick={this.editCreation}
+              style={{ cursor: this.state.disabled ? "default" : "pointer" }}
+            >
+              <b>Edit</b>
+            </button>
+            &nbsp;&nbsp;
+            <button
+              className="btn-savereview_xx"
+              type="button"
+              onClick={this.publishComm}
+              style={{ cursor: this.state.disabled ? "default" : "pointer" }}
+            >
+              <b>Publish</b>
+            </button>
+          </div>
+        );
+      } else {
+        saveReviewPanel = (
+          <div>
+            <button
+              className="btn-savereview_xx"
+              type="button"
+              onClick={this.savedNowClose}
+              style={{ cursor: this.state.disabled ? "default" : "pointer" }}
+            >
+              <b>Close</b>
+            </button>
+          </div>
+        );
+      }
     }
 
     let uploadpanel;
@@ -553,14 +661,14 @@ class NewCreation extends Component {
             </div>
           </div>
           <div
-              className={`${
-                !this.state.pictureErrFlag
-                  ? "save_review_msg pic_msg_placement"
-                  : "save_review_msg_err pic_msg_placement"
-              }`}
-            >
-              <p>{this.state.picturesMsg}</p>
-            </div>
+            className={`${
+              !this.state.pictureErrFlag
+                ? "save_review_msg pic_msg_placement"
+                : "save_review_msg_err pic_msg_placement"
+            }`}
+          >
+            <p>{this.state.picturesMsg}</p>
+          </div>
         </div>
       );
     }
@@ -720,7 +828,9 @@ class NewCreation extends Component {
         </div>
         <div
           className={`${
-            !this.state.intentErrFlag ? "save_review_msg" : "save_review_msg_err"
+            !this.state.intentErrFlag
+              ? "save_review_msg"
+              : "save_review_msg_err"
           }`}
         >
           <p>{this.state.intentMsg}</p>
@@ -756,7 +866,7 @@ class NewCreation extends Component {
                   : "save_review_msg_err"
               }`}
             >
-              {this.state.saveReviewMsg} 
+              {this.state.saveReviewMsg}
             </div>
           </div>
           <div className="col-5">{saveReviewPanel}</div>
@@ -780,7 +890,7 @@ class NewCreation extends Component {
                   : "save_review_msg_err"
               }`}
             >
-              {this.state.saveReviewMsg} 
+              {this.state.saveReviewMsg}
             </div>
           </div>
           <div className="col-5">{saveReviewPanel}</div>
