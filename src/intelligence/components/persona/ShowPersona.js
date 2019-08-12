@@ -174,7 +174,7 @@ class ShowPersona extends Component {
   };
 
   render() {
-
+    console.log('Show Persona props:', this.props);
     let personaChart;
 
     personaChart = (

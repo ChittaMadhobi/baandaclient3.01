@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
-// import axios from "axios";
+import axios from "axios";
 
 import ModalContainer from "../../../modal/components/ModalContainer";
 import { showModal, hideModal } from "../../../actions/modalActions";
@@ -12,12 +12,21 @@ import "../../../modal/css/template.css";
 
 import "./Dashboard.css";
 
+const baandaServer = process.env.REACT_APP_BAANDA_SERVER;
+const getAccessList = "/routes/dashboard/getAccessList?"; // This is a GET
+
+let list = [];
+
 class Dashboard extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      date: this.formatDate()
+      date: this.formatDate(),
+      dashMsg: "Please select the item you would like to engage in.",
+      dashMsgFlag: true, // Meaning, no error or empty lists (false to be displayed in red)
+      accessList: [],
+      list: []
     };
   }
   openAlertModal = () => {
@@ -101,44 +110,142 @@ class Dashboard extends Component {
   };
 
   // to be filled out if needed
-  componentDidMount() {
-    
-  }
+  componentDidMount = async () => {
+    console.log("I am in component Did Mount ... calling loadList");
+    await this.loadList();
+  };
 
   componentWillUnmount() {
+    console.log("I am in component will mount");
     if (!this.props.auth.isAuthenticated) {
       this.props.history.push("/login");
     }
     this.props.history.goForward();
   }
 
+  loadList = async () => {
+    let url =
+      baandaServer +
+      getAccessList +
+      "baandaid=" +
+      this.props.auth.user.baandaId;
+    console.log("loadList url:", url);
+    try {
+      let retData = await axios.get(url);
+
+      if (retData.data.length === 0) {
+        throw new Error(
+          `Empty access list. Please join or create a community first.`
+        );
+      } else {
+        console.log("ret msg:", retData.data);
+        let noOfRecs = retData.data.length;
+        let value;
+        for (var i = 0; i < noOfRecs; i++) {
+          value = {
+            commName: retData.data[i].commName,
+            commCaption: retData.data[i].commCaption,
+            intent: retData.data[i].intent,
+            intentFocus: retData.data[i].intentFocus,
+            role: retData.data[i].role
+          };
+          this.addToAccessList(value);
+        }
+      }
+    } catch (err) {
+      console.log("err:", err.message);
+      await this.setState({
+        dashMsg: err.message,
+        dashMsgFlag: true
+      });
+      // ifExists = false;
+    }
+  };
+
+  addToAccessList = value => {
+    // console.log('addToAccessList value:', value );
+    this.setState(state => {
+      const accessList = [...state.accessList, value];
+      return { accessList };
+    });
+  };
+
   handleShowPersona = () => {
     this.props.history.push("/mirror");
   };
 
+  testClick = (v1, v2, v3) => {
+    alert("Params v1=" + v1 + " v2=" + v2 + "v3=" + v3);
+  };
   render() {
     console.log("Dashboard this.props: ", this.props);
+    console.log("this.state.accessList:", this.state.accessList);
+    console.log("this.state.list:", list);
 
-    // let initProfilePanel;
+    let itemListPanel;
+    let colorflag = true;
+    // let rowcolor=true;
+    itemListPanel = (
+      <div>
+        {/* <div className="text-center access_list_header">Engagements</div> */}
+        <small className="text-center"><i>Click 'Go >' button to enter your selection.</i></small>
+        <div className="header-spacing" />
+        <div className="row">
+          <div className="col-11 text-center selection_header_font">
+            Your Communities
+          </div>
+          <div className="col-1">&nbsp;</div>
+        </div>
+        <hr className="header_hr"/>
+        <div className="fixedsize_dash">
+          {this.state.accessList.map((item, i) => (
+            <div key={i}>
+              {/* <p>{item.commName} &nbsp;  */}
+              <div className={`${colorflag ? "dark-row" : "light-row"}`}>
+                <div className="row text-left">
+                  {/* <div className="col-2">{item.commName}</div> */}
+                  <div className="col-10 caption_bold">
+                    {item.commCaption}
+                  </div>
+                  {/* <div className="col-2 text-left">
+                    |{item.intentFocus}
+                  </div> */}
+                  <div className="col-2">
+                    <button
+                      className="btn_access_list"
+                      type="button"
+                      onClick={() =>
+                        this.testClick(
+                          item.commName,
+                          item.intent,
+                          item.intentFocus
+                        )
+                      }
+                    >
+                      Go <i className="fas fa-greater-than" />
+                    </button>
+                  </div>
+                </div>
+              </div>
 
-    // if (!this.props.auth.user.isInitPersonalInfoDone) {
-    //   initProfilePanel = (
-    //     <div>
-    //       <InitialProfile />
-    //     </div>
-    //   )
-    // }
+              {(colorflag = !colorflag)}
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+
     return (
       <div className="text-center">
         <div className="row page-top">
-          <div className="col-6 dash_header">Engage - Your Dashboard</div>
+          <div className="col-6 access_list_header">Engagements</div>
           <div className="col-6">
             <button
               className="btn_mirror_dash"
               type="button"
               onClick={this.handleShowPersona}
             >
-              <b>Mirror Mirror</b>
+              <b>Mirror</b>
             </button>
             &nbsp;
             <button
@@ -146,10 +253,11 @@ class Dashboard extends Component {
               type="button"
               onClick={this.openAlertModal}
             >
-              <b>What is this?</b>
+              <b>Info</b>
             </button>
           </div>
         </div>
+        {itemListPanel}
         <ModalContainer />
       </div>
     );
@@ -171,7 +279,7 @@ const mapDispatchToProps = dispatch => ({
     //   "modalProps:" + JSON.stringify(modalProps) + "  |modalType:" + modalType
     // );
     dispatch(showModal({ modalProps, modalType }));
-  },
+  }
   // setQAInitDone: () => dispatch(setQAInitDone(userData))
 });
 
