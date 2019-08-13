@@ -1,0 +1,164 @@
+div.fixedsize_market {
+  height: 700px;
+  width: 100%;
+  margin-left: -5%;
+  /* background-color: #f0e9df; */
+  /* background-color: #f5f2eb; */
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.btn_top_market_passive {
+  width: 100px;
+  height: 32px;
+  background-color: #0c5e22;
+  border: none;
+  color: white;
+  font-size: 9pt;
+  box-shadow: 3px 3px 0px 0px black;
+  border-radius: 5px;
+}
+
+.btn_top_market_active {
+  width: 100px;
+  height: 32px;
+  background-color: #0c5e22;
+  border: none;
+  color: white;
+  font-size: 9pt;
+  box-shadow: 3px 3px 0px 0px black;
+  border-radius: 5px;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #5cbf4d;
+}
+
+.btn-modal_market {
+  width: 50px;
+  height: 32px;
+  background-color: #555f6b;
+  border: none;
+  color: white;
+  font-size: 9pt;
+  box-shadow: 3px 3px 0px 0px black;
+  border-radius: 5px;
+}
+
+.btn-back {
+  width: 50px;
+  height: 32px;
+  background-color: #555f6b;
+  border: none;
+  color: white;
+  font-size: 9pt;
+  box-shadow: 3px 3px 0px 0px black;
+  border-radius: 5px;
+}
+
+@media only screen and (max-device-width: 480px) {
+  /* styles for mobile browsers smaller than 480px; (iPhone) */
+  div.fixedsize_market {
+    height: 540px;
+    width: 100%;
+    margin-left: -5%;
+    /* background-color: #f0e9df; */
+    /* background-color: #f5f2eb; */
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  .btn_top_market_passive {
+    width: 63px;
+    height: 28px;
+    background-color: #0c5e22;
+    border: none;
+    color: white;
+    font-size: 8pt;
+    box-shadow: 3px 3px 0px 0px black;
+    border-radius: 5px;
+  }
+
+  .btn_top_market_active {
+    width: 63px;
+    height: 28px;
+    background-color: #0c5e22;
+    border: none;
+    color: white;
+    font-size: 8pt;
+    box-shadow: 3px 3px 0px 0px black;
+    border-radius: 5px;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #5cbf4d;
+  }
+
+  .btn-modal_market {
+    width: 40px;
+    height: 28px;
+    background-color: #555f6b;
+    border: none;
+    color: white;
+    font-size: 8pt;
+    box-shadow: 3px 3px 0px 0px black;
+    border-radius: 5px;
+  }
+
+  .btn-back {
+    width: 30px;
+    height: 28px;
+    font-size: 7pt;
+    box-shadow: 3px 3px 0px 0px black;
+    border-radius: 5px;
+  }
+}
+
+@media only screen and (max-device-width: 320px) {
+  /* styles for browsers larger than 320px iphone5; */
+  .btn_top_market_passive {
+    width: 52px;
+    height: 27px;
+    font-size: 7pt;
+    box-shadow: 3px 3px 0px 0px black;
+    border-radius: 5px;
+  }
+
+  .btn_top_market_active {
+    width: 52px;
+    height: 27px;
+    font-size: 7pt;
+    box-shadow: 3px 3px 0px 0px black;
+    border-radius: 5px;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #5cbf4d;
+  }
+
+  .btn-modal_market {
+    width: 35px;
+    height: 27px;
+    background-color: #555f6b;
+    border: none;
+    color: white;
+    font-size: 7pt;
+    box-shadow: 3px 3px 0px 0px black;
+    border-radius: 5px;
+  }
+
+  .btn-back {
+    width: 25px;
+    height: 27px;
+    font-size: 6pt;
+    box-shadow: 3px 3px 0px 0px black;
+    border-radius: 5px;
+  }
+
+}
+
+@media only screen and (device-width: 768px) {
+  /* default iPad screens */
+}
+
+/* different techniques for iPad screening */
+@media only screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation: portrait) {
+  /* For portrait layouts only */
+}

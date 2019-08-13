@@ -357,21 +357,21 @@ class NewCreation extends Component {
       });
     }
 
-    // if (
-    //   this.state.fileUploads[0].s3Url === "" ||
-    //   this.state.fileUploads[0].caption === ""
-    // ) {
-    //   await this.setState({
-    //     pictureMsg: "Must upload a picture and provide a caption.",
-    //     pictureErrFlag: true
-    //   });
-    //   isValid = false;
-    // } else {
-    //   await this.setState({
-    //     pictureMsg: "Upload a picture and provide a caption.",
-    //     pictureErrFlag: false
-    //   });
-    // }
+    if (
+      this.state.fileUploads[0].s3Url === "" ||
+      this.state.fileUploads[0].caption === ""
+    ) {
+      await this.setState({
+        pictureMsg: "Must upload a picture and provide a caption.",
+        pictureErrFlag: true
+      });
+      isValid = false;
+    } else {
+      await this.setState({
+        pictureMsg: "Upload a picture and provide a caption.",
+        pictureErrFlag: false
+      });
+    }
 
     return isValid;
   };

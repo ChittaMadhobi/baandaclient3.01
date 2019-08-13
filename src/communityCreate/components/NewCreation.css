@@ -179,6 +179,7 @@ p.intent_msg {
 }
 
 .upload_message {
+  margin-left: -15px;
   font-size: 1em;
 }
 /* File upload portion above */
@@ -306,6 +307,12 @@ p.intent_msg {
     margin-top: 20px;
   }
 
+  .Icon {
+    opacity: 0.8;
+    height: 85px;
+    width: 120px;
+  }
+
   .upload_message {
     font-size: 0.68em;
     margin-top: 2px;
@@ -317,13 +324,6 @@ p.intent_msg {
     font-size: 0.7em;
     margin-top: -3px;
     margin-bottom: 9px;
-  }
-
-  .Icon {
-    opacity: 0.8;
-    height: 80px;
-    width: 120px;
-    padding-right: 5px;
   }
 
   .top_of_card {
@@ -386,6 +386,21 @@ p.intent_msg {
     margin-top: 20px;
   }
 
+  .Icon {
+    opacity: 0.8;
+    height: 75px;
+    width: 100px;
+    padding-right: 4px;
+  }
+
+  .save_review_msg {
+    font-size: 0.7em;
+  }
+
+  .save_review_msg_err {
+    font-size: .7em;
+    color: red;
+  }
 }
 
 @media only screen and (device-width: 768px) {

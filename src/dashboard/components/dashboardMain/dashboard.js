@@ -8,14 +8,14 @@ import { showModal, hideModal } from "../../../actions/modalActions";
 import "../../../modal/css/localModal.css";
 import "../../../modal/css/template.css";
 
-// import InitialProfile from '../../../intelligence/components/persona/InitialProfile';
+// Navigation imports
+import Market from '../market/MarketMain';
+
 
 import "./Dashboard.css";
 
 const baandaServer = process.env.REACT_APP_BAANDA_SERVER;
 const getAccessList = "/routes/dashboard/getAccessList?"; // This is a GET
-
-let list = [];
 
 class Dashboard extends Component {
   constructor(props) {
@@ -26,45 +26,36 @@ class Dashboard extends Component {
       dashMsg: "Please select the item you would like to engage in.",
       dashMsgFlag: true, // Meaning, no error or empty lists (false to be displayed in red)
       accessList: [],
-      list: []
+      list: [],
+
+      commName: '',
+      
+      // active panel flags
+      accessListPanelFlag: true,
+      marketFlag: false
     };
   }
   openAlertModal = () => {
     let msg = {
-      Header: "Engage - Your Dashboard",
+      Header: "Engage - Your Communities",
       Body: {
-        oneLineSummary: `This is your today's <${
+        oneLineSummary: `The list shows the communities you created, adminster or participate. <${
           this.state.date
         }> personality overview based on Big-5 (OCEAN) technique. This is a widely used, and vetted technique including adopted by intelligence communities around  the world. This has been tested to transcend culturs, values and seems to be aligned to ones DNA.`,
         steps: [
           {
-            step: "O: (Openness vs. Closed to experience)",
+            step: "1: Identify",
             stepNote:
-              "This includes Ideas(curious), Fantasy(imaginative), Aesthetics(artistic) Actions(wide interests), Feelings(exciteable), Values(unconventional)"
+              "Identify the community you want to work on (your interest now)."
           },
           {
-            step: "C: (Conscientiousness vs. Lack of direction)",
+            step: "2: Proceed to enagage",
             stepNote:
-              "Competence(efficient), Order(organized), Dutifulness(not careless), Achievement striving(through), Self-discipline(not lazy), Deliberation(not impulsive)"
-          },
-          {
-            step: "E: (Extraversion vs. Introversion)",
-            stepNote:
-              "Gregariousness(sociable), Assertiveness(forceful), Activity(energetic) Excitement-seeking(adventerous), Positive emotions(enthusistic), Warmth(outgoing)"
-          },
-          {
-            step: "A: (Agreeable vs. Antagonism)",
-            stepNote:
-              "Trust(forgiving), Straightforwardness(not demanding), Altruism(warm), Compliance(not stubborn), Modesty(not show-off), Tender-mindedness(sympathetic)"
-          },
-          {
-            step: "N: (Neuroticism vs. Emotional Stability)",
-            stepNote:
-              "Anxiety(tense), Angry hostility(irritable), Depression(not contented), Self-consciousness(shy), Impulsiveness(moody), Vulnarability(not self-confident)"
+              "Click Go> buttton to enter into the selected community realm."
           }
         ],
         footnote:
-          "Big-5 persona assessment is assumed to be closely related to your DNA. It's manifestation is influenced by your environment."
+          "In the begining, the access list shows latest community (by date) you have created, adminster, or joined. Coming soon when you can filter and order the access list and set that as your default."
       },
       Footer: "This is the footer"
     };
@@ -111,12 +102,12 @@ class Dashboard extends Component {
 
   // to be filled out if needed
   componentDidMount = async () => {
-    console.log("I am in component Did Mount ... calling loadList");
+    // console.log("I am in component Did Mount ... calling loadList");
     await this.loadList();
   };
 
-  componentWillUnmount() {
-    console.log("I am in component will mount");
+  async componentWillUnmount() {
+    // console.log("I am in component will mount");
     if (!this.props.auth.isAuthenticated) {
       this.props.history.push("/login");
     }
@@ -129,7 +120,7 @@ class Dashboard extends Component {
       getAccessList +
       "baandaid=" +
       this.props.auth.user.baandaId;
-    console.log("loadList url:", url);
+    // console.log("loadList url:", url);
     try {
       let retData = await axios.get(url);
 
@@ -138,7 +129,7 @@ class Dashboard extends Component {
           `Empty access list. Please join or create a community first.`
         );
       } else {
-        console.log("ret msg:", retData.data);
+        // console.log("ret msg:", retData.data);
         let noOfRecs = retData.data.length;
         let value;
         for (var i = 0; i < noOfRecs; i++) {
@@ -174,21 +165,41 @@ class Dashboard extends Component {
     this.props.history.push("/mirror");
   };
 
-  testClick = (v1, v2, v3) => {
-    alert("Params v1=" + v1 + " v2=" + v2 + "v3=" + v3);
+  // Handle navigation based on selection
+  handleSelectedCommunity = async (commName, intent, focus) => {
+    // alert("Params commName=" + commName + " intent=" + intent + " focus=" + focus);
+    if ( intent === 'Business' && focus === 'Catalog') {
+      await this.setState({
+        accessListPanelFlag: false,
+        marketFlag: true,
+        commName: commName
+      })
+    }
   };
-  render() {
-    console.log("Dashboard this.props: ", this.props);
-    console.log("this.state.accessList:", this.state.accessList);
-    console.log("this.state.list:", list);
 
+  returnToDashboard = async () => {
+    // alert( 'Returned to dashboard');
+    await this.setState({
+      accessListPanelFlag: true,
+      marketFlag: false
+    })
+  }
+
+  render() {
+    // console.log("Dashboard this.props: ", this.props);
+    // console.log("this.state.accessList:", this.state);
+    // console.log("this.state.list:", list);
+
+    // Engage Landing Module list.
     let itemListPanel;
+    // colorFlag toggles between two colors of the list to display
     let colorflag = true;
-    // let rowcolor=true;
     itemListPanel = (
       <div>
         {/* <div className="text-center access_list_header">Engagements</div> */}
-        <small className="text-center"><i>Click 'Go >' button to enter your selection.</i></small>
+        <small className="text-center">
+          <i>Click 'Go >' button to enter your selection.</i>
+        </small>
         <div className="header-spacing" />
         <div className="row">
           <div className="col-11 text-center selection_header_font">
@@ -196,7 +207,7 @@ class Dashboard extends Component {
           </div>
           <div className="col-1">&nbsp;</div>
         </div>
-        <hr className="header_hr"/>
+        <hr className="header_hr" />
         <div className="fixedsize_dash">
           {this.state.accessList.map((item, i) => (
             <div key={i}>
@@ -204,9 +215,7 @@ class Dashboard extends Component {
               <div className={`${colorflag ? "dark-row" : "light-row"}`}>
                 <div className="row text-left">
                   {/* <div className="col-2">{item.commName}</div> */}
-                  <div className="col-10 caption_bold">
-                    {item.commCaption}
-                  </div>
+                  <div className="col-10 caption_bold">{item.commCaption}</div>
                   {/* <div className="col-2 text-left">
                     |{item.intentFocus}
                   </div> */}
@@ -215,7 +224,7 @@ class Dashboard extends Component {
                       className="btn_access_list"
                       type="button"
                       onClick={() =>
-                        this.testClick(
+                        this.handleSelectedCommunity(
                           item.commName,
                           item.intent,
                           item.intentFocus
@@ -234,9 +243,8 @@ class Dashboard extends Component {
         </div>
       </div>
     );
-
-    return (
-      <div className="text-center">
+    let engageLandingPanel = (
+      <div>
         <div className="row page-top">
           <div className="col-6 access_list_header">Engagements</div>
           <div className="col-6">
@@ -259,6 +267,25 @@ class Dashboard extends Component {
         </div>
         {itemListPanel}
         <ModalContainer />
+      </div>
+    );
+
+    // This is your store, market for handling catalog, inventory, this.connects, intel etc. All for the community you selected. 
+    let marketPanel = (
+      <div>
+        <Market commName={this.state.commName} dashReturnMethod={this.returnToDashboard}/>
+      </div>
+    )
+
+    let outputPanel;
+    if (this.state.accessListPanelFlag) {
+      outputPanel = engageLandingPanel;
+    } else if (this.state.marketFlag) {
+      outputPanel = marketPanel;
+    }
+    return (
+      <div className="text-center">
+        {outputPanel}
       </div>
     );
   }
