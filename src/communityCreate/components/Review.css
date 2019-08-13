@@ -3,8 +3,8 @@
 }
 
 .picture_review_card {
-  height: 180px;
-  width: 280px;
+  height: 200px;
+  width: 300px;
   background-color: #dde7eb;
   border: none;
   border-radius: 10%;
@@ -28,9 +28,17 @@
 }
 
 .icon_rev {
-  opacity: 0.3;
+  opacity: 1;
   height: 160px;
   width: 250px;
+}
+
+.spaces {
+  height: 10px;
+}
+
+.location_position {
+  margin-right: -10px;
 }
 
 @media only screen and (min-width: 960px) {
@@ -62,10 +70,15 @@
   }
 
   .icon_rev {
-    margin-top: 20px;
+    margin-top: 10px;
     opacity: 1;
     height: 130px;
     width: 180px;
+  }
+
+  .location_position {
+    /* padding-left: 10px; */
+    margin-right: -10px;
   }
 }
 
@@ -76,10 +89,24 @@
     width: 240px;
     font-size: 16px;
     padding-bottom: 1px;
-    margin-left: 9%;
+    margin-left: 10%;
     margin-top: 1px;
     margin-bottom: 10px;
     padding-left: 3px;
+  }
+
+  .top_of_card_rev {
+    margin-top: -10px;
+    padding-bottom: -3px;
+    margin-bottom: 3px;
+    font-weight: 400;
+  }
+
+  .icon_rev {
+    margin-top: 10px;
+    opacity: 1;
+    height: 130px;
+    width: 180px;
   }
 }
 
@@ -89,4 +116,32 @@
 /* different techniques for iPad screening */
 @media only screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation: portrait) {
   /* For portrait layouts only */
+  .picture_review_card {
+    height: 200px;
+    width: 280px;
+    font-size: 16px;
+    padding-bottom: 1px;
+    margin-left: 15%;
+    margin-top: 1px;
+    margin-bottom: 10px;
+    padding-left: 3px;
+  }
+
+  .top_of_card_rev {
+    margin-top: -10px;
+    padding-bottom: -3px;
+    margin-bottom: 3px;
+    font-weight: 700;
+  }
+
+  .icon_rev {
+    margin-top: 20px;
+    opacity: 1;
+    height: 150px;
+    width: 200px;
+  }
+
+  .location_position {
+    margin-right: -10px;
+  }
 }

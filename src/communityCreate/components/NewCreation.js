@@ -48,7 +48,9 @@ class NewCreation extends Component {
       commName: "", // input text  5 to 20 chars
       commCaption: "", // input text 15 - to 50
       commDescription: "", // input textarea 50 to 1000 chars
-      joinProcess: "Private", // Radio Button
+      joinProcess: "Private", // Radio Button,
+      locationType: "Current",
+      locationCurr: {},
       intent: "", // This is drop down
       subIntent: "",
       fileUploads: [
@@ -80,10 +82,23 @@ class NewCreation extends Component {
       commNameErrFlag: false,
       commCaptionErrFlag: false,
       commDecriptionErrFlag: false,
+
       intentErrFlg: false,
       commNameMsg: "A reference name (5-to-20 Chars).",
       commCaptionMsg: "A caption for others (15-to-50 chars).",
       commDescriptionMsg: "Describe your community - (min:50 max:1000 chars)",
+
+      streetAddress: "",
+      streetAddressMsg: "Enter street address with unit number (optional)",
+      streetAddressErrFlag: false,
+
+      city: "",
+      zip: "",
+      state: "",
+      country: "USA",
+      restAddressMsg: "Enter city, zip, state - Country is USA for pilot.",
+      restAddressErrFlag: false,
+
       intentMsg: "Select an intent & focus for the community.",
       searchTagMsg: "Search tags comma (,) delimited (max 100 Chars).",
       picCaptionMsg: "",
@@ -106,6 +121,29 @@ class NewCreation extends Component {
     this.onDrop = this.onDrop.bind(this);
   }
 
+  async componentDidMount() {
+    if (!this.props.auth.isAuthenticated) {
+      this.props.history.push('/login');
+    }
+    let retdata;
+    try {
+      let url = "https://ipapi.co/json/";
+      retdata = await axios.get(url);
+      if (!retdata.data) {
+        throw new Error(
+          "Geocentric return data not availabe for api = https://ipapi.co/json/"
+        );
+      } else {
+        this.setState({
+          locationCurr: retdata.data
+        });
+      }
+      // console.log("retdata:", retdata.data);
+    } catch (err) {
+      console.log("Get geodata error:", err);
+    }
+    // console.log("retdata: ", retdata);
+  }
   uploadToS3 = async e => {
     // console.log("upload ng: ", e.target.files[0]);
     let dirname = "bid" + this.props.auth.user.baandaId;
@@ -245,6 +283,12 @@ class NewCreation extends Component {
     });
   }
 
+  handlelocationType = async e => {
+    await this.setState({
+      locationType: e.target.value
+    });
+  };
+
   handleIntent = async (selectedOption, { action }) => {
     await this.setState({
       intent: selectedOption
@@ -357,12 +401,16 @@ class NewCreation extends Component {
       });
     }
 
+    // if (
+    //   this.state.fileUploads[0].s3Url === "" ||
+    //   this.state.fileUploads[0].caption === ""
+    // )
     if (
-      this.state.fileUploads[0].s3Url === "" ||
-      this.state.fileUploads[0].caption === ""
-    ) {
+      this.state.fileUploads[0].s3Url === "" 
+    )
+     {
       await this.setState({
-        pictureMsg: "Must upload a picture and provide a caption.",
+        pictureMsg: "Must upload a picture & enter a caption.",
         pictureErrFlag: true
       });
       isValid = false;
@@ -416,6 +464,15 @@ class NewCreation extends Component {
       focus: this.state.subIntent.value,
       searchWords: this.state.searchTags,
       joiningProcess: this.state.joinProcess,
+      locationType: this.state.locationType,
+      locationCurr: this.state.locationCurr,
+      postalAddress: {
+        street: this.state.streetAddress,
+        city: this.state.city,
+        state: this.state.state,
+        zip: this.state.zip,
+        country: this.state.country
+      },
       fileUploads: {
         key: this.state.fileUploads[0].key,
         type: this.state.fileUploads[0].contentType,
@@ -424,7 +481,7 @@ class NewCreation extends Component {
       }
     };
     console.log("url:", url);
-    console.log("commData:", JSON.stringify(commData));
+    console.log("commData:", commData);
     try {
       let ret = await axios.post(url, commData);
       if (ret.length === 0) {
@@ -468,8 +525,8 @@ class NewCreation extends Component {
 
   // Redirect to Home / lobby
   savedNowClose = () => {
-    this.props.history.push('/lobby');
-  }
+    this.props.history.push("/lobby");
+  };
 
   reviewBeforeSave = async () => {
     let revobj = {
@@ -481,8 +538,16 @@ class NewCreation extends Component {
       subIntent: this.state.subIntent,
       fileUploads: this.state.fileUploads,
       searchTags: this.state.searchTags,
-      picCaption: this.state.picCaption
-      // readyToPublish: false
+      picCaption: this.state.picCaption,
+      locationType: this.state.locationType,
+      locationCurr: this.state.locationCurr,
+      postalAddress: {
+        street: this.state.streetAddress,
+        city: this.state.city,
+        state: this.state.state,
+        zip: this.state.zip,
+        country: this.state.country
+      }
     };
     await this.setState({
       reviewFlag: true,
@@ -499,7 +564,7 @@ class NewCreation extends Component {
   };
 
   render() {
-    // console.log("this.state create: ", this.state);
+    console.log("NewCreation.js this.state create: ", this.state);
     // console.log('accesskey:' , awsAccessKeyId);
 
     let fileLoadBtn;
@@ -711,6 +776,85 @@ class NewCreation extends Component {
         </div>
       );
     }
+
+    let postalAddressPanel = null;
+    if (this.state.locationType === "Postal") {
+      postalAddressPanel = (
+        <div className="text-center">
+          <div className="row">
+            <div className="col input_text_creation_caption">
+              <input
+                name="streetAddress"
+                type="text"
+                value={this.state.streetAddress}
+                onChange={this.onChange}
+                size="45"
+                maxLength="40"
+                className="input_text_street"
+                placeholder="Your postal street address ..."
+              />
+              <div
+                className={`${
+                  !this.state.streetAddressErrFlag
+                    ? "save_review_msg"
+                    : "save_review_msg_err"
+                }`}
+              >
+                <p>{this.state.streetAddressMsg}</p>
+              </div>
+            </div>
+            <div className="row input_text_address">
+              <div className="col-6">
+                <input
+                  name="city"
+                  type="text"
+                  value={this.state.city}
+                  onChange={this.onChange}
+                  size="20"
+                  maxLength="40"
+                  className="input_text_city"
+                  placeholder="City ... "
+                />
+              </div>
+              <div className="col-2 input_text_zip_col">
+                <input
+                  name="state"
+                  type="text"
+                  value={this.state.state}
+                  onChange={this.onChange}
+                  size="3"
+                  maxLength="2"
+                  className="input_text_state"
+                  placeholder="State"
+                />
+              </div>
+              {/* <div className="col-1">&nbsp;</div> */}
+              <div className="col-4 input_text_zip_col">
+                <input
+                  name="zip"
+                  type="text"
+                  value={this.state.zip}
+                  onChange={this.onChange}
+                  size="5"
+                  maxLength="5"
+                  className="input_text_zip"
+                  placeholder="Zip"
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            className={`${
+              !this.state.restAddressErrFlag
+                ? "save_review_msg"
+                : "save_review_msg_err"
+            }`}
+          >
+            <p>{this.state.restAddressMsg}</p>
+          </div>
+        </div>
+      );
+    }
     topInputPanel = (
       <div>
         <div className="row">
@@ -811,6 +955,48 @@ class NewCreation extends Component {
             </div>
           </div>
         </div>
+        <div className="row">
+          <div className="col text-center radio-fonts">
+            <strong>Geo-Location: &nbsp;&nbsp;</strong>
+            <div className="form-check form-check-inline">
+              <label className="form-check-label">
+                <input
+                  className="form-check-input"
+                  type="radio"
+                  value="Current"
+                  checked={this.state.locationType === "Current"}
+                  onChange={this.handlelocationType}
+                />{" "}
+                Current
+              </label>
+            </div>
+            <div className="form-check form-check-inline">
+              <label className="form-check-label">
+                <input
+                  className="form-check-input"
+                  type="radio"
+                  value="Postal"
+                  checked={this.state.locationType === "Postal"}
+                  onChange={this.handlelocationType}
+                />{" "}
+                Postal
+              </label>
+            </div>
+            <div className="form-check form-check-inline">
+              <label className="form-check-label">
+                <input
+                  className="form-check-input"
+                  type="radio"
+                  value="Virtual"
+                  checked={this.state.locationType === "Virtual"}
+                  onChange={this.handlelocationType}
+                />{" "}
+                Virtual
+              </label>
+            </div>
+          </div>
+        </div>
+        {postalAddressPanel}
         <p align="justify" className="intent_msg">
           Please select your intent and intent's focus:
         </p>

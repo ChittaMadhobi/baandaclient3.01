@@ -48,12 +48,17 @@ class UserInitPersona extends Component {
           {
             step: "Step 1: ",
             stepNote:
-              "Please slide the scale to provide an impulsive answer. Answer with you feelings (heart) and not with thought (mind)"
+              "For each question, use the slide scale to answer. Low score (1) means you strongly disagree and high-score (10) means you strongly agree."
           },
           {
             step: "Step 2: ",
             stepNote:
-              "Please tell me your physical (geo) location and contacts. This will help me assist you intelligently"
+              "I will assess your geo-location from your current position. You would be able to assign a geo-location with reference to the center of your activities when you create communities or join one."
+          },
+          {
+            step: "Core Idea: ",
+            stepNote:
+              "This is a starting point to knowing you. Think of me like your doctor, lawyer, councilor, a friend. More genuin you are, more I would be able to assist you that will fit the unique you."
           }
 
           // {
@@ -63,7 +68,7 @@ class UserInitPersona extends Component {
           // }
         ],
         footnote:
-          "More genuine you are, better I would be able to assist you. None of your information will be shared with anyone unless you explicitly ask me to (Baanda promise). Think, as if you just met me and sharing me about your inner being (persona). Progressively, I will try to know more of your spirit and assist you uiquely."
+          "More genuine you are, better I would be able to assist you. None of your information will be shared with anyone unless you explicitly ask me to (Baanda promise). Think, as if you just met me and sharing me about your inner being (persona). Progressively, I will try to know more of your spirit and assist you uiquely and become your assistance and friend (your baanda)."
       },
       Footer: "This is the footer"
     };
