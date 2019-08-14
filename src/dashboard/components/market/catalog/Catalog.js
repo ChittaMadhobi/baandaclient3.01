@@ -36,12 +36,18 @@ class Catalog extends Component {
       itemNameMsg: "A unique item name between 10 to 100 chars",
       itemNameErrFlag: false,
 
+      itemCategory: "",
+      itemCatagoryMsg: "Item category. May be same for set of entry.",
+      itemCatagoryErrFlag: false,
+
       itemDescription: "",
       itemDecriptionErrFlag: "",
-      itemDescriptionMsg:
-        "Enter the description for the users. ",
+      itemDescriptionMsg: "Enter the description (50 to 1000 characters). ",
 
       unitType: "Number",
+      itemPrice: 0.01,
+      itemPriceMsg: "Enter the price of the item (0.00)$",
+      itemPriceErrFlag: false,
 
       createCatalogFlag: true,
       editCatalogFlag: false,
@@ -54,7 +60,7 @@ class Catalog extends Component {
       picturesMsg: "Please upload a picture and provide a caption.",
       pictureErrFlag: false,
       saveReviewMsg:
-        "Please click Save to save & go to next entry. When finished entering, click Close."
+        "Click Save to validate, save, & go for the next item entry. Close to return."
     };
 
     this.fileInputRef = React.createRef();
@@ -356,7 +362,9 @@ class Catalog extends Component {
                 value={this.state.picCaption}
                 required
               />
-              <p className="pic_caption_msg_catalog">{this.state.picCaptionMsg}</p>
+              <p className="pic_caption_msg_catalog">
+                {this.state.picCaptionMsg}
+              </p>
               <p className="pic_caption_msg_catalog">
                 <b>{this.state.fileNameToDisplay}</b>
               </p>
@@ -482,7 +490,30 @@ class Catalog extends Component {
             </div>
           </div>
           <div className="row">
-            <div className="col text-center">
+            <div className="col input_placement">
+              <input
+                name="itemCatagory"
+                type="text"
+                value={this.state.itemCatagory}
+                onChange={this.onChange}
+                size="50"
+                maxLength="50"
+                className="input_text_catlog"
+                placeholder="Catagory of your item ..."
+              />
+              <div
+                className={`${
+                  !this.state.itemCatagoryErrFlag
+                    ? "catalog_input_msg"
+                    : "catalog_input_msg_err"
+                }`}
+              >
+                <p>{this.state.itemCatagoryMsg}</p>
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col text-center input_placement_desc">
               <textarea
                 name="itemDescription"
                 maxLength="1000"
@@ -546,6 +577,46 @@ class Catalog extends Component {
                   Weight
                 </label>
               </div>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-4 text-right price_word">
+              <b>Price</b>
+            </div>
+            <div className="col-4 input_placement text-left">
+              <input
+                name="itemPrice"
+                type="number"
+                min="0"
+                value={this.state.itemPrice}
+                onChange={this.onChange}
+                size="20"
+                // maxLength="50"
+                className="input_price_field"
+                step=".01"
+                placeholder="0.00"
+              />
+              {/* <div
+                className={`${
+                  !this.state.itemPriceErrFlag
+                    ? "catalog_input_msg"
+                    : "catalog_input_msg_err"
+                }`}
+              >
+                <p>{this.state.itemPriceMsg}</p>
+              </div> */}
+            </div>
+            <div className="col-4 text-left price_word_s">
+              <b>$</b>
+            </div>
+            <div
+              className={`${
+                !this.state.itemPriceErrFlag
+                  ? "catalog_input_msg"
+                  : "catalog_input_msg_err"
+              }`}
+            >
+              <p>{this.state.itemPriceMsg}</p>
             </div>
           </div>
           <div className="row">

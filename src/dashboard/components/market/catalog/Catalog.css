@@ -1,7 +1,7 @@
 div.fixedsize_catalog {
   height: 700px;
   width: 100%;
-  background-color: #f5f2eb;
+  /* background-color: #f5f2eb; */
   margin-left: -5%;
   overflow-x: hidden;
   overflow-y: auto;
@@ -69,8 +69,12 @@ div.fixedsize_catalog {
 }
 
 .input_placement {
-  margin-top: 10px;
+  margin-top: -10px;
   /* margin-left: 30px; */
+}
+
+.input_placement_desc {
+  margin-top: -10px;
 }
 
 .input_textarea_desc {
@@ -187,6 +191,32 @@ div.fixedsize_catalog {
   padding-left: 40px;
 }
 
+.price_word {
+  margin-top: 10px;
+  margin-right: -10px;
+  margin-left: 10px;
+  padding-right: 5px;
+}
+
+.price_word_s {
+  margin-top: 10px;
+  margin-left: -60px;
+}
+
+.input_price_field {
+  font-size: .8em;
+  color: blue;
+  width: 80%;
+  margin-left: -2%;
+}
+
+.input_text_catlog {
+  font-size: 1em;
+  color: blue;
+  width: 90%;
+  margin-left: -2%;
+}
+
 @media only screen and (max-device-width: 480px) {
   /* styles for mobile browsers smaller than 480px; (iPhone) */
   div.fixedsize_catalog {
@@ -273,9 +303,13 @@ div.fixedsize_catalog {
   }
 
   .input_placement {
-    margin-top: 10px;
+    margin-top: -7px;
     margin-left: 5%;
     margin-right: 4%;
+  }
+
+  .input_placement_desc {
+    margin-top: -15px;
   }
 
   .input_textarea_desc {
@@ -354,7 +388,7 @@ div.fixedsize_catalog {
     width: 110%;
     margin-left: -14px;
     /* background-color: #f0e9df; */
-    background-color: #f5f2eb;
+    /* background-color: #f5f2eb; */
     overflow-x: hidden;
     overflow-y: auto;
   }
@@ -422,9 +456,11 @@ div.fixedsize_catalog {
     font-size: 7pt;
     padding-right: -1px;
   }
+
 }
 
 @media only screen and (device-width: 768px) {
+
   /* default iPad screens */
 }
 
@@ -436,7 +472,7 @@ div.fixedsize_catalog {
     padding-top: 5px;
     height: 800px;
     width: 100%;
-    background-color: white;
+    /* background-color: white; */
     margin-left: -1px;
     overflow-x: hidden;
     overflow-y: auto;
@@ -507,13 +543,18 @@ div.fixedsize_catalog {
     margin-right: 4%;
   }
 
+  .input_placement_desc {
+    margin-top: 10px;
+    padding-top: 5px;
+  }
+
   .input_textarea_desc {
     font-size: 1em;
     color: blue;
+    margin-top: -5px;
   }
 
   .dropzone {
-    /* background-color: red; */
     height: 200px;
     width: 300px;
     margin-left: 10%;
@@ -537,4 +578,5 @@ div.fixedsize_catalog {
     padding-left: 10px;
     margin-left: -10px;
   }
+
 }
