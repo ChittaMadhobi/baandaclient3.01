@@ -57,7 +57,7 @@ class Toolbar extends Component {
                 onClick={this.props.onLogoutClickApp}
                 className="transparent-button"
               >
-                {user.name} &nbsp;&nbsp; Logout
+                {user.name}&nbsp;<font color="#bef587" size="2">(Credits: {user.availableCredits})</font> &nbsp;&nbsp; Logout
               </button>
             </li>
           </ul>

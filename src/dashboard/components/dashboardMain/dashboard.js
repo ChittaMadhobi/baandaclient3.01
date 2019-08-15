@@ -29,6 +29,8 @@ class Dashboard extends Component {
       list: [],
 
       commName: '',
+      communityid: 0,
+      role: '',
       
       // active panel flags
       accessListPanelFlag: true,
@@ -135,6 +137,7 @@ class Dashboard extends Component {
         for (var i = 0; i < noOfRecs; i++) {
           value = {
             commName: retData.data[i].commName,
+            communityId: retData.data[i].communityId,
             commCaption: retData.data[i].commCaption,
             intent: retData.data[i].intent,
             intentFocus: retData.data[i].intentFocus,
@@ -166,13 +169,16 @@ class Dashboard extends Component {
   };
 
   // Handle navigation based on selection
-  handleSelectedCommunity = async (commName, intent, focus) => {
-    // alert("Params commName=" + commName + " intent=" + intent + " focus=" + focus);
+  handleSelectedCommunity = async (commName, communityid, role, intent, focus) => {
+    // alert("Params commName=" + commName + " CommunityId="+ communityid + " role=" + role);
+    console.log("Params commName=" , commName , " CommunityId=", communityid , " role=", role,  " intent=" , intent , " focus=" , focus);
     if ( intent === 'Business' && focus === 'Catalog') {
       await this.setState({
         accessListPanelFlag: false,
         marketFlag: true,
-        commName: commName
+        commName: commName,
+        communityid: communityid,
+        role: role
       })
     }
   };
@@ -226,6 +232,8 @@ class Dashboard extends Component {
                       onClick={() =>
                         this.handleSelectedCommunity(
                           item.commName,
+                          item.communityId,
+                          item.role,
                           item.intent,
                           item.intentFocus
                         )
@@ -273,7 +281,7 @@ class Dashboard extends Component {
     // This is your store, market for handling catalog, inventory, this.connects, intel etc. All for the community you selected. 
     let marketPanel = (
       <div>
-        <Market commName={this.state.commName} dashReturnMethod={this.returnToDashboard}/>
+        <Market commName={this.state.commName} communityid={this.state.communityid} role={this.state.role} dashReturnMethod={this.returnToDashboard}/>
       </div>
     )
 

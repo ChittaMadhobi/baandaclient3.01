@@ -33,6 +33,9 @@ class SideDrawer extends Component {
               <h6>{user.name}</h6>
             </li>
             <li>
+              <p align="justify" className="disply_credit">(Credits: {user.availableCredits})</p>
+            </li>
+            <li>
               <button
                 onClick={this.props.onLobbyClickApp}
                 className="transparent-button"

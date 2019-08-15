@@ -1,6 +1,6 @@
 div.fixedsize_catalog {
   height: 700px;
-  width: 100%;
+  width: 110%;
   /* background-color: #f5f2eb; */
   margin-left: -5%;
   overflow-x: hidden;
@@ -192,21 +192,22 @@ div.fixedsize_catalog {
 }
 
 .price_word {
-  margin-top: 10px;
+  margin-top: -10px;
   margin-right: -10px;
   margin-left: 10px;
   padding-right: 5px;
 }
 
 .price_word_s {
-  margin-top: 10px;
-  margin-left: -60px;
+  margin-top: -10px;
+  margin-left: -30px;
+  color: green;
 }
 
 .input_price_field {
   font-size: .8em;
   color: blue;
-  width: 80%;
+  width: 90%;
   margin-left: -2%;
 }
 
@@ -215,6 +216,10 @@ div.fixedsize_catalog {
   color: blue;
   width: 90%;
   margin-left: -2%;
+}
+
+.item_price_msg {
+  margin-top: -10px;
 }
 
 @media only screen and (max-device-width: 480px) {
@@ -379,6 +384,23 @@ div.fixedsize_catalog {
   .save_btn_placement {
     margin-left: -30px;
   }
+
+  .price_word {
+    /* margin-top: 10px; */
+    margin-top: -6px;
+    margin-right: -10px;
+    margin-left: 10px;
+    padding-right: 5px;
+  }
+
+  .price_word_s {
+    margin-top: -6px;
+    /* margin-right: 5px; */
+  }
+
+  .item_price_msg {
+    margin-top: -20px;
+  }
 }
 
 @media only screen and (max-device-width: 320px) {
@@ -457,6 +479,22 @@ div.fixedsize_catalog {
     padding-right: -1px;
   }
 
+  .price_word {
+    /* margin-top: 10px; */
+    margin-top: -6px;
+    margin-right: -10px;
+    margin-left: 10px;
+    padding-right: 5px;
+  }
+
+  .price_word_s {
+    margin-top: -6px;
+    margin-left: -60px;
+  }
+
+  .item_price_msg {
+    margin-top: -20px;
+  }
 }
 
 @media only screen and (device-width: 768px) {
@@ -577,6 +615,24 @@ div.fixedsize_catalog {
     margin-bottom: 9px;
     padding-left: 10px;
     margin-left: -10px;
+  }
+
+  .price_word {
+    /* margin-top: 10px; */
+    margin-top: 10px;
+    margin-right: -10px;
+    margin-left: 10px;
+    padding-right: 5px;
+  }
+
+  .price_word_s {
+    margin-top: 10px;
+    margin-right: -8px;
+    color: green;
+  }
+
+  .item_price_msg {
+    margin-top: -20px;
   }
 
 }

@@ -10,6 +10,7 @@ import "../../../modal/css/localModal.css";
 import "../../../modal/css/template.css";
 
 import Catalog from '../market/catalog/Catalog';
+import ViewCatalog from '../market/catalog/ViewCatalog';
 
 import "./MarketMain.css";
 
@@ -119,11 +120,15 @@ class MarketMain extends Component {
   };
 
   render() {
-    console.log("Market props:", this.props);
+    // console.log("Market props:", this.props);
 
     // This will handle only catalog portion definitions
     let catalogOutputPanel;
-    catalogOutputPanel = <div><Catalog /></div>;
+    if (this.props.role === 'Creator' || this.props.role === 'Admin') {
+      catalogOutputPanel = <div><Catalog commName={this.props.commName} communityid={this.props.communityid}/></div>;
+    } else {
+      catalogOutputPanel = <div><ViewCatalog /></div>;
+    }
 
     // activePanel will invoke the module that is clicked on.
     let activePanel;

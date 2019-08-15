@@ -57,6 +57,12 @@
     font-size: 1.2em;
 }
 
+p.disply_credit {
+    color: #3e6e0e;
+    font-size: .75em;
+    font-weight: 700;
+    margin-top: -20px;
+}
 /* Media Query */
 @media (min-width: 769px) {
     .side-drawer {

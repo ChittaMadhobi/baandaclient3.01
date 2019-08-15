@@ -145,7 +145,8 @@ class NewCreation extends Component {
     // console.log("retdata: ", retdata);
   }
   uploadToS3 = async e => {
-    // console.log("upload ng: ", e.target.files[0]);
+    alert('inside  uploadToS3');
+    console.log("upload ng: ", e.target.files[0]);
     let dirname = "bid" + this.props.auth.user.baandaId;
     let config = {
       bucketName: s3BucketName,
@@ -166,6 +167,7 @@ class NewCreation extends Component {
     //   index = 2;
     // }
     // console.log("index :", index);
+
     try {
       let data = await ReactS3.uploadFile(this.state.currFilename, config);
       let s3fileObject = {

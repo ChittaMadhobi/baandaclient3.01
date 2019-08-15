@@ -5,7 +5,7 @@ import { withRouter } from "react-router-dom";
 import update from "react-addons-update";
 
 import ReactS3 from "react-s3";
-// import axios from "axios";
+import axios from "axios";
 
 import ModalContainer from "../../../../modal/components/ModalContainer";
 import { showModal, hideModal } from "../../../../actions/modalActions";
@@ -21,7 +21,9 @@ const awsSecretAccessKey = process.env.REACT_APP_SECRET_ACCESS_KEY;
 const awsRegion = process.env.REACT_APP_AWS_REGION;
 const s3BucketName = process.env.REACT_APP_S3_BUCKET_NAME;
 
-// const baandaServer = process.env.REACT_APP_BAANDA_SERVER;
+const baandaServer = process.env.REACT_APP_BAANDA_SERVER;
+const ifItemExistsAPI ='/routes/dashboard/ifCatalogItemExists?';
+const saveItemAPI = '/routes/dashboard/saveCatalogItem';
 
 class Catalog extends Component {
   constructor(props) {
@@ -37,21 +39,31 @@ class Catalog extends Component {
       itemNameErrFlag: false,
 
       itemCategory: "",
-      itemCatagoryMsg: "Item category. May be same for set of entry.",
-      itemCatagoryErrFlag: false,
+      itemCategoryMsg: "Item category. May be same for set of entry.",
+      itemCategoryErrFlag: false,
 
       itemDescription: "",
       itemDecriptionErrFlag: "",
       itemDescriptionMsg: "Enter the description (50 to 1000 characters). ",
 
       unitType: "Number",
-      itemPrice: 0.01,
+      itemPrice: '',
       itemPriceMsg: "Enter the price of the item (0.00)$",
       itemPriceErrFlag: false,
 
       createCatalogFlag: true,
       editCatalogFlag: false,
 
+      fileUploads: [
+        {
+          contentType: "", // audio, video, pdf, pic
+          bucket: "",
+          dirname: "",
+          key: "",
+          caption: "",
+          s3Url: ""
+        }
+      ],
       uploadBtnClicked: false,
       uploadFileType: "",
       fileNameToDisplay: "",
@@ -64,10 +76,12 @@ class Catalog extends Component {
     };
 
     this.fileInputRef = React.createRef();
+    this.onFilesAdded = this.onFilesAdded.bind(this);
     this.openFileDialog = this.openFileDialog.bind(this);
     this.onDragOver = this.onDragOver.bind(this);
     this.onDragLeave = this.onDragLeave.bind(this);
     this.onDrop = this.onDrop.bind(this);
+
   }
 
   openAlertModal = () => {
@@ -128,10 +142,15 @@ class Catalog extends Component {
   onChange = async e => {
     await this.setState({ [e.target.name]: e.target.value });
   };
-
+  
+  // onChangePrice = async e => {
+  //   let val = parseFloat(e.target.value).toFixed(2);
+  //   console.log('val:', val);
+  //   await this.setState({ [e.target.name]: e.target.value });
+  //   // await this.setState({ [e.target.name]: val });
+  // };
   uploadToS3 = async e => {
-    // console.log("upload ng: ", e.target.files[0]);
-    let dirname = "bid" + this.props.auth.user.baandaId;
+    let dirname = "commid" + this.props.communityid;
     let config = {
       bucketName: s3BucketName,
       dirName: dirname,
@@ -139,7 +158,7 @@ class Catalog extends Component {
       accessKeyId: awsAccessKeyId,
       secretAccessKey: awsSecretAccessKey
     };
-
+    // console.log('uploadToS3 config:', config, ' filename:', this.state.currFilename);
     try {
       let data = await ReactS3.uploadFile(this.state.currFilename, config);
       let s3fileObject = {
@@ -154,7 +173,7 @@ class Catalog extends Component {
       if (s3fileObject.key) {
         filename = s3fileObject.key.split(/(\\|\/)/g).pop();
       }
-      //   console.log("Data:", data, " s3fileObject:", s3fileObject);
+      console.log("Data:", data, " s3fileObject:", s3fileObject);
 
       await this.setState({
         fileUploads: update(this.state.fileUploads, {
@@ -173,6 +192,35 @@ class Catalog extends Component {
     this.fileInputRef.current.click();
   }
 
+  async onFilesAdded(evt) {
+    // let fullPath = evt.target.value;
+    // let filename;
+    // if (fullPath) {
+    //   filename = fullPath.split(/(\\|\/)/g).pop()
+    // }
+    let index;
+    // pic=0, vedio=1, & audio=2 -- only three kinds now & pic is active.
+    if (this.state.uploadFileType === "pic") {
+      index = 0;
+    } else if (this.state.uploadFileType === "vedio") {
+      index = 1;
+    } else {
+      index = 2;
+    }
+    const files = evt.target.files;
+    await this.setState({
+      currFilename: files[index],
+      fileNameToDisplay: "Ready to upload: " + files[index].name
+    });
+
+    // console.log("filename:", this.state.fileNameToDisplay);
+    // In case, in future we allow multifile upload
+    // if (this.props.onFilesAdded) {
+    //   const array = this.fileListToArray(files);
+    //   this.props.onFilesAdded(array);
+    // }
+  }
+
   setUploadType = async type => {
     console.log("upload type:", type);
     await this.setState({
@@ -187,7 +235,6 @@ class Catalog extends Component {
     console.log("In drop zone");
     this.setState({ hightlight: true });
   }
-
   onDragLeave() {
     this.setState({ hightlight: false });
   }
@@ -212,15 +259,85 @@ class Catalog extends Component {
     // }));
   }
 
-  validateAndSave = () => {
-    alert("validate and save and next");
+  validateAndSave = async () => {
+    // alert("validateAndSave function");
+    let data = {
+      communityId: this.props.communityid,
+      commName: this.props.commName,
+      baandaId: this.props.auth.user.baandaId,
+      merchandiseType: this.state.merchandiseType,
+      itemName: this.state.itemName,
+      itemCategory: this.state.itemCategory,
+      itemDescription: this.state.itemDescription,
+      unitType: this.state.unitType,
+      itemPrice: parseFloat(this.state.itemPrice).toFixed(2), 
+      fileUploads: this.state.fileUploads
+    }
+  
+    console.log('data:', data);
+
+    let valid = await this.validateItem(data);
+    console.log('valid:', valid);
+    if (valid) {
+      // this.saveItem(data);
+      console.log('valid: /////////')
+    }
   };
+
+  validateItem = async (data) => {
+    console.log('save validate data:', data);
+    let validity = await this.checkIfItemExists(data.communityId, data.itemName);
+    console.log('validity:', validity);
+    return validity;
+  }
+
+  saveItem = async (data) => {
+    let url = baandaServer + saveItemAPI;
+    console.log('All OK ... ready to save - url: ', url );
+
+    let retData;
+    try {
+      retData = await axios.post(url, data);
+      console.log('retData:', retData);
+    } catch (err) {
+      console.log('save Item err:', err.message);
+    }
+  }
+
+  checkIfItemExists = async (communityId, itemName) => {
+    console.log(' checkifItemExists communityId:' + communityId, ' itemName:' + itemName);
+    let ifExists = true;
+    let params =
+      "communityId=" +
+      communityId +
+      "&itemName=" +
+      itemName;
+    let url = baandaServer + ifItemExistsAPI + params;
+    console.log('if exists get url:' , url);
+    try {
+      let ret = await axios.get(url);
+      if (ret.data.status === "Fail") {
+        // console.log('msg:', ret.data.Msg);
+        throw new Error(`Item name already exists`);
+      }
+      // else {
+      //   console.log('ret msg:', ret.data.status);
+      // }
+    } catch (err) {
+      console.log('err:', err.message);
+      ifExists = false;
+    }
+
+    return ifExists;
+  }
 
   returnToAccessList = () => {
     alert("return to access List");
   };
 
   render() {
+    console.log('catalog props:', this.props);
+
     let catalogbuttons;
     if (this.state.createCatalogFlag) {
       catalogbuttons = (
@@ -492,23 +609,23 @@ class Catalog extends Component {
           <div className="row">
             <div className="col input_placement">
               <input
-                name="itemCatagory"
+                name="itemCategory"
                 type="text"
-                value={this.state.itemCatagory}
+                value={this.state.itemCategory}
                 onChange={this.onChange}
                 size="50"
                 maxLength="50"
                 className="input_text_catlog"
-                placeholder="Catagory of your item ..."
+                placeholder="Category of your item ..."
               />
               <div
                 className={`${
-                  !this.state.itemCatagoryErrFlag
+                  !this.state.itemCategoryErrFlag
                     ? "catalog_input_msg"
                     : "catalog_input_msg_err"
                 }`}
               >
-                <p>{this.state.itemCatagoryMsg}</p>
+                <p>{this.state.itemCategoryMsg}</p>
               </div>
             </div>
           </div>
@@ -587,7 +704,7 @@ class Catalog extends Component {
               <input
                 name="itemPrice"
                 type="number"
-                min="0"
+                min="0.00"
                 value={this.state.itemPrice}
                 onChange={this.onChange}
                 size="20"
@@ -595,20 +712,14 @@ class Catalog extends Component {
                 className="input_price_field"
                 step=".01"
                 placeholder="0.00"
+                autoComplete="off"
+                pattern="^\d*(\.\d{0,2})?$"
               />
-              {/* <div
-                className={`${
-                  !this.state.itemPriceErrFlag
-                    ? "catalog_input_msg"
-                    : "catalog_input_msg_err"
-                }`}
-              >
-                <p>{this.state.itemPriceMsg}</p>
-              </div> */}
             </div>
-            <div className="col-4 text-left price_word_s">
+            <div className="col-1 text-left price_word_s">
               <b>$</b>
             </div>
+            <div className="col-3">&nbsp;</div>
             <div
               className={`${
                 !this.state.itemPriceErrFlag
@@ -616,7 +727,7 @@ class Catalog extends Component {
                   : "catalog_input_msg_err"
               }`}
             >
-              <p>{this.state.itemPriceMsg}</p>
+              <p className="item_price_msg">{this.state.itemPriceMsg}</p>
             </div>
           </div>
           <div className="row">
