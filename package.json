@@ -7,6 +7,7 @@
     "classnames": "^2.2.6",
     "jwt-decode": "^2.2.0",
     "keymirror": "^0.1.1",
+    "lodash": "^4.17.15",
     "moment": "^2.22.2",
     "rc-time-picker": "^3.4.0",
     "react": "^16.4.1",

@@ -55,6 +55,10 @@ div.fixedsize_market {
   border-radius: 5px;
 }
 
+.market_header_spacing {
+  margin-left: -1%px;
+}
+
 @media only screen and (max-device-width: 480px) {
   /* styles for mobile browsers smaller than 480px; (iPhone) */
   div.fixedsize_market {
@@ -79,7 +83,7 @@ div.fixedsize_market {
   }
 
   .btn_top_market_active {
-    width: 63px;
+    width: 56px;
     height: 28px;
     background-color: #0c5e22;
     border: none;
@@ -93,7 +97,7 @@ div.fixedsize_market {
   }
 
   .btn-modal_market {
-    width: 40px;
+    width: 35px;
     height: 28px;
     background-color: #555f6b;
     border: none;
@@ -104,7 +108,7 @@ div.fixedsize_market {
   }
 
   .btn-back {
-    width: 30px;
+    width: 27px;
     height: 28px;
     font-size: 7pt;
     box-shadow: 3px 3px 0px 0px black;

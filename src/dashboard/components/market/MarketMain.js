@@ -146,7 +146,7 @@ class MarketMain extends Component {
       <div>
         <div className="row page-top">
           {/* <div className="col-6 access_list_header">Engagements</div> */}
-          <div className="col">
+          <div className="col market_header_spacing">
             <button
               className={`${
                 this.state.catalogFlag
@@ -169,7 +169,7 @@ class MarketMain extends Component {
               type="button"
               onClick={() => this.handleSelectedFunction("inventory")}
             >
-              <b>Inventory</b>
+              <b>Store</b>
             </button>
             &nbsp;
             <button
