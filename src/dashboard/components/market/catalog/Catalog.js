@@ -6,6 +6,7 @@ import update from "react-addons-update";
 
 import ReactS3 from "react-s3";
 import axios from "axios";
+import Select from "react-select";
 
 import _ from "lodash";
 
@@ -26,6 +27,9 @@ const s3BucketName = process.env.REACT_APP_S3_BUCKET_NAME;
 const baandaServer = process.env.REACT_APP_BAANDA_SERVER;
 const ifItemExistsAPI = "/routes/dashboard/ifCatalogItemExists?";
 const saveItemAPI = "/routes/dashboard/saveCatalogItem";
+const serchItemToEdit = "/routes/dashboard/searchItemToEdit?";
+
+let options = [];
 
 class Catalog extends Component {
   constructor(props) {
@@ -39,6 +43,7 @@ class Catalog extends Component {
       itemName: "",
       itemNameMsg: "A unique item name between 10 to 100 chars",
       itemNameErrFlag: false,
+      searchItemName: "",
 
       itemCategory: "",
       itemCategoryMsg: "Item category. May be same for set of entry.",
@@ -49,12 +54,18 @@ class Catalog extends Component {
       itemDescriptionMsg: "Enter the description (50 to 1000 characters). ",
 
       unitType: "Number",
-      itemPrice: 0.00,
+      itemPrice: 0.0,
       itemPriceMsg: "Enter the price of the item (0.00)$",
       itemPriceErrFlag: false,
 
       createCatalogFlag: true,
       editCatalogFlag: false,
+      searchCatalogFlag: false,
+      itemSelected: {},
+      // itemSelectOptions: [],
+      item: [],
+      itemSelectToEditFlag: false,
+      searchAndEditMsg: "Enter part/full name if item to edit.",
 
       fileUploads: [
         {
@@ -75,7 +86,7 @@ class Catalog extends Component {
       pictureErrFlag: false,
       saveReviewMsg:
         "Click Save to validate, save, & go for the next item entry. Close to return.",
-      saveValidFlag: false  
+      saveValidFlag: false
     };
 
     this.fileInputRef = React.createRef();
@@ -117,7 +128,9 @@ class Catalog extends Component {
     // alert("Edit");
     await this.setState({
       createCatalogFlag: false,
-      editCatalogFlag: true
+      editCatalogFlag: false,
+      searchCatalogFlag: true,
+      itemNameMsg: "Enter part/full item name to edit."
     });
   };
 
@@ -125,8 +138,72 @@ class Catalog extends Component {
     // alert('ENew');
     await this.setState({
       createCatalogFlag: true,
-      editCatalogFlag: false
+      editCatalogFlag: false,
+      searchCatalogFlag: false,
+      itemNameMsg: "A unique item name between 10 to 100 chars."
     });
+  };
+
+  handleFind = async () => {
+    alert(
+      "Will find or fail : " +
+        this.state.searchItemName +
+        " communityId:" +
+        this.props.communityid
+    );
+    let ifExists = true;
+    let params =
+      "communityId=" +
+      this.props.communityid +
+      "&itemName=" +
+      this.state.searchItemName;
+    let url = baandaServer + serchItemToEdit + params;
+    console.log("if exists get url:", url);
+    try {
+      let ret = await axios.get(url);
+      if (ret.data.status === "Error") {
+        // console.log('msg:', ret.data.Msg);
+        throw new Error(`No items found with this condition`);
+      } else {
+        console.log("ret msg:", ret.data.Msg);
+        if (ret.data.Msg.length === 1) {
+          // display the item for edit
+          console.log("Length of 1");
+          await this.setState({
+            itemSelectToEditFlag: false,
+            searchAndEditMsg: "Enter part/full name if item to edit."
+          });
+        } else {
+          let option = {};
+          ret.data.Msg.forEach(async obj => {
+            option = {
+              value: obj.itemId,
+              label: obj.itemName
+            };
+            options.push(option);
+            console.log("obj:", obj, " itemId:", obj.itemId);
+          });
+          await this.setState({
+            itemSelectToEditFlag: true,
+            searchAndEditMsg: "Please select the item to edit.",
+            item: options
+          });
+          console.log("==================: ", options);
+        }
+      }
+    } catch (err) {
+      console.log("err:", err.message);
+      ifExists = false;
+    }
+
+    return ifExists;
+  };
+
+  handleItemSelected = async (selectedOption, { action }) => {
+    await this.setState({
+      itemSelected: selectedOption
+    });
+    console.log("item selected:", this.state.itemSelected);
   };
 
   handleMerchandiseType = async e => {
@@ -142,9 +219,9 @@ class Catalog extends Component {
   };
 
   onChange = async e => {
-    console.log('name: ', [e.target.name], ' value:', e.target.value)
+    console.log("name: ", [e.target.name], " value:", e.target.value);
     await this.setState({ [e.target.name]: e.target.value });
-    console.log('itemPrice:', this.state.itemPrice);
+    console.log("itemPrice:", this.state.itemPrice);
   };
 
   // onChangePrice = async e => {
@@ -274,23 +351,28 @@ class Catalog extends Component {
     let price = 0;
     if (_.isString(this.state.itemPrice)) {
       // console.log ('this is string:', this.state.itemPrice)
-      if ( this.state.itemPrice === "0" || this.state.itemPrice === "") {
+      if (this.state.itemPrice === "0" || this.state.itemPrice === "") {
         price = 0;
       } else {
         price = parseFloat(this.state.itemPrice).toFixed(2);
       }
-    } else if (!isNaN(this.state.itemPrice)){
+    } else if (!isNaN(this.state.itemPrice)) {
       // console.log('This is a number:', this.state.itemPrice);
-      if ( this.state.itemPrice === 0) {
+      if (this.state.itemPrice === 0) {
         price = 0;
         // console.log('price  set to 0');
       } else {
         price = this.state.itemPrice.toFixed(2);
         // console.log('price  set to: ', price);
       }
-    } 
+    }
 
-    console.log('$$$ price: ', price, ' this.state.itemPrice:', this.state.itemPrice);
+    console.log(
+      "$$$ price: ",
+      price,
+      " this.state.itemPrice:",
+      this.state.itemPrice
+    );
     let data = {
       communityId: this.props.communityid,
       commName: this.props.commName,
@@ -312,25 +394,25 @@ class Catalog extends Component {
       // this.saveItem(data);
       console.log("valid: /////////");
       let response = await this.saveItem(data);
-      console.log('SaveItem Response:', response);
+      console.log("SaveItem Response:", response);
       await this.setState({
-        saveReviewMsg: 'Saved. Please enter the next item. Close to return.',
+        saveReviewMsg: "Saved. Please enter the next item. Close to return.",
         saveValidFlag: false,
-        itemName: '',
-        itemDescription: '',
-        itemPrice: 0.00,
+        itemName: "",
+        itemDescription: "",
+        itemPrice: 0.0,
         fileUploads: [
           {
-            contentType: "", 
+            contentType: "",
             key: "",
             caption: "",
             s3Url: ""
           }
         ],
-        picCaption: '',
-        fileNameToDisplay: '',
-      })
-    } 
+        picCaption: "",
+        fileNameToDisplay: ""
+      });
+    }
   };
 
   validateItem = async data => {
@@ -375,7 +457,7 @@ class Catalog extends Component {
     }
 
     // Price
-    console.log('price:', data.itemPrice);
+    console.log("price:", data.itemPrice);
     if (data.itemPrice === 0) {
       await this.setState({
         itemPriceMsg: "Item must have a price.",
@@ -404,7 +486,10 @@ class Catalog extends Component {
     } catch (err) {
       console.log("save Item err:", err.message);
       await this.setState({
-        saveReviewMsg: 'Failed: ' + err.message + 'Please contact Baanda support at info@baanda.com.',
+        saveReviewMsg:
+          "Failed: " +
+          err.message +
+          "Please contact Baanda support at info@baanda.com.",
         saveValidFlag: true
       });
     }
@@ -442,7 +527,7 @@ class Catalog extends Component {
 
   render() {
     // console.log("catalog props:", this.props);
-    console.log('state:', this.state);
+    console.log("state:", this.state);
 
     let catalogbuttons;
     if (this.state.createCatalogFlag) {
@@ -471,6 +556,32 @@ class Catalog extends Component {
           </div>
         </div>
       );
+    } else if (this.state.searchCatalogFlag) {
+      catalogbuttons = (
+        <div>
+          <div className="row">
+            <div className="col-6 header_text_style">Search, Select & Edit</div>
+            <div className="col-6">
+              <button
+                className="btn_catalog"
+                type="button"
+                onClick={() => this.handleNew()}
+              >
+                <b>Cancel</b>
+              </button>
+              &nbsp;
+              <button
+                className="btn-modal_catalog"
+                type="button"
+                onClick={this.openAlertModal}
+              >
+                <i className="fas fa-info-circle" />
+                {/* <b>Info</b> */}
+              </button>
+            </div>
+          </div>
+        </div>
+      );
     } else {
       catalogbuttons = (
         <div>
@@ -480,7 +591,7 @@ class Catalog extends Component {
               <button
                 className="btn_catalog"
                 type="button"
-                onClick={() => this.handleNew()}
+                onClick={() => this.handleUpdate()}
               >
                 <b>Entry</b>
               </button>
@@ -642,64 +753,268 @@ class Catalog extends Component {
       </div>
     );
 
-    let createCatalogPanel;
-    if (this.state.createCatalogFlag) {
-      createCatalogPanel = (
-        <div>
-          {catalogbuttons}
-          <div className="space-before-form" />
-          <div className="row">
-            <div className="col text-center radio-catlog-fonts">
-              <strong>Merchandise Type: &nbsp;&nbsp;</strong>
-              <div className="form-check form-check-inline">
-                <label className="form-check-label">
-                  <input
-                    className="form-check-input"
-                    type="radio"
-                    value="Goods"
-                    checked={this.state.merchandiseType === "Goods"}
-                    onChange={this.handleMerchandiseType}
-                  />{" "}
-                  Goods
-                </label>
-              </div>
-              <div className="form-check form-check-inline">
-                <label className="form-check-label">
-                  <input
-                    className="form-check-input"
-                    type="radio"
-                    value="Service"
-                    checked={this.state.merchandiseType === "Service"}
-                    onChange={this.handleMerchandiseType}
-                  />{" "}
-                  Services
-                </label>
-              </div>
-              <div className="form-check form-check-inline">
-                <label className="form-check-label">
-                  <input
-                    className="form-check-input"
-                    type="radio"
-                    value="Goods&Service"
-                    checked={this.state.merchandiseType === "Goods&Service"}
-                    onChange={this.handleMerchandiseType}
-                  />{" "}
-                  Goods&Services
-                </label>
-              </div>
+    let inputPanel; // It holds the portions common for both new and edit
+
+    inputPanel = (
+      <div>
+        <div className="row">
+          <div className="col text-center radio-catlog-fonts">
+            <strong>Merchandise Type: &nbsp;&nbsp;</strong>
+            <div className="form-check form-check-inline">
+              <label className="form-check-label">
+                <input
+                  className="form-check-input"
+                  type="radio"
+                  value="Goods"
+                  checked={this.state.merchandiseType === "Goods"}
+                  onChange={this.handleMerchandiseType}
+                />{" "}
+                Goods
+              </label>
+            </div>
+            <div className="form-check form-check-inline">
+              <label className="form-check-label">
+                <input
+                  className="form-check-input"
+                  type="radio"
+                  value="Service"
+                  checked={this.state.merchandiseType === "Service"}
+                  onChange={this.handleMerchandiseType}
+                />{" "}
+                Services
+              </label>
+            </div>
+            <div className="form-check form-check-inline">
+              <label className="form-check-label">
+                <input
+                  className="form-check-input"
+                  type="radio"
+                  value="Goods&Service"
+                  checked={this.state.merchandiseType === "Goods&Service"}
+                  onChange={this.handleMerchandiseType}
+                />{" "}
+                Goods&Services
+              </label>
             </div>
           </div>
-          <div className="row">
-            <div className="col input_placement">
+        </div>
+        <div className="row">
+          <div className="col input_placement">
+            <input
+              name="itemName"
+              type="text"
+              value={this.state.itemName}
+              onChange={this.onChange}
+              size="50"
+              maxLength="50"
+              className="input_text_catlog"
+              placeholder="Enter a unique item name"
+            />
+            <div
+              className={`${
+                !this.state.itemNameErrFlag
+                  ? "catalog_input_msg"
+                  : "catalog_input_msg_err"
+              }`}
+            >
+              <p>{this.state.itemNameMsg}</p>
+            </div>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col input_placement">
+            <input
+              name="itemCategory"
+              type="text"
+              value={this.state.itemCategory}
+              onChange={this.onChange}
+              size="50"
+              maxLength="50"
+              className="input_text_catlog"
+              placeholder="Category of your item ..."
+            />
+            <div
+              className={`${
+                !this.state.itemCategoryErrFlag
+                  ? "catalog_input_msg"
+                  : "catalog_input_msg_err"
+              }`}
+            >
+              <p>{this.state.itemCategoryMsg}</p>
+            </div>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col text-center input_placement_desc">
+            <textarea
+              name="itemDescription"
+              maxLength="1000"
+              placeholder="Write short description of the item."
+              rows="4"
+              //   cols="50"
+              wrap="hard"
+              spellCheck="true"
+              className="input_textarea_desc"
+              onChange={this.onChange}
+              value={this.state.itemDescription}
+              required
+            />
+            <div
+              className={`${
+                !this.state.itemDecriptionErrFlag
+                  ? "catalog_input_msg text-center"
+                  : "catalog_input_msg_err text-center"
+              }`}
+            >
+              <p>{this.state.itemDescriptionMsg}</p>
+            </div>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col text-center radio-catlog-units">
+            <strong>Unit Type: &nbsp;&nbsp;</strong>
+            <div className="form-check form-check-inline">
+              <label className="form-check-label">
+                <input
+                  className="form-check-input"
+                  type="radio"
+                  value="Number"
+                  checked={this.state.unitType === "Number"}
+                  onChange={this.handleUnitType}
+                />{" "}
+                <b>Each</b>
+              </label>
+            </div>
+            <div className="form-check form-check-inline">
+              <label className="form-check-label">
+                <input
+                  className="form-check-input"
+                  type="radio"
+                  value="Volume"
+                  checked={this.state.unitType === "Volume"}
+                  onChange={this.handleUnitType}
+                  disabled
+                />{" "}
+                Volume
+              </label>
+            </div>
+            <div className="form-check form-check-inline">
+              <label className="form-check-label">
+                <input
+                  className="form-check-input"
+                  type="radio"
+                  value="Weight"
+                  checked={this.state.unitType === "Weight"}
+                  onChange={this.handleUnitType}
+                  disabled
+                />{" "}
+                Weight
+              </label>
+            </div>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-4 text-right price_word">
+            <b>Price</b>
+          </div>
+          <div className="col-4 input_placement text-left">
+            <input
+              name="itemPrice"
+              type="number"
+              min="0.00"
+              value={this.state.itemPrice}
+              onChange={this.onChange}
+              size="20"
+              // maxLength="50"
+              className="input_price_field"
+              step=".01"
+              placeholder="0.00"
+              autoComplete="off"
+              // pattern="^\d*(\.\d{0,2})?$"
+            />
+          </div>
+          <div className="col-3 text-left price_word_s">
+            <b>$</b> Each
+          </div>
+          <div className="col-1">&nbsp;</div>
+        </div>
+        <div className="row">
+          <div className="col">
+            <div
+              className={`${
+                !this.state.itemPriceErrFlag
+                  ? "catalog_input_msg"
+                  : "catalog_input_msg_err"
+              }`}
+            >
+              <p className="item_price_msg">{this.state.itemPriceMsg}</p>
+            </div>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col text-center">{fileLoadBtn}</div>
+        </div>
+        <div>{uploadpanel}</div>
+        <hr />
+        <div className="row">
+          <div className="col-7 save_close_msg_placement">
+            <div
+              className={`${
+                !this.state.saveValidFlag
+                  ? "save_review_msg"
+                  : "save_review_msg_err"
+              }`}
+            >
+              {this.state.saveReviewMsg}
+            </div>
+          </div>
+          <div className="col-5">{saveReviewPanel}</div>
+        </div>
+        <div className="spacing" />
+      </div>
+    );
+
+    let selectItemdropdown;
+    if (this.state.itemSelectToEditFlag) {
+      selectItemdropdown = (
+        <div className="row">
+          <div className="col-10">
+            <Select
+              value={this.state.itemSelected}
+              options={this.state.item}
+              className="item-select"
+              classNamePrefix="select"
+              onChange={this.handleItemSelected}
+            />
+          </div>
+          <div className="col-2">
+            <button
+              className="btn_goEdit"
+              type="button"
+              onClick={this.handleFind}
+            >
+              <i className="fas fa-edit" />
+              {/* <b>Go</b> */}
+            </button>
+          </div>
+        </div>
+      );
+    }
+    let searchPanel;
+    if (this.state.searchCatalogFlag) {
+      searchPanel = (
+        <div className="text-center">
+          <div className="row searchpanel_placement">
+            <div className="col-10 search_input_placement">
               <input
-                name="itemName"
+                name="searchItemName"
                 type="text"
-                value={this.state.itemName}
+                value={this.state.searchItemName}
                 onChange={this.onChange}
                 size="50"
                 maxLength="50"
                 className="input_text_catlog"
-                placeholder="Enter a unique item name"
+                placeholder="Item name to edit"
               />
               <div
                 className={`${
@@ -711,157 +1026,46 @@ class Catalog extends Component {
                 <p>{this.state.itemNameMsg}</p>
               </div>
             </div>
-          </div>
-          <div className="row">
-            <div className="col input_placement">
-              <input
-                name="itemCategory"
-                type="text"
-                value={this.state.itemCategory}
-                onChange={this.onChange}
-                size="50"
-                maxLength="50"
-                className="input_text_catlog"
-                placeholder="Category of your item ..."
-              />
-              <div
-                className={`${
-                  !this.state.itemCategoryErrFlag
-                    ? "catalog_input_msg"
-                    : "catalog_input_msg_err"
-                }`}
+            <div className="col-2 search_go_btn_placement text-left">
+              <button
+                className="btn_goFind"
+                type="button"
+                onClick={this.handleFind}
               >
-                <p>{this.state.itemCategoryMsg}</p>
-              </div>
+                <i className="fas fa-search" />
+                {/* <b>Info</b> */}
+              </button>
             </div>
           </div>
-          <div className="row">
-            <div className="col text-center input_placement_desc">
-              <textarea
-                name="itemDescription"
-                maxLength="1000"
-                placeholder="Write short description of the item."
-                rows="4"
-                //   cols="50"
-                wrap="hard"
-                spellCheck="true"
-                className="input_textarea_desc"
-                onChange={this.onChange}
-                value={this.state.itemDescription}
-                required
-              />
-              <div
-                className={`${
-                  !this.state.itemDecriptionErrFlag
-                    ? "catalog_input_msg text-center"
-                    : "catalog_input_msg_err text-center"
-                }`}
-              >
-                <p>{this.state.itemDescriptionMsg}</p>
-              </div>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col text-center radio-catlog-units">
-              <strong>Unit Type: &nbsp;&nbsp;</strong>
-              <div className="form-check form-check-inline">
-                <label className="form-check-label">
-                  <input
-                    className="form-check-input"
-                    type="radio"
-                    value="Number"
-                    checked={this.state.unitType === "Number"}
-                    onChange={this.handleUnitType}
-                  />{" "}
-                  <b>Each</b>
-                </label>
-              </div>
-              <div className="form-check form-check-inline">
-                <label className="form-check-label">
-                  <input
-                    className="form-check-input"
-                    type="radio"
-                    value="Volume"
-                    checked={this.state.unitType === "Volume"}
-                    onChange={this.handleUnitType}
-                    disabled
-                  />{" "}
-                  Volume
-                </label>
-              </div>
-              <div className="form-check form-check-inline">
-                <label className="form-check-label">
-                  <input
-                    className="form-check-input"
-                    type="radio"
-                    value="Weight"
-                    checked={this.state.unitType === "Weight"}
-                    onChange={this.handleUnitType}
-                    disabled
-                  />{" "}
-                  Weight
-                </label>
-              </div>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-4 text-right price_word">
-              <b>Price</b>
-            </div>
-            <div className="col-4 input_placement text-left">
-              <input
-                name="itemPrice"
-                type="number"
-                min="0.00"
-                value={this.state.itemPrice}
-                onChange={this.onChange}
-                size="20"
-                // maxLength="50"
-                className="input_price_field"
-                step=".01"
-                placeholder="0.00"
-                autoComplete="off"
-                // pattern="^\d*(\.\d{0,2})?$"
-              />
-            </div>
-            <div className="col-3 text-left price_word_s">
-              <b>$</b> Each
-            </div>
-            <div className="col-1">&nbsp;</div>
-          </div>
-          <div className="row">
-            <div className="col">
-              <div
-                className={`${
-                  !this.state.itemPriceErrFlag
-                    ? "catalog_input_msg"
-                    : "catalog_input_msg_err"
-                }`}
-              >
-                <p className="item_price_msg">{this.state.itemPriceMsg}</p>
-              </div>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col text-center">{fileLoadBtn}</div>
-          </div>
-          <div>{uploadpanel}</div>
-          <hr />
-          <div className="row">
-            <div className="col-7 save_close_msg_placement">
-              <div
-                className={`${
-                  !this.state.saveValidFlag
-                    ? "save_review_msg"
-                    : "save_review_msg_err"
-                }`}
-              >
-                {this.state.saveReviewMsg}
-              </div>
-            </div>
-            <div className="col-5">{saveReviewPanel}</div>
-          </div>
-          <div className="spacing" />
+          <div>{selectItemdropdown}</div>
+        </div>
+      );
+    }
+
+    let createCatalogPanel;
+    if (this.state.createCatalogFlag) {
+      createCatalogPanel = (
+        <div>
+          {catalogbuttons}
+          <div className="space-before-form" />
+          {inputPanel}
+        </div>
+      );
+    } else if (this.state.searchCatalogFlag) {
+      createCatalogPanel = (
+        <div>
+          {catalogbuttons}
+          <div className="space-before-form" />
+          {searchPanel}
+        </div>
+      );
+    } else {
+      createCatalogPanel = (
+        <div>
+          {catalogbuttons}
+          <div className="space-before-form" />
+          <p>Show item id</p>
+          {inputPanel}
         </div>
       );
     }
