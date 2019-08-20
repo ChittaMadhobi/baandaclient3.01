@@ -255,11 +255,23 @@ div.fixedsize_catalog {
 }
 
 .item-select {
-  font-size: 1em;
-  margin-left: 5px;
-  margin-right: 25px;
-  margin-bottom: 5px;
+  width: 200px;
 }
+
+.div_item_select {
+  font-size: .75em;
+}
+
+.select_item_msg {
+  font-size: .75em;
+  color: #085e5e;
+}
+
+.select_item_msg_err {
+  font-size: 1em;
+  color: red;
+}
+
 
 @media only screen and (max-device-width: 480px) {
   /* styles for mobile browsers smaller than 480px; (iPhone) */
@@ -420,6 +432,13 @@ div.fixedsize_catalog {
     margin-bottom: 9px;
   }
 
+  .pic_caption_msg_catalog_err {
+    font-size: 0.8em;
+    margin-top: -3px;
+    margin-bottom: 9px;
+    color: red;
+  }
+
   .top_of_card {
     margin-top: -5px;
     margin-bottom: 2px;
@@ -468,13 +487,32 @@ div.fixedsize_catalog {
     font-size: .75em;
   }
 
+  
   .item-select {
-    font-size: .75em;
+    font-size: .8em;
     margin-left: 14px;
     margin-right: 15px;
     margin-bottom: 5px;
+    width: 80%;
   }
 
+  /* .item-select {
+    width: 80%;
+  } */
+
+  .div_item_select {
+    font-size: 1em;
+  }
+  
+  .select_item_msg {
+    margin-top: -5px;
+    font-size: .85em;
+  }
+
+  .select_item_msg_err {
+    font-size: .75em;
+    color: red;
+  }
 }
 
 @media only screen and (max-device-width: 320px) {
@@ -587,6 +625,24 @@ div.fixedsize_catalog {
 
   .price_message {
     margin-top: 10px;
+  }
+
+  .item-select {
+    width: 80%;
+  }
+  
+  .div_item_select {
+    font-size: .85em;
+  }
+  
+  .select_item_msg {
+    font-size: .85em;
+    color: #085e5e;
+  }
+
+  .select_item_msg_err {
+    font-size: .7em;
+    color: red;
   }
 }
 
@@ -724,6 +780,15 @@ div.fixedsize_catalog {
     margin-left: -10px;
   }
 
+  .pic_caption_msg_catalog_err {
+    font-size: 0.7em;
+    margin-top: -1px;
+    margin-bottom: 9px;
+    padding-left: 10px;
+    margin-left: -10px;
+    color: red;
+  }
+
   .price_word {
     /* margin-top: 10px; */
     margin-top: 10px;
@@ -740,6 +805,24 @@ div.fixedsize_catalog {
 
   .item_price_msg {
     margin-top: -20px;
+  }
+
+  .item-select {
+    width: 80%;
+  }
+  
+  .div_item_select {
+    font-size: 1em;
+  }
+  
+  .select_item_msg {
+    font-size: 1em;
+    color: #085e5e;
+  }
+
+  .select_item_msg_err {
+    font-size: 1em;
+    color: red;
   }
 
 }

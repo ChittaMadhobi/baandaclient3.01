@@ -125,7 +125,8 @@ class MarketMain extends Component {
     // This will handle only catalog portion definitions
     let catalogOutputPanel;
     if (this.props.role === 'Creator' || this.props.role === 'Admin') {
-      catalogOutputPanel = <div><Catalog commName={this.props.commName} communityid={this.props.communityid}/></div>;
+      // catalogOutputPanel = <div><Catalog commName={this.props.commName} communityid={this.props.communityid} goToDashboard={this.props.dashReturnMethod()}/></div>;
+      catalogOutputPanel = <div><Catalog commName={this.props.commName} communityid={this.props.communityid} goToDashboard={this.goToDashboard}/></div>;
     } else {
       catalogOutputPanel = <div><ViewCatalog /></div>;
     }
