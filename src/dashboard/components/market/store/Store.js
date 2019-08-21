@@ -75,7 +75,7 @@ class Store extends Component {
     }
   };
 
-  render() {s
+  render() {
     //  console.log("Store Props:", this.props);
 
     let storebuttons = (
@@ -154,7 +154,10 @@ class Store extends Component {
           />
         </div>
       );
-    } else {
+    } else if (this.state.pos) {
+      storePanel = 'This is for POS Component';
+    } 
+    else {
       storePanel = <div>Not Inventory</div>;
     }
 
