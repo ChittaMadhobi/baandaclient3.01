@@ -48,13 +48,11 @@ div.fixedsize_catalog {
   margin-bottom: 10px;
 }
 
-.input_text_catlog {
+/* .input_text_catlog {
   font-size: 1em;
-  /* color: #445d85; */
   color: blue;
   width: 82%;
-  /* margin-left: 3%; */
-}
+} */
 
 .catalog_input_msg {
   width: 80%;

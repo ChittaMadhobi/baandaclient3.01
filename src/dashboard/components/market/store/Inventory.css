@@ -1,0 +1,418 @@
+.searchpanel_placement_inventory {
+  margin-top: 20px;
+}
+
+.search_input_placement{
+  font-size: 1.1em;
+}
+
+.input_text_inventory {
+  font-size: 1.1em;
+  color: blue;
+  width: 80%;
+  margin-left: -2%;
+  padding-left: 4px;
+}
+
+.inventory_input_msg {
+  margin-top: 2px;
+  font-size: 0.9em;
+  color: black;
+}
+
+.inventory_input_msg_err {
+  margin-top: 2px;
+  font-size: 0.9em;
+  color: red;
+}
+
+.inventory_input_msg_err {
+  margin-top: 2px;
+  font-size: 0.9em;
+  color: red;
+}
+
+.item-select {
+  width: 80%;
+  font-size: 1em;
+}
+
+.btn_goFind_inventory {
+  width: 70px;
+  height: 32px;
+  background-color: #136128;
+  border: none;
+  color: white;
+  font-size: 10pt;
+  box-shadow: 3px 3px 0px 0px black;
+  border-radius: 5px;
+  margin-top: -10px;
+}
+
+.btn-adjust-save {
+  width: 100px;
+  height: 32px;
+  background-color: #136128;
+  border: none;
+  color: white;
+  font-size: 10pt;
+  box-shadow: 3px 3px 0px 0px black;
+  border-radius: 5px;
+  margin-top: -10px;
+}
+
+.btn-adjust-cancel {
+  width: 100px;
+  height: 32px;
+  background-color: #91130a;
+  border: none;
+  color: white;
+  font-size: 10pt;
+  box-shadow: 3px 3px 0px 0px black;
+  border-radius: 5px;
+  margin-top: -10px;
+}
+
+.input_text_inventory {
+  font-size: 1em;
+  color: blue;
+  width: 90%;
+  margin-left: -2%;
+}
+
+.select_panel_inventory {
+  margin-top: 1px;
+  font-size: 1.2em;
+}
+
+.select_item_msg {
+  font-size: 1em;
+}
+
+.radio-inventory-fonts {
+  font-size: 1em;
+  padding-left: 10px;
+  margin-top: 10px;
+}
+
+.input_adjust_field {
+  font-size: 1em;
+  color: blue;
+  width: 90%;
+  margin-left: -2%;
+}
+
+.itemname_row_placement {
+  margin-left: 20px;
+  margin-top: 10px;
+}
+
+.inventory_row_placement {
+  margin-left: 5px;
+  margin-top: 15px;
+}
+
+.inventory_comment {
+  width: 90%;
+}
+
+.inventory_comment_placement {
+  margin-top: 15px;
+  margin-left: 5px;
+}
+
+.inventory_msg_placement{
+  margin-left: 5px;
+}
+
+.adjust_panel_header{
+  margin-bottom: 10px;
+  font-size: 1em;
+  font-weight: 700;
+  color: #0f4e6e;
+}
+
+.inventory_msg {
+  font-size: 1em;
+  color: black;
+}
+
+.inventory_msg_err {
+  font-size: 1em;
+  color: red;
+}
+
+.show_update_success {
+  color: green;
+  font-weight: 700;
+}
+
+@media only screen and (max-device-width: 480px) {
+  .btn_goFind_inventory {
+    width: 50px;
+    height: 27px;
+    font-size: 8pt;
+    box-shadow: 3px 3px 0px 0px black;
+    border-radius: 5px;
+    margin-top: -10px;
+    margin-left: -25px;
+  }
+
+  .search_input_placement{
+    font-size: 1em;
+  }
+  
+  .select_panel_inventory {
+    margin-top: 1px;
+    font-size: .8em;
+  }
+
+  .input_text_inventory {
+    margin-top: 2px;
+    font-size: 0.9em;
+    color: blue;
+    width: 90%;
+    margin-left: -2%;
+  }
+
+  .select_item_msg {
+    font-size: 0.75em;
+  }
+
+  .radio-inventory-fonts {
+    font-size: 0.7em;
+    padding-left: 10px;
+  }
+
+  .input_adjust_field {
+    font-size: 1em;
+    width: 90%;
+    margin-left: -2%;
+  }
+
+  .itemname_row_placement {
+    margin-left: 15px;
+    font-size: 0.8em;
+    margin-top: -10px;
+  }
+
+  .inventory_row_placement {
+    margin-left: 3px;
+    font-size: 0.75em;
+    margin-top: 5px;
+  }
+
+  .inventory_comment {
+    width: 90%;
+    font-size: .9em;
+  }
+
+  .inventory_comment_placement {
+    margin-left: 5px;
+    font-size: .8em;
+    margin-top: 10px;
+  }
+
+  .inventory_msg_placement{
+    margin-left: 5px;
+    font-size: .75em;
+  }
+
+  .btn-adjust-save {
+    margin-left: -15px; 
+    width: 44px;
+    height: 28px;
+    font-size: 8pt;
+    box-shadow: 3px 3px 0px 0px black;
+    border-radius: 5px;
+    margin-top: 5px;
+  }
+  
+  .btn-adjust-cancel {
+    width: 44px;
+    height: 28px;
+    font-size: 8pt;
+    box-shadow: 3px 3px 0px 0px black;
+    border-radius: 5px;
+    margin-top: 5px;
+  }
+
+  .adjust_panel_header{
+    margin-top: -10px;
+    margin-bottom: 10px;
+    font-size: .9em;
+    font-weight: 700;
+  }
+
+  .inventory_msg {
+    font-size: .8em;
+  }
+  
+  .inventory_msg_err {
+    font-size: .8em;
+  }
+}
+
+@media only screen and (max-device-width: 320px) {
+  .btn_goFind_inventory {
+    width: 40px;
+    height: 27px;
+    font-size: 8pt;
+    box-shadow: 3px 3px 0px 0px black;
+    border-radius: 5px;
+    margin-top: -10px;
+    margin-left: -25px;
+  }
+  .radio-inventory-fonts {
+    font-size: 0.7em;
+    padding-left: 10px;
+  }
+
+  .input_adjust_field {
+    font-size: .9em;
+    color: blue;
+    width: 90%;
+    margin-left: -2%;
+  }
+
+  .inventory_input_msg {
+    margin-top: 2px;
+    font-size: 0.8em;
+  }
+
+  .inventory_input_msg_err {
+    margin-top: 2px;
+    font-size: 0.8em;
+  }
+
+  .itemname_row_placement {
+    margin-left: 15px;
+    font-size: 0.8em;
+  }
+  .inventory_row_placement {
+    margin-left: -3px;
+    font-size: 0.7em;
+    margin-top: 8px;
+  }
+
+  .inventory_comment {
+    width: 90%;
+    font-size: .9em;
+  }
+
+  .inventory_comment_placement {
+    margin-left: 5px;
+    font-size: .8em;
+    margin-top: 10px;
+  }
+
+  .inventory_msg_placement{
+    margin-left: 5px;
+    font-size: .75em;
+  }
+
+  .btn-adjust-save {
+    margin-left: -15px; 
+    width: 44px;
+    height: 28px;
+    font-size: 8pt;
+    box-shadow: 3px 3px 0px 0px black;
+    border-radius: 5px;
+    margin-top: 5px;
+  }
+  
+  .btn-adjust-cancel {
+    width: 44px;
+    height: 28px;
+    font-size: 8pt;
+    box-shadow: 3px 3px 0px 0px black;
+    border-radius: 5px;
+    margin-top: 5px;
+  }
+
+  .adjust_panel_header{
+    margin-bottom: 10px;
+    font-size: .9em;
+    font-weight: 700;
+  }
+
+  .inventory_msg {
+    font-size: .8em;
+  }
+  
+  .inventory_msg_err {
+    font-size: .8em;
+  }
+}
+
+@media only screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation: portrait) {
+  /* For portrait layouts only */
+  .btn_goFind_inventory {
+    width: 90px;
+    height: 32px;
+    font-size: 10pt;
+    box-shadow: 3px 3px 0px 0px black;
+    border-radius: 5px;
+    margin-top: -10px;
+    margin-left: -35px;
+  }
+
+  .radio-inventory-fonts {
+    font-size: 1em;
+    padding-left: 10px;
+  }
+
+  .itemname_row_placement {
+    margin-left: 20px;
+    font-size: 1em;
+  }
+  .inventory_row_placement {
+    margin-left: 3px;
+    font-size: 1em;
+    margin-top: 15px;
+    padding-top: 5px;
+  }
+
+  .inventory_comment {
+    width: 90%;
+    font-size: 1em;
+    margin-top: 10px;
+  }
+
+  .inventory_comment_placement {
+    margin-left: 5px;
+    font-size: 1em;
+    margin-top: 15px;
+  }
+
+  .inventory_msg_placement{
+    margin-left: 5px;
+    font-size: 1em;
+    margin-top: 10px;
+  }
+
+  .btn-adjust-save {
+    margin-left: -15px; 
+    width: 100px;
+    height: 32px;
+    font-size: 10pt;
+    box-shadow: 3px 3px 0px 0px black;
+    border-radius: 5px;
+    margin-top: 5px;
+  }
+  
+  .btn-adjust-cancel {
+    width: 100px;
+    height: 32px;
+    font-size: 10pt;
+    box-shadow: 3px 3px 0px 0px black;
+    border-radius: 5px;
+    margin-top: 5px;
+  }
+
+  .adjust_panel_header{
+    margin-bottom: 10px;
+    font-size: .9em;
+    font-weight: 700;
+  }
+}

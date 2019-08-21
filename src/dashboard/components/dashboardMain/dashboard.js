@@ -170,8 +170,7 @@ class Dashboard extends Component {
 
   // Handle navigation based on selection
   handleSelectedCommunity = async (commName, communityid, role, intent, focus) => {
-    // alert("Params commName=" + commName + " CommunityId="+ communityid + " role=" + role);
-    console.log("Params commName=" , commName , " CommunityId=", communityid , " role=", role,  " intent=" , intent , " focus=" , focus);
+    // console.log("Params commName=" , commName , " CommunityId=", communityid , " role=", role,  " intent=" , intent , " focus=" , focus);
     if ( intent === 'Business' && focus === 'Catalog') {
       await this.setState({
         accessListPanelFlag: false,

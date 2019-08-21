@@ -1,0 +1,310 @@
+.fixedsize_store {
+  height: 700px;
+  width: 110%;
+  /* background-color: #f5f2eb; */
+  margin-left: -5%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.btn_store {
+  width: 120px;
+  height: 32px;
+  background-color: #133d16;
+  border: none;
+  color: white;
+  font-size: 10pt;
+  box-shadow: 3px 3px 0px 0px black;
+  border-radius: 5px;
+}
+
+.btn_store_active {
+  width: 120px;
+  height: 32px;
+  background-color: #133d16;
+  color: white;
+  border-width: 4px;
+  box-shadow: 3px 3px 0px 0px black;
+  border-radius: 5px;
+  border-width: 4px;
+  border-color: lightgreen;
+}
+
+.btn_store_sm {
+  width: 120px;
+  height: 32px;
+  background-color: #133d16;
+  border: none;
+  color: white;
+  font-size: 10pt;
+  box-shadow: 3px 3px 0px 0px black;
+  border-radius: 5px;
+}
+
+.btn_store_sm_active {
+  width: 120px;
+  height: 32px;
+  background-color: #133d16;
+  color: white;
+  font-size: 10pt;
+  box-shadow: 3px 3px 0px 0px black;
+  border-radius: 5px;
+  border-width: 4px;
+  border-color: lightgreen;
+}
+
+.btn-modal_store {
+  width: 40px;
+  height: 32px;
+  background-color: #3c455e;
+  border: none;
+  color: white;
+  font-size: 10pt;
+  box-shadow: 3px 3px 0px 0px black;
+  border-radius: 5px;
+}
+
+.header_store_text {
+  padding-top: -10px;
+  margin-top: -4px;
+  font-size: 2em;
+  font-weight: 700;
+  color: #3c5438;
+}
+
+.header_store_buttons {
+  padding-top: 4px;
+  margin-left: -40px;
+}
+
+.bottom-padding {
+  height: 10px;
+}
+
+@media only screen and (max-device-width: 480px) {
+  /* styles for mobile browsers smaller than 480px; (iPhone) */
+  .fixedsize_store {
+    height: 540px;
+    width: 110%;
+    margin-left: -14px;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  .btn_store {
+    width: 62px;
+    height: 28px;
+    background-color: #133d16;
+    border: none;
+    color: white;
+    font-size: 8pt;
+    box-shadow: 3px 3px 0px 0px black;
+    border-radius: 5px;
+  }
+
+  .btn_store_active {
+    width: 62px;
+    height: 28px;
+    font-size: 8pt;
+    box-shadow: 3px 3px 0px 0px black;
+    border-radius: 5px;
+    border-width: 2px;
+    border-color: lightgreen;
+  }
+
+  .btn_store_sm {
+    width: 38px;
+    height: 28px;
+    font-size: 8pt;
+    box-shadow: 3px 3px 0px 0px black;
+    border-radius: 5px;
+  }
+
+  .btn_store_sm_active {
+    width: 38px;
+    height: 28px;
+    font-size: 8pt;
+    box-shadow: 3px 3px 0px 0px black;
+    border-radius: 5px;
+    border-width: 2px;
+    border-color: lightgreen;
+  }
+
+  .btn-modal_store {
+    width: 40px;
+    height: 28px;
+    background-color: #3c455e;
+    border: none;
+    color: white;
+    font-size: 8pt;
+    box-shadow: 3px 3px 0px 0px black;
+    border-radius: 5px;
+  }
+
+  .header_store_text {
+    padding-left: -10px;
+    margin-left: 10px;
+    margin-top: -5px;
+    padding-top: 8px;
+    font-size: 1em;
+    font-weight: 700;
+    color: #3c5438;
+  }
+
+  .header_store_buttons {
+    margin-top: -5px;
+    margin-left: -17px;
+  }
+}
+
+@media only screen and (max-device-width: 320px) {
+  /* styles for browsers larger than 320px iphone5; */
+  div.fixedsize_store {
+    height: 450x;
+    width: 110%;
+    margin-left: -14px;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  .btn_store {
+    width: 58px;
+    height: 27px;
+    font-size: 7pt;
+    box-shadow: 3px 3px 0px 0px black;
+    border-radius: 5px;
+  }
+
+  .btn_store_active {
+    width: 60px;
+    height: 27px;
+    font-size: 7pt;
+    box-shadow: 3px 3px 0px 0px black;
+    border-radius: 5px;
+    border-width: 2px;
+    border-color: lightgreen;
+  }
+  
+  .btn_store_sm {
+    width: 35px;
+    height: 27px;
+    font-size: 7pt;
+    box-shadow: 3px 3px 0px 0px black;
+    border-radius: 5px;
+  }
+
+  .btn_store_sm_active {
+    width: 40px;
+    height: 27px;
+    font-size: 7pt;
+    box-shadow: 3px 3px 0px 0px black;
+    border-radius: 5px;
+    border-width: 2px;
+    border-color: lightgreen;
+  }
+  
+  .btn-modal_store {
+    width: 32px;
+    height: 27px;
+    background-color: #3c455e;
+    border: none;
+    color: white;
+    font-size: 7pt;
+    box-shadow: 3px 3px 0px 0px black;
+    border-radius: 5px;
+  }
+  
+  .header_store_text {
+    padding-top: 2px;
+    margin-top: 5px;
+    font-size: 1em;
+    font-weight: 700;
+    color: #3c5438;
+  }
+  
+  .header_store_buttons {
+    padding-top: 4px;
+    margin-left: -10px;
+  }
+
+  .bottom-padding {
+    height: 100px;
+  }
+}
+
+/* different techniques for iPad screening */
+@media only screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation: portrait) {
+  /* For portrait layouts only */
+  div.fixedsize_store {
+    margin-top: 5px;
+    padding-top: 5px;
+    height: 850px;
+    width: 100%;
+    margin-left: -1px;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  .btn_store {
+    width: 120px;
+    height: 32px;
+    background-color: #133d16;
+    border: none;
+    color: white;
+    font-size: 10pt;
+    box-shadow: 3px 3px 0px 0px black;
+    border-radius: 5px;
+  }
+
+  .btn_store_active {
+    width: 120px;
+    height: 32px;
+    font-size: 10pt;
+    box-shadow: 3px 3px 0px 0px black;
+    border-radius: 5px;
+    border-width: 3px;
+    border-color: lightgreen;
+  }
+  
+  .btn_store_sm {
+    width: 100px;
+    height: 32px;
+    font-size: 10pt;
+    box-shadow: 3px 3px 0px 0px black;
+    border-radius: 5px;
+  }
+
+  .btn_store_sm_active {
+    width: 100px;
+    height: 32px;
+    font-size: 10pt;
+    box-shadow: 3px 3px 0px 0px black;
+    border-radius: 5px;
+    border-width: 3px;
+    border-color: lightgreen;
+  }
+  
+  .btn-modal_store {
+    width: 50px;
+    height: 32px;
+    background-color: #3c455e;
+    border: none;
+    color: white;
+    font-size: 10pt;
+    box-shadow: 3px 3px 0px 0px black;
+    border-radius: 5px;
+  }
+  
+  .header_store_text {
+    padding-top: -10px;
+    margin-top: -4px;
+    font-size: 2em;
+    font-weight: 700;
+    color: #3c5438;
+  }
+  
+  .header_store_buttons {
+    padding-top: 4px;
+    margin-left: -40px;
+  }
+}

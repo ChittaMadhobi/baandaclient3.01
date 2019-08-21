@@ -11,6 +11,8 @@ import "../../../modal/css/template.css";
 
 import Catalog from '../market/catalog/Catalog';
 import ViewCatalog from '../market/catalog/ViewCatalog';
+import Store from '../market/store/Store';
+import ViewStore from '../market/store/ViewStore';
 
 import "./MarketMain.css";
 
@@ -23,7 +25,7 @@ class MarketMain extends Component {
 
       // Activation module flags
       catalogFlag: true,
-      inventoryFlag: false,
+      storeFlag: false,
       reportsFlag: false,
       connectFlag: false
     };
@@ -91,28 +93,28 @@ class MarketMain extends Component {
     if (selected === "catalog") {
       await this.setState({
         catalogFlag: true,
-        inventoryFlag: false,
+        storeFlag: false,
         reportsFlag: false,
         connectFlag: false
       });
-    } else if (selected === "inventory") {
+    } else if (selected === "store") {
       await this.setState({
         catalogFlag: false,
-        inventoryFlag: true,
+        storeFlag: true,
         reportsFlag: false,
         connectFlag: false
       });
     } else if (selected === "reports") {
       await this.setState({
         catalogFlag: false,
-        inventoryFlag: false,
+        storeFlag: false,
         reportsFlag: true,
         connectFlag: false
       });
     } else if (selected === "connect") {
       await this.setState({
         catalogFlag: false,
-        inventoryFlag: false,
+        storeFlag: false,
         reportsFlag: false,
         connectFlag: true
       });
@@ -126,17 +128,25 @@ class MarketMain extends Component {
     let catalogOutputPanel;
     if (this.props.role === 'Creator' || this.props.role === 'Admin') {
       // catalogOutputPanel = <div><Catalog commName={this.props.commName} communityid={this.props.communityid} goToDashboard={this.props.dashReturnMethod()}/></div>;
-      catalogOutputPanel = <div><Catalog commName={this.props.commName} communityid={this.props.communityid} goToDashboard={this.goToDashboard}/></div>;
+      catalogOutputPanel = <div><Catalog commName={this.props.commName} communityid={this.props.communityid} goToDashboard={this.goToDashboard} role={this.props.role}/></div>;
     } else {
       catalogOutputPanel = <div><ViewCatalog /></div>;
+    }
+
+    let storeOutputPanel;
+    if (this.props.role === 'Creator' || this.props.role === 'Admin') {
+      // catalogOutputPanel = <div><Catalog commName={this.props.commName} communityid={this.props.communityid} goToDashboard={this.props.dashReturnMethod()}/></div>;
+      storeOutputPanel = <div><Store commName={this.props.commName} communityid={this.props.communityid} goToDashboard={this.goToDashboard} role={this.props.role}/></div>;
+    } else {
+      storeOutputPanel = <div><ViewStore /></div>;
     }
 
     // activePanel will invoke the module that is clicked on.
     let activePanel;
     if (this.state.catalogFlag) {
       activePanel = catalogOutputPanel;
-    } else if (this.state.inventoryFlag) {
-      activePanel = <div>Inventory</div>;
+    } else if (this.state.storeFlag) {
+      activePanel = storeOutputPanel;
     } else if (this.state.reportsFlag) {
       activePanel = <div>Reports</div>;
     } else if (this.state.connectFlag) {
@@ -163,12 +173,12 @@ class MarketMain extends Component {
             &nbsp; 
             <button
               className={`${
-                this.state.inventoryFlag
+                this.state.storeFlag
                   ? "btn_top_market_active"
                   : "btn_top_market_passive"
               }`}
               type="button"
-              onClick={() => this.handleSelectedFunction("inventory")}
+              onClick={() => this.handleSelectedFunction("store")}
             >
               <b>Store</b>
             </button>
