@@ -75,8 +75,8 @@ class Store extends Component {
     }
   };
 
-  render() {
-    // console.log("Store Props:", this.props);
+  render() {s
+    //  console.log("Store Props:", this.props);
 
     let storebuttons = (
       <div>
