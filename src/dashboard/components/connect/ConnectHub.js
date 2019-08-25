@@ -2,51 +2,39 @@ import React, { Component } from "react";
 import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-// import update from "react-addons-update";
 
-// import ReactS3 from "react-s3";
 // import axios from "axios";
 // import Select from "react-select";
 
 // import _ from "lodash";
 
-import ModalContainer from "../../../../modal/components/ModalContainer";
-import { showModal, hideModal } from "../../../../actions/modalActions";
-import "../../../../modal/css/localModal.css";
-import "../../../../modal/css/template.css";
+import ModalContainer from "../../../modal/components/ModalContainer";
+import { showModal, hideModal } from "../../../actions/modalActions";
+import "../../../modal/css/localModal.css";
+import "../../../modal/css/template.css";
 
-import Inventory from "./Inventory";
-import Pos from './Pos';
+import GroupAdmin from "./grouping/GroupAdmin";
+import GroupParticipate from "./grouping/GroupParticipate";
 
-// import cosmicDoorway from "../../market/image/cosmicDoorway.jpg";
-// import Select from "react-select";
-import "./Store.css";
+import "./ConnectHub.css";
 
-// const awsAccessKeyId = process.env.REACT_APP_ACCESS_KEY_ID;
-// const awsSecretAccessKey = process.env.REACT_APP_SECRET_ACCESS_KEY;
-// const awsRegion = process.env.REACT_APP_AWS_REGION;
-// const s3BucketName = process.env.REACT_APP_S3_BUCKET_NAME;
-
-// const baandaServer = process.env.REACT_APP_BAANDA_SERVER;
-
-class Store extends Component {
+class ConnectHub extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       name: "",
 
-      posActiveFlag: false,
-      poActiveFlag: false,
-      inventoryActiveFlag: true,
-      financeActiveFlag: false
+      groupingActiveFlag: true,
+      talkingActiveFlag: false,
+      feelingActiveFlag: false
     };
   }
 
-   // This is to show the info panel
-   openAlertModal = () => {
+  // This is to show the info panel
+  openAlertModal = () => {
     let msg = {
-      Header: "Your Store",
+      Header: "Your Connection Hub",
       Body: {
         oneLineSummary: `This has all the information about the activities of the store..`,
         steps: [
@@ -89,93 +77,73 @@ class Store extends Component {
 
   handleSelect = async choice => {
     // alert("The selection is: " + choice);
-    if (choice === "POS") {
+    if (choice === "grouping") {
       await this.setState({
-        posActiveFlag: true,
-        poActiveFlag: false,
-        inventoryActiveFlag: false,
-        financeActiveFlag: false
+        groupingActiveFlag: true,
+        talkingActiveFlag: false,
+        feelingActiveFlag: false
       });
-    } else if (choice === "PO") {
+    } else if (choice === "talking") {
       await this.setState({
-        posActiveFlag: false,
-        poActiveFlag: true,
-        inventoryActiveFlag: false,
-        financeActiveFlag: false
-      });
-    } else if (choice === "Inventory") {
-      await this.setState({
-        posActiveFlag: false,
-        poActiveFlag: false,
-        inventoryActiveFlag: true,
-        financeActiveFlag: false
+        groupingActiveFlag: false,
+        talkingActiveFlag: true,
+        feelingActiveFlag: false
       });
     } else {
       await this.setState({
-        posActiveFlag: false,
-        poActiveFlag: false,
-        inventoryActiveFlag: false,
-        financeActiveFlag: true
+        groupingActiveFlag: false,
+        talkingActiveFlag: false,
+        feelingActiveFlag: false
       });
     }
   };
 
   render() {
-    //  console.log("Store Props:", this.props);
+    console.log("ConnectHub props:", this.props);
 
-    let storebuttons = (
+    let connectHubButtons = (
       <div>
         <div className="row">
-          <div className="col-2 header_store_text text-right">Store</div>
+          <div className="col-2 header_store_text text-right">Connect</div>
           <div className="col-10 header_store_buttons">
             <button
               className={`${
-                !this.state.posActiveFlag
-                  ? "btn_store_sm"
-                  : "btn_store_sm_active"
+                !this.state.groupingActiveFlag
+                  ? "btn_connecthub"
+                  : "btn_connecthub_active"
               }`}
               type="button"
-              onClick={() => this.handleSelect("POS")}
+              onClick={() => this.handleSelect("grouping")}
             >
-              <b>POS</b>
+              <b>Grouping</b>
             </button>
             &nbsp;
             <button
               className={`${
-                !this.state.poActiveFlag
-                  ? "btn_store_sm"
-                  : "btn_store_sm_active"
+                !this.state.talkingActiveFlag
+                  ? "btn_connecthub"
+                  : "btn_connecthub_active"
               }`}
               type="button"
-              onClick={() => this.handleSelect("PO")}
+              onClick={() => this.handleSelect("talking")}
             >
-              <b>PO</b>
+              <b>Talking</b>
             </button>
             &nbsp;
             <button
               className={`${
-                !this.state.inventoryActiveFlag
-                  ? "btn_store"
-                  : "btn_store_active"
+                !this.state.feelingActiveFlag
+                  ? "btn_connecthub"
+                  : "btn_connecthub_active"
               }`}
               type="button"
-              onClick={() => this.handleSelect("Inventory")}
+              onClick={() => this.handleSelect("feeling")}
             >
-              <b>Inventory</b>
+              <b>Feeling</b>
             </button>
             &nbsp;
             <button
-              className={`${
-                !this.state.financeActiveFlag ? "btn_store" : "btn_store_active"
-              }`}
-              type="button"
-              onClick={() => this.handleSelect("Finance")}
-            >
-              <b>Finance</b>
-            </button>
-            &nbsp;
-            <button
-              className="btn-modal_store"
+              className="btn-modal_connecthub"
               type="button"
               onClick={this.openAlertModal}
             >
@@ -186,49 +154,56 @@ class Store extends Component {
       </div>
     );
 
-    let storePanel;
+    
+    let groupingOutputPanel;
+    
+    if (this.props.role === "Creator" || this.props.role === "Admin") {
+      groupingOutputPanel = (
+        <div>
+          <GroupAdmin
+            commName={this.props.commName}
+            communityid={this.props.communityid}
+            goToDashboard={this.props.goToDashboard}
+            role={this.props.role}
+          />
+        </div>
+      );
+    } else {
+      groupingOutputPanel = (
+        <div>
+          <GroupParticipate
+            commName={this.props.commName}
+            communityid={this.props.communityid}
+            goToDashboard={this.props.goToDashboard}
+            role={this.props.role}
+          />
+        </div>
+      );
+    }
+    // let talkingOutputPanel, feelingOutputPanel;
 
-    if (this.state.inventoryActiveFlag) {
-      storePanel = (
+    let outputPanel;
+    if (this.state.groupingActiveFlag) {
+      outputPanel = groupingOutputPanel;
+    } else {
+      outputPanel = (
         <div>
-          <Inventory
-            commName={this.props.commName}
-            communityid={this.props.communityid}
-            goToDashboard={this.props.goToDashboard}
-            role={this.props.role}
-          />
+          Not Grouping Panel 
         </div>
-      );
-    } else if (this.state.posActiveFlag) {
-      storePanel = (
-        <div>
-          <Pos
-            commName={this.props.commName}
-            communityid={this.props.communityid}
-            goToDashboard={this.props.goToDashboard}
-            role={this.props.role}
-          />
-        </div>
-      );
-    } 
-    else {
-      storePanel = <div>Not Inventory</div>;
+      )
     }
 
-    // storePanel = <div>{storebuttons}</div>;
-
     return (
-      <div className="fixedsize_store">
-        {storebuttons}
-        {storePanel}
-        <div className="bottom-padding" />
+      <div className="fixedsize_connect">
+        {connectHubButtons}
+        {outputPanel}
         <ModalContainer />
       </div>
     );
   }
 }
 
-Store.propTypes = {
+ConnectHub.propTypes = {
   auth: PropTypes.object.isRequired
 };
 
@@ -250,4 +225,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(Store));
+)(withRouter(ConnectHub));

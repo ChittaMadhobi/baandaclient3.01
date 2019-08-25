@@ -168,7 +168,7 @@ class Dashboard extends Component {
     this.props.history.push("/mirror");
   };
 
-  // Handle navigation based on selection
+  // Handle navigation based on selection of intent and focus. 
   handleSelectedCommunity = async (commName, communityid, role, intent, focus) => {
     // console.log("Params commName=" , commName , " CommunityId=", communityid , " role=", role,  " intent=" , intent , " focus=" , focus);
     if ( intent === 'Business' && focus === 'Catalog') {

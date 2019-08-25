@@ -14,6 +14,8 @@ import ViewCatalog from '../market/catalog/ViewCatalog';
 import Store from '../market/store/Store';
 import ViewStore from '../market/store/ViewStore';
 
+import ConnectHub from '../connect/ConnectHub';
+
 import "./MarketMain.css";
 
 class MarketMain extends Component {
@@ -122,7 +124,7 @@ class MarketMain extends Component {
   };
 
   render() {
-    // console.log("Market props:", this.props);
+    console.log("Market props:", this.props);
 
     // This will handle only catalog portion definitions
     let catalogOutputPanel;
@@ -141,6 +143,9 @@ class MarketMain extends Component {
       storeOutputPanel = <div><ViewStore /></div>;
     }
 
+    let connectOutputPanel = <div><ConnectHub commName={this.props.commName} communityid={this.props.communityid} goToDashboard={this.goToDashboard} role={this.props.role}/></div>;
+    
+
     // activePanel will invoke the module that is clicked on.
     let activePanel;
     if (this.state.catalogFlag) {
@@ -150,7 +155,7 @@ class MarketMain extends Component {
     } else if (this.state.reportsFlag) {
       activePanel = <div>Reports</div>;
     } else if (this.state.connectFlag) {
-      activePanel = <div>Connect</div>;
+      activePanel = <div>{connectOutputPanel}</div>;
     }
 
     let marketLandingPanel = (

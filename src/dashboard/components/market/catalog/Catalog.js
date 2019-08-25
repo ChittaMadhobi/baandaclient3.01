@@ -160,7 +160,7 @@ class Catalog extends Component {
       let ret = await axios.get(url);
       if (ret.data.status === "Error") {
         // console.log('msg:', ret.data.Msg);
-        throw new Error(`No items found with this condition`);
+        throw new Error(`No items found with this entry.`);
       } else {
         // console.log("ret msg:", ret.data.Msg);
         if (ret.data.Msg.length === 0) {
@@ -483,12 +483,6 @@ class Catalog extends Component {
       }
     }
 
-    // console.log(
-    //   "$$$ price: ",
-    //   price,
-    //   " this.state.itemPrice:",
-    //   this.state.itemPrice
-    // );
     let data;  
     if (!this.state.itemSelectToEditFlag) {
       data = {
@@ -1274,4 +1268,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(Catalog));
+)(withRouter(Catalog)); 
