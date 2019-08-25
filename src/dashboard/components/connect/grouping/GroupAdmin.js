@@ -276,7 +276,7 @@ class GroupAdmin extends Component {
       email: this.state.email,
       cell: this.state.cell,
       memberName: this.state.memberName,
-      role: "Participant"
+      role: "Member"
     };
     let data = {
       communityId: this.props.communityid,
