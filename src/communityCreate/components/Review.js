@@ -13,11 +13,12 @@ class Review extends Component {
 
   render() {
     console.log("this.props review:", this.props.reviewObj);
-    console.log("s3url:", this.props.reviewObj.fileUploads[0].s3Url);
+    // console.log("s3url:", this.props.reviewObj.fileUploads[0].s3Url);
     let imgSrc, imgCaption;
     if (this.props.reviewObj.fileUploads[0].s3Url) {
       imgSrc = this.props.reviewObj.fileUploads[0].s3Url;
-      imgCaption = this.props.reviewObj.fileUploads[0].caption;
+      // imgCaption = this.props.reviewObj.fileUploads[0].caption;
+      imgCaption = this.props.reviewObj.picCaption;
     }
 
     let picPanel;
@@ -41,7 +42,7 @@ class Review extends Component {
 
     let locationPanel = null;
     if (this.props.reviewObj.locationType === "Current") {
-      console.log("======>> Current:", this.props.reviewObj.locationCurr);
+      // console.log("======>> Current:", this.props.reviewObj.locationCurr);
       let loc = this.props.reviewObj.locationCurr;
       locationPanel = (
         <div>

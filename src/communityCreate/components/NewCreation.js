@@ -145,8 +145,6 @@ class NewCreation extends Component {
     // console.log("retdata: ", retdata);
   }
   uploadToS3 = async e => {
-    alert('inside  uploadToS3');
-    console.log("upload ng: ", e.target.files[0]);
     let dirname = "bid" + this.props.auth.user.baandaId;
     let config = {
       bucketName: s3BucketName,
@@ -182,7 +180,7 @@ class NewCreation extends Component {
       if (s3fileObject.key) {
         filename = s3fileObject.key.split(/(\\|\/)/g).pop();
       }
-      console.log("Data:", data, " s3fileObject:", s3fileObject);
+      // console.log("Data:", data, " s3fileObject:", s3fileObject);
       // this.setState(prevState => ({
       //   fileUploads: {
       //     ...prevState.fileUploads, [prevState.fileUploads[index]]: s3fileObject
@@ -246,7 +244,7 @@ class NewCreation extends Component {
   onDragOver(evt) {
     evt.preventDefault();
     // if (this.state.disabled) return;
-    console.log("In drop zone");
+    // console.log("In drop zone");
     this.setState({ hightlight: true });
   }
 
@@ -259,7 +257,7 @@ class NewCreation extends Component {
     // console.log("this.props:", this.props);
     if (this.state.disabled) return; // investigate
     const files = event.dataTransfer.files;
-    console.log("files: ", files);
+    // console.log("files: ", files);
     await this.setState({
       hightlight: false,
       currFilename: files[0],
@@ -275,8 +273,11 @@ class NewCreation extends Component {
   }
 
   async onChange(e) {
-    // console.log('onChange: ', e.target.name, ' value:', e.target.value);
+    // let name = [e.target.name];
+    // let value = e.target.value;
     await this.setState({ [e.target.name]: e.target.value });
+
+    // console.log('onChange name:', name, ' value:', value);
   }
 
   async handleJoinProcess(e) {
@@ -303,7 +304,7 @@ class NewCreation extends Component {
   };
 
   setUploadType = async type => {
-    console.log("upload type:", type);
+    // console.log("upload type:", type);
     await this.setState({
       uploadFileType: type,
       uploadBtnClicked: true,
@@ -403,13 +404,13 @@ class NewCreation extends Component {
       });
     }
 
-    // if (
-    //   this.state.fileUploads[0].s3Url === "" ||
-    //   this.state.fileUploads[0].caption === ""
-    // )
     if (
-      this.state.fileUploads[0].s3Url === "" 
+      this.state.fileUploads[0].s3Url === "" ||
+      this.state.picCaption === ""
     )
+    // if (
+    //   this.state.fileUploads[0].s3Url === "" 
+    // )
      {
       await this.setState({
         pictureMsg: "Must upload a picture & enter a caption.",
@@ -435,18 +436,13 @@ class NewCreation extends Component {
       "&commName=" +
       this.state.commName;
     let url = baandaServer + checkifexistsAPI + params;
-    // console.log('get url:' , url);
     try {
       let ret = await axios.get(url);
       if (ret.data.status === "Fail") {
-        // console.log('msg:', ret.data.Msg);
-        throw new Error(`Commname already exists`);
+        throw new Error(`Commune name already exists ${this.state.commName}`);
       }
-      // else {
-      //   console.log('ret msg:', ret.data.status);
-      // }
     } catch (err) {
-      // console.log('err:', err.message);
+      console.log('err:', err.message);
       ifExists = false;
     }
 
@@ -479,11 +475,10 @@ class NewCreation extends Component {
         key: this.state.fileUploads[0].key,
         type: this.state.fileUploads[0].contentType,
         s3Url: this.state.fileUploads[0].s3Url,
-        caption: this.state.fileUploads[0].caption
+        caption: this.state.picCaption
       }
     };
-    console.log("url:", url);
-    console.log("commData:", commData);
+
     try {
       let ret = await axios.post(url, commData);
       if (ret.length === 0) {
@@ -496,12 +491,16 @@ class NewCreation extends Component {
           saveReviewMsg:
             "Successfully published. Work on it via Engage panel in Home. Click Close to complete."
         });
+        // console.log('Saved message successfully ...');
       }
-    } catch (err) {}
+    } catch (err) {
+      console.log('savePublishInDB save error: ', err.message);
+    }
   };
 
   // Validate whethere the form is ready for publishing
   publishComm = async () => {
+
     let valid = await this.saveValidation();
     if (valid) {
       try {
@@ -566,7 +565,7 @@ class NewCreation extends Component {
   };
 
   render() {
-    console.log("NewCreation.js this.state create: ", this.state);
+    // console.log("NewCreation.js this.state create: ", this.state);
     // console.log('accesskey:' , awsAccessKeyId);
 
     let fileLoadBtn;

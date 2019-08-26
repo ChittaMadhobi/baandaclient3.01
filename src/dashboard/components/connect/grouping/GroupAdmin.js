@@ -21,6 +21,10 @@ const baandaServer = process.env.REACT_APP_BAANDA_SERVER;
 const ifGroupExistsAPI = "/routes/dashboard/ifGroupExists?";
 const createNewGroupAPI = "/routes/dashboard/createNewGroup";
 const saveGetGroupMembers = "/routes/dashboard/saveGetGroupMembers";
+const getGroupsOfCommunity = "/routes/dashboard/getGroupsOfCommunity?";
+const updateGroupAPI = "/routes/dashboard/updateGroup";
+
+let groupOptions = [];
 
 class GroupAdmin extends Component {
   constructor(props) {
@@ -41,9 +45,13 @@ class GroupAdmin extends Component {
       groupDescriptionErrFlag: false,
       groupCreatedFlag: false,
       groupId: 0,
-      createGroupMsg: "Create a new group.",
+      createGroupMsg: "Enter group information.",
       createGroupMsgErrFlag: false,
 
+      newMemberPanelFlag: false,
+      editMemberPanelFlag: false,
+      viewMemberPanelFlag: false,
+      editMemberListFlag: false,
       memberName: "",
       memberNameMsg: "Enter name. (5 - 50 chars)",
       memberNameErrFlag: false,
@@ -54,9 +62,21 @@ class GroupAdmin extends Component {
       cellMsg: "Enter Cell# (optional).",
       cellErrFlag: false,
 
-      memberMsg: "",
+      searchGroupName: "",
+      searchGroupMsg: "Enter part/full group name to search-filter.",
+      searchGRoupErrFlag: false,
+
+      memberMsg: "Duplicate email will be ignored. Delete & re-enter to change member info.",
       memberMsgErrFlag: false,
-      selectedMembers: null
+      selectedMembers: null,
+
+      groupSelectedToEditFlag: false,
+      groups: null,
+      groupsSelectedErrFlag: false,
+
+      showgroupEditPanelFlag: false,
+      showEditAddNewMemberPanelFlag: false,
+      showMemberEditPanelFlag: false
     };
   }
 
@@ -116,11 +136,44 @@ class GroupAdmin extends Component {
     }
   };
 
+  onChangeText = async e => {
+    //   alert('>>>>>> I am in onChangeText ...');
+    await this.setState({
+      [e.target.name]: e.target.value
+    });
+    console.log("this.state.searchGroupName:", this.state.searchGroupName);
+    let letterNumber = /^[\w\-\s]+$/;
+    if (!this.state.searchGroupName.match(letterNumber)) {
+      if (this.state.searchGroupName.length > 0) {
+        await this.setState({
+          searchGroupErrFlag: true,
+          searchGroupMsg: "Only Alphanumeric, space, -, _ is allowed."
+        });
+      } else {
+        await this.setState({
+          searchGroupErrFlag: false,
+          searchGroupMsg:
+            "Enter part/full to search-filter. Blank for whole catalog."
+        });
+      }
+    } else {
+      await this.setState({
+        searchGroupErrFlag: false,
+        searchGroupMsg:
+          "Enter part/full to search-filter. Blank for whole catalog."
+      });
+    }
+  };
+
   handleEdit = async () => {
     await this.setState({
       createGroupFlag: false,
       editGroupFlag: true,
-      viewGroupFlag: false
+      viewGroupFlag: false,
+      newMemberPanelFlag: false,
+      editMemberPanelFlag: false,
+      viewMemberPanelFlag: false,
+      editMemberListFlag: false
     });
   };
 
@@ -129,7 +182,17 @@ class GroupAdmin extends Component {
       createGroupFlag: true,
       editGroupFlag: false,
       viewGroupFlag: false,
-      groupCreatedFlag: false
+      groupCreatedFlag: false,
+      groupName: "",
+      groupDescription: "",
+      showgroupEditPanelFlag: false,
+      showEditAddNewMemberPanelFlag: false,
+      showMemberEditPanelFlag: false,
+      selectedMembers: null,
+      newMemberPanelFlag: true,
+      editMemberPanelFlag: false,
+      viewMemberPanelFlag: false,
+      editMemberListFlag: false
     });
   };
 
@@ -137,7 +200,11 @@ class GroupAdmin extends Component {
     await this.setState({
       createGroupFlag: false,
       editGroupFlag: false,
-      viewGroupFlag: true
+      viewGroupFlag: true,
+      newMemberPanelFlag: true,
+      editMemberPanelFlag: false,
+      viewMemberPanelFlag: false,
+      editMemberListFlag: false
     });
   };
 
@@ -197,6 +264,31 @@ class GroupAdmin extends Component {
     }
   };
 
+  handleEditGroup = async () => {
+    alert("handling edit group");
+    let validate = await this.validateNewGroup();
+    console.log("handleEditGroup validate:", validate);
+    if (validate) {
+      let data = {
+        baandaId: this.props.auth.user.baandaId,
+        communityId: this.props.communityid,
+        groupName: this.state.groupName,
+        groupDescription: this.state.groupDescription,
+        groupId: this.state.groupId
+      };
+
+      let url = baandaServer + updateGroupAPI;
+      console.log("handleEditGroup data:", data, " url:", url);
+
+      try {
+        let grpUpdt = await axios.post(url, data);
+        console.log("grpUpdt:", grpUpdt);
+      } catch (err) {
+        console.log("handleEditGroup updateGroupAPI error:", err.message);
+      }
+    }
+  };
+
   validateNewGroup = async () => {
     let isValid = true;
 
@@ -231,8 +323,11 @@ class GroupAdmin extends Component {
         "communityId=" +
         this.props.communityid +
         "&groupName=" +
-        this.state.groupName;
+        this.state.groupName +
+        "&groupId=" +
+        this.state.groupId;
       let url = baandaServer + ifGroupExistsAPI + params;
+      console.log("VallidateNewGroup url:" + url);
       try {
         let ret = await axios.get(url);
         console.log("if group exists ret:", ret);
@@ -287,31 +382,198 @@ class GroupAdmin extends Component {
     };
     console.log("handleSaveMember data:", data);
     let addMember = await this.addSelectMemberList(data);
-    console.log("addMember:", addMember);
+    console.log(">>>>> addMember:", addMember);
   };
 
   // Selects the member list at the begining of Member add.
   addSelectMemberList = async data => {
+    let ifExists = true;
     let url = baandaServer + saveGetGroupMembers;
     console.log(">>> addSelectMemberList:", url, " input data:", data);
 
     let newMembers = await axios.post(url, data);
-    await this.setState({
-      selectedMembers: newMembers.data,
-      memberName: "",
-      email: "",
-      cell: ""
-    });
+
+    // There will minimum one member. We need to handle other error conditions
+    // here (when we get sanity in our development process).
+    if (newMembers.data.length > 0) {
+      await this.setState({
+        selectedMembers: newMembers.data,
+        memberName: "",
+        email: "",
+        cell: ""
+      });
+    } else {
+      ifExists = false;
+    }
     console.log("new Member:", newMembers);
-    return true;
+    return ifExists;
+  };
+
+  handleFind = async () => {
+    // alert("handling find");
+    // let ifExists = true;
+    // Remove  create or edit group name/description panel.
+    await this.setState({
+      showgroupEditPanelFlag: false,
+      createGroupFlag: false,
+      editMemberListFlag: false,
+      editMemberPanelFlag: false
+    });
+    let params =
+      "communityId=" +
+      this.props.communityid +
+      "&communityName=" +
+      this.props.commName +
+      "&groupName=" +
+      this.state.searchGroupName;
+    let url = baandaServer + getGroupsOfCommunity + params;
+    console.log("handleFind url:", url);
+    try {
+      let ret = await axios.get(url);
+      console.log(
+        "getGroupsOfCommunit handleFind ret:",
+        ret,
+        " ret.status:",
+        ret.data.status
+      );
+      if (ret.data.status === "Error") {
+        throw new Error(ret.data.Msg);
+      } else {
+        if (ret.data.Msg.length === 0) {
+          await this.setState({
+            groupsSelectedErrFlag: true,
+            groupsSelectedMsg: ret.Msg,
+            groupSelectedToEditFlag: false // Nothing to edit hence don't show the groups panel
+          });
+        } else {
+          let groupOption = {};
+          groupOptions = [];
+          ret.data.Msg.forEach(obj => {
+            groupOption = {
+              value: obj.groupId,
+              label: obj
+            };
+            groupOptions.push(groupOption);
+          });
+          if (ret.data.length === 1) {
+            // there is only one and hence prepGroupForEdit.
+
+            console.log("I m here 1: ");
+            await this.setState({
+              groups: groupOptions,
+              groupSelectedToEditFlag: true,
+              groupsSelectedErrFlag: false
+              //   editMemberListFlag: true
+            });
+            console.log(
+              "I m here 1: this.state.groups=",
+              this.state.groups,
+              " groupOptions=",
+              groupOptions
+            );
+            this.prepGroupToEdit(ret.data.Msg[0]);
+          } else {
+            console.log("I m here 2: ");
+            await this.setState({
+              groups: groupOptions,
+              groupSelectedToEditFlag: true,
+              groupsSelectedErrFlag: false
+              //   editMemberListFlag: true
+            });
+          }
+        }
+      }
+    } catch (err) {
+      console.log("GetGroupsOfCommunity Err:", err.message);
+    }
+  };
+
+  prepGroupToEdit = async data => {
+    // Get members for the community & group with the data below
+    let data1 = {
+      communityId: this.props.communityid,
+      groupId: data.groupId,
+      requestType: "SelectMembers",
+      member: {},
+      ascDsc: "dsc"
+    };
+    console.log("prepGroupToEdit data:", data, " data1:", data1);
+    let members = this.addSelectMemberList(data1);
+    // Set flag to set member's list with delete 'X' button except for role='Creator'
+    await this.setState({
+      showMemberEditPanelFlag: true,
+      membersToShowDelete: members
+    });
+  };
+
+  handleGroupSelected = async e => {
+    // alert("handleGroupSelected: " + e.target.value);
+    console.log("handleGroupSelected: ", e.target.value);
+    let val = JSON.parse(e.target.value);
+    let data = {
+      communityId: this.props.communityid,
+      groupId: val.groupId,
+      requestType: "SelectMembers",
+      member: {},
+      ascDsc: "dsc"
+    };
+    console.log(">>> handleGroupSelected data:", data);
+    let memberExists = await this.addSelectMemberList(data);
+    console.log("memberExists:", memberExists);
+    if (memberExists) {
+      await this.setState({
+        showgroupEditPanelFlag: true,
+        showEditAddNewMemberPanelFlag: false,
+        showMemberEditPanelFlag: false,
+        groupSelectedToEditFlag: false, // close the grouplist dropdown
+        groupName: val.groupName,
+        groupId: val.groupId,
+        groupNameErrFlag: false,
+        groupNameMsg: "Edited name must be unique (5-50 chars).",
+        groupDescription: val.description,
+        createGroupMsgErrFlag: false,
+        createGroupFlag: false,
+        editMemberListFlag: true,
+        editMemberPanelFlag: true
+      });
+    } else {
+    }
   };
 
   render() {
-    // console.log("GroupAdmin props:", this.props);
-    console.log("GroupAdmin state:", this.state);
+    console.log("GroupAdmin props:", this.props);
+    console.log("GroupAdmin state.groups:", this.state);
+
+    let groupOpsBtn;
+
+    if (this.state.createGroupFlag) {
+      groupOpsBtn = (
+        <div>
+          <button
+            className="btn_grouping_create"
+            type="button"
+            onClick={() => this.handleCreateGroup()}
+          >
+            <b>Create Group</b>
+          </button>
+        </div>
+      );
+    } else if (this.state.showgroupEditPanelFlag) {
+      groupOpsBtn = (
+        <div>
+          <button
+            className="btn_grouping_create"
+            type="button"
+            onClick={() => this.handleEditGroup()}
+          >
+            <b>Edit Group</b>
+          </button>
+        </div>
+      );
+    }
 
     let groupDefPanel;
-    if (this.state.createGroupFlag) {
+    if (this.state.createGroupFlag || this.state.showgroupEditPanelFlag) {
       groupDefPanel = (
         <div>
           <div className="row">
@@ -375,24 +637,96 @@ class GroupAdmin extends Component {
                 {this.state.createGroupMsg}
               </div>
             </div>
-            <div className="col-3 text-left">
-              <button
-                className="btn_grouping_create"
-                type="button"
-                onClick={() => this.handleCreateGroup()}
-              >
-                <b>Create Group</b>
-              </button>
-            </div>
+            <div className="col-3 text-left">{groupOpsBtn}</div>
           </div>
           <hr className="adjust" />
-          {/* <hr /> */}
+        </div>
+      );
+    }
+
+    let selectGroupdropdown;
+    if (this.state.groupSelectedToEditFlag) {
+      let selheight = this.state.groups.length;
+      console.log("this.state.groups.length:", selheight);
+      if (selheight > 7) selheight = 7;
+
+      let selgrouplist = this.state.groups.map((obj, i) => {
+        return (
+          <option key={i} value={JSON.stringify(obj.label)}>
+            {obj.label.groupName}
+          </option>
+        );
+      });
+      console.log("selgrouplist:", selgrouplist);
+      selectGroupdropdown = (
+        <div>
+          <div className="row select_panel_group">
+            <div className="col text-center div_group_select">
+              <select
+                size={selheight}
+                onChange={this.handleGroupSelected}
+                className="group-select"
+              >
+                {selgrouplist}
+              </select>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col text-center select_item_msg">
+              Please select a group to edit
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    let searchPanel;
+    if (this.state.editGroupFlag) {
+      searchPanel = (
+        <div className="text-center">
+          <div className="row searchpanel_placement_group">
+            <div className="col-10 search_input_placement">
+              <input
+                name="searchGroupName"
+                type="text"
+                value={this.state.searchGroupName}
+                onChange={this.onChangeText}
+                size="50"
+                maxLength="50"
+                className="input_text_group"
+                placeholder="Group name to search-filter"
+              />
+              <div
+                className={`${
+                  !this.state.searchGroupErrFlag
+                    ? "group_input_msg"
+                    : "group_input_msg_err"
+                }`}
+              >
+                <p>{this.state.searchGroupMsg}</p>
+              </div>
+            </div>
+            <div className="col-2 search_go_btn_placement text-left">
+              <button
+                className="btn_goFind_groups"
+                type="button"
+                onClick={this.handleFind}
+              >
+                <i className="fas fa-search" />
+              </button>
+              &nbsp;
+            </div>
+          </div>
+          <div>{selectGroupdropdown}</div>
         </div>
       );
     }
 
     let addMemberPanel;
-    if (this.state.groupCreatedFlag && this.state.createGroupFlag) {
+    if (
+      (this.state.groupCreatedFlag && this.state.createGroupFlag) ||
+      this.state.editMemberPanelFlag
+    ) {
       addMemberPanel = (
         <div>
           <div className="row">
@@ -489,9 +823,9 @@ class GroupAdmin extends Component {
       );
     }
 
-    let catalogbuttons;
+    let groupnavbuttons;
     if (this.state.createGroupFlag) {
-      catalogbuttons = (
+      groupnavbuttons = (
         <div>
           <div className="row">
             <div className="col-4 header_grouping_style">Create Group</div>
@@ -524,7 +858,7 @@ class GroupAdmin extends Component {
         </div>
       );
     } else if (this.state.editGroupFlag) {
-      catalogbuttons = (
+      groupnavbuttons = (
         <div>
           <div className="row">
             <div className="col-4 header_grouping_style">Edit Group</div>
@@ -557,7 +891,7 @@ class GroupAdmin extends Component {
         </div>
       );
     } else {
-      catalogbuttons = (
+      groupnavbuttons = (
         <div>
           <div className="row">
             <div className="col-4 header_grouping_style">View Groups</div>
@@ -592,17 +926,73 @@ class GroupAdmin extends Component {
     }
 
     let newMemberPanel;
+    if (this.state.newMemberPanelFlag) {
+      if (this.state.selectedMembers && this.state.selectedMembers.length > 0) {
+        newMemberPanel = (
+          <div>
+            <div className="new_member_header text-center">
+              New Group Members
+            </div>
+            {this.state.selectedMembers.map((member, i) => (
+              <div key={i}>
+                <div className="row">
+                  <div className="col show_new_member text-left">
+                    <i className="fas fa-check-circle" /> &nbsp;&nbsp;
+                    {member.memberName}&nbsp;({member.role})
+                  </div>
+                </div>
+              </div>
+            ))}
+            <hr className="adjust" />
+            <div className="space_below" />
+          </div>
+        );
+      } else {
+        newMemberPanel = (
+          <div>
+            No member. Should not have happen for creator is an automatic
+            member. Contact baanda suppport.
+          </div>
+        );
+      }
+    }
 
-    if (this.state.selectedMembers && this.state.selectedMembers.length > 0) {
-      newMemberPanel = (
+    let editMemberPanel;
+    if (this.state.editMemberListFlag) {
+      //   console.log("this.state.selectedMembers:", this.state.selectedMembers);
+      editMemberPanel = (
         <div>
-          <div className="new_member_header text-center">New Group Members</div>  
+          <div className="new_member_header text-center">
+            Present Group Members
+          </div>
           {this.state.selectedMembers.map((member, i) => (
             <div key={i}>
               <div className="row">
-                <div className="col show_new_member text-left">
-                <i className="fas fa-check-circle" /> &nbsp;&nbsp;
-                {member.memberName}&nbsp;({member.role})</div>
+                <div className="col show_old_member text-left">
+                  {/* <i className="fas fa-check-circle" /> &nbsp; */}
+                  {/* {member.memberName}&nbsp;({member.role}) */}
+                  {member.role === "Creator" ? (
+                    <button
+                      className="btn_creator"
+                      type="button"
+                      //   onClick={() => this.handleCreateGroup()} - show only row
+                    >
+                      <i className="fab fa-earlybirds" />
+                    </button>
+                  ) : (
+                    <button
+                      className="btn_delete_member"
+                      type="button"
+                      onClick={() => this.handleCreateGroup()}
+                    >
+                      <i className="fas fa-trash-alt" />
+                    </button>
+                  )}
+                  &nbsp;&nbsp;
+                  <i className="fas fa-check-circle" />
+                  &nbsp;
+                  {member.memberName}&nbsp;({member.role})
+                </div>
               </div>
             </div>
           ))}
@@ -614,17 +1004,37 @@ class GroupAdmin extends Component {
 
     let outputPanel;
 
-    outputPanel = (
-      <div>
-        {groupDefPanel}
-        {addMemberPanel}
-        {newMemberPanel}
-      </div>
-    );
+    if (this.state.createGroupFlag) {
+      outputPanel = (
+        <div>
+          {groupDefPanel}
+          {addMemberPanel}
+          {newMemberPanel}
+        </div>
+      );
+    } else if (this.state.editGroupFlag) {
+      outputPanel = (
+        <div>
+          {searchPanel}
+          {groupDefPanel}
+          {addMemberPanel}
+          {editMemberPanel}
+        </div>
+      );
+    } else {
+      outputPanel = (
+        <div className="text-center">
+          <br /><br /><br />
+          <h6>Coming soon - in November 2019 Release</h6>
+          <br />
+          <p align="justify" className="coming_soon">This will include group search-filter, group's information, that will include description, member list, member participation (accepted, declined etc.), and other activity. Baanda team is gathering viewing requirements from the users.</p>
+        </div>
+      )
+    }
 
     return (
       <div className="fixedsize_grouping">
-        {catalogbuttons}
+        {groupnavbuttons}
         {outputPanel}
         <ModalContainer />
       </div>

@@ -277,7 +277,7 @@ class Catalog extends Component {
       merchandiseType: "Goods",
 
       itemName: "",
-      itemNameMsg: "A unique item name between 10 to 100 chars",
+      itemNameMsg: "A unique item name (10 to 100 chars).",
       itemNameErrFlag: false,
       searchItemName: "",
 
@@ -350,6 +350,31 @@ class Catalog extends Component {
     // console.log("itemPrice:", this.state.itemPrice);
   };
 
+  
+  onChangeItemName = async e => {
+    await this.setState({
+      [e.target.name]: e.target.value
+    });
+    let letterNumber = /^[\w\-.\s]+$/;
+    if (!this.state.itemName.match(letterNumber)) {
+      if (this.state.itemName.length > 0) {
+        await this.setState({
+          itemNameErrFlag: true,
+          itemNameMsg: "Only Alphanumeric, space, -, _ is allowed."
+        });
+      } else {
+        await this.setState({
+          itemNameErrFlag: false,
+          itemNameMsg: "A unique item name (10 to 100 chars)."
+        });
+      }
+    } else {
+      await this.setState({
+        itemNameErrFlag: false,
+        itemNameMsg: "A unique item name (10 to 100 chars)."
+      });
+    }
+  };
   // onChangePrice = async e => {
   //   let val = parseFloat(e.target.value).toFixed(2);
   //   console.log('val:', val);
@@ -951,7 +976,7 @@ class Catalog extends Component {
               name="itemName"
               type="text"
               value={this.state.itemName}
-              onChange={this.onChange}
+              onChange={this.onChangeItemName}
               size="50"
               maxLength="50"
               className="input_text_catlog"
@@ -962,7 +987,7 @@ class Catalog extends Component {
                 !this.state.itemNameErrFlag
                   ? "catalog_input_msg"
                   : "catalog_input_msg_err"
-              }`}
+              }`} 
             >
               <p>{this.state.itemNameMsg}</p>
             </div>
