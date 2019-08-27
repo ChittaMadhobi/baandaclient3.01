@@ -185,6 +185,7 @@ class Inventory extends Component {
       isValid = false;
       errMsg = errMsg + `Minimum comment length must be 15 chars (now ${this.state.adjustmentComment.length} chrs) `;
     }
+    console.log('validateAndSave isValid before updateInventory:', isValid);
     if ( isValid ) {
       await this.updateInventory();
     } else {
@@ -209,8 +210,12 @@ class Inventory extends Component {
       originTransId: 0  // Used for PO, POS etc.
     }
     let url = baandaServer + updateInventory;
+    console.log('updateInventory url: ', url, ' data:', data);
+    alert('check url and data before axios.post ');
     try {
       let ret = await axios.post(url, data);
+
+      console.log('After db call - ret:', ret.data);
       // Initialize for new create
       if ( ret.data.status === 'Success') {
         await this.setState({

@@ -124,7 +124,7 @@ class MarketMain extends Component {
   };
 
   render() {
-    console.log("Market props:", this.props);
+    // console.log("Market props:", this.props);
 
     // This will handle only catalog portion definitions
     let catalogOutputPanel;

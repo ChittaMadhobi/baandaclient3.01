@@ -99,7 +99,7 @@ class ConnectHub extends Component {
   };
 
   render() {
-    console.log("ConnectHub props:", this.props);
+    // console.log("ConnectHub props:", this.props);
 
     let connectHubButtons = (
       <div>

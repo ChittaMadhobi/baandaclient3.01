@@ -173,21 +173,35 @@ hr.adjust {
   margin-top: 20px;
   margin-left: 5px;
   margin-right: 5px;
+
 }
 
 .search_input_placement {
-  font-size: 1.1em;
+  font-size: 1em;
 }
 
 .select_panel_group {
   margin-top: 1px;
-  font-size: 1.2em;
+  font-size: 1em;
 }
 
 .coming_soon {
   color: #1b4194;
   margin-left: 50px;
   margin-right: 80px;
+}
+
+.input_text_group {
+  font-size: 0.9em;
+  color: blue;
+  width: 90%;
+  margin-left: -2%;
+}
+
+.group-select {
+  margin-left: -10px;
+  width: 75%;
+  font-size: 0.9em;
 }
 
 @media only screen and (max-device-width: 480px) {
