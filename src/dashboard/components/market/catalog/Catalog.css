@@ -248,11 +248,11 @@ div.fixedsize_catalog {
 }
 
 .item-select {
-  width: 200px;
+  width: 80%;
 }
 
 .div_item_select {
-  font-size: .75em;
+  font-size: .85em;
 }
 
 .select_item_msg {

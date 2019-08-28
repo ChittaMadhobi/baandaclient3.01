@@ -734,7 +734,7 @@ class Catalog extends Component {
                 type="button"
                 onClick={() => this.handleNew()}
               >
-                <b>Cancel</b>
+                <b>Entry</b>
               </button>
               &nbsp;
               <button
@@ -1156,7 +1156,7 @@ class Catalog extends Component {
         </option>
       );
     });
-
+ 
     let selectItemdropdown;
     if (this.state.itemSelectToEditFlag) {
       selectItemdropdown = (
