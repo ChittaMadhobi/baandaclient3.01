@@ -13,7 +13,9 @@ const baandaServer = process.env.REACT_APP_BAANDA_SERVER;
 
 const saveInvitesAndSendMails = "/routes/dashboard/saveInvitesAndSendMails";
 const saveGetGroupMembers = "/routes/dashboard/saveGetGroupMembers";
-const saveInvitesToIndvidual = '/routes/dashboard/saveInvitesToIndvidual';
+const saveInvitesToIndvidual = "/routes/dashboard/saveInvitesToIndvidual";
+const getInviteLetterContent = "/routes/dashboard/getInviteLetterContent?";
+const saveInviteLetter = '/routes/dashboard/saveInviteLetter';
 
 class EditInvite extends Component {
   constructor(props) {
@@ -30,6 +32,7 @@ class EditInvite extends Component {
       acceptLinkMsg: "Please click the picture below to accept the invitation.",
       signature: "Jane Doe \r\n Group Creator & Organizaer",
       revImgSrc: "https://baandadev1.s3-us-west-2.amazonaws.com/herbpic5.jpg",
+      saveLetterMsg: '',
 
       memberListFlag: true,
 
@@ -37,13 +40,12 @@ class EditInvite extends Component {
       reviewFlag: false,
       selectedMembers: [],
       loadingFlag: false,
-      loadedMsg: '',
+      loadedMsg: "",
       lodedFlag: false
     };
   }
 
   componentWillMount = async () => {
-
     // await this.setState({
     //   selectedMembers: this.props.selectedMembers
     // });
@@ -55,14 +57,44 @@ class EditInvite extends Component {
       ascDsc: "dsc"
     };
     let urlm = baandaServer + saveGetGroupMembers;
+    let ivtLetterParms =
+      "communityId=" +
+      this.props.communityId +
+      "&groupId=" +
+      this.props.groupId;
+    let urlLetter = baandaServer + getInviteLetterContent + ivtLetterParms;
+    try {
       let newMembers = await axios.post(urlm, datam);
-      await this.setState({
-        selectedMembers: newMembers.data
-      });
+      // console.log('newMember:', newMembers);
+      let il = await axios.get(urlLetter);
+      // console.log("il:", il);
+      let invLet = il.data.Msg[0].inviteLetter;
+      if (invLet.body !== "") {
+        // console.log("got something in invite letter");
+        await this.setState({
+          selectedMembers: newMembers.data,
+          salute: invLet.salute,
+          subject: invLet.subject,
+          inviteBody: invLet.body,
+          acceptLinkMsg: invLet.acceptLink,
+          signature: invLet.signature
+        });
+      } else {
+        // console.log("inviteletter in DB is empty");
+        await this.setState({
+          selectedMembers: newMembers.data
+        });
+      }
+    } catch (err) {
+      console.log("EditInvite componentWillMount Error:", err.message);
+    }
   };
 
   onChange = async e => {
-    await this.setState({ [e.target.name]: e.target.value });
+    await this.setState({ 
+      [e.target.name]: e.target.value,
+      saveLetterMsg: '' 
+    });
   };
 
   handlePrep = async () => {
@@ -79,8 +111,33 @@ class EditInvite extends Component {
     });
   };
 
-  handlePrepSave = () => {
-    alert("handlePrepSave");
+  handlePrepSave = async () => {
+    // alert("handlePrepSave");
+    // COMPLETE THIS FIRST ... Call the damn microservice 
+    let url = baandaServer + saveInviteLetter;
+    let data = {
+      communityId: this.props.communityId,
+      groupId: this.props.groupId,
+      inviteLetter: {
+        subject: this.state.subject,
+        salute: this.state.salute,
+        body: this.state.inviteBody,
+        acceptLink: this.state.acceptLinkMsg,
+        signature: this.state.signature
+      }
+    };
+    try { 
+      await axios.post(url, data);
+      await this.setState({
+        saveLetterMsg: 'Saved'
+      });
+    } catch(err) {
+      console.log('handlePrepSave: ', err.message);
+      await this.setState({
+        saveLetterMsg: 'Failed: Contact Baanda support.'
+      });
+    }
+
   };
 
   handleInviteAll = async () => {
@@ -108,14 +165,14 @@ class EditInvite extends Component {
       // console.log("handleInviteAll ret: ", ret);
       await this.setState({
         loadingFlag: false,
-        loadedMsg: 'refresh'
+        loadedMsg: "refresh"
       });
       // console.log('this.state.selectedMembers: ', this.state.selectedMembers);
     } catch (err) {
       console.log("handleInviteAll error: ", err.message);
       await this.setState({
         loadingFlag: false,
-        loadedMsg: 'Error'
+        loadedMsg: "Error"
       });
     }
   };
@@ -125,25 +182,25 @@ class EditInvite extends Component {
       loadingFlag: true
     });
     let datam = {
-        communityId: this.props.communityId,
-        groupId: this.props.groupId,
-        requestType: "selectMembers",
-        member: [],
-        ascDsc: "dsc"
-      };
-      let urlm = baandaServer + saveGetGroupMembers;
-      // console.log('urlm:', urlm, ' datam:', datam);
-      let newMembers = await axios.post(urlm, datam);
-      // console.log('newMembers.data:', newMembers.data);
-      await this.setState({
-        selectedMembers: newMembers.data,
-        loadingFlag: false
-      });
-      await this.setState({
-        loadingFlag: false,
-        loadedMsg: 'Refreshed'
-      });
-  }
+      communityId: this.props.communityId,
+      groupId: this.props.groupId,
+      requestType: "selectMembers",
+      member: [],
+      ascDsc: "dsc"
+    };
+    let urlm = baandaServer + saveGetGroupMembers;
+    // console.log('urlm:', urlm, ' datam:', datam);
+    let newMembers = await axios.post(urlm, datam);
+    // console.log('newMembers.data:', newMembers.data);
+    await this.setState({
+      selectedMembers: newMembers.data,
+      loadingFlag: false
+    });
+    await this.setState({
+      loadingFlag: false,
+      loadedMsg: "Refreshed"
+    });
+  };
 
   handleInviteMember = async (email, name) => {
     // alert("handleIniveiteMember: " + email + ' name:' + name);
@@ -165,14 +222,12 @@ class EditInvite extends Component {
       await axios.post(url, data);
       await this.setState({
         loadingFlag: false,
-        loadedMsg: 'refresh'
+        loadedMsg: "refresh"
       });
-    } catch(err) {
-      console.log('HandleInviteMember Error:', err.message);
+    } catch (err) {
+      console.log("HandleInviteMember Error:", err.message);
     }
-    
   };
-
 
   render() {
     // console.log("props:", this.props);
@@ -184,7 +239,7 @@ class EditInvite extends Component {
       inviteButtonPanel = (
         <div>
           <div className="row">
-            <div className="col-8">&nbsp;</div>
+            <div className="col-8 text-right save_letter_msg">{this.state.saveLetterMsg}</div>
             <div className="col-4 btn_invite_placement text-right">
               <button
                 className="btn_invite_fn"
@@ -209,7 +264,7 @@ class EditInvite extends Component {
       inviteButtonPanel = (
         <div>
           <div className="row">
-            <div className="col-8">&nbsp;</div>
+            <div className="col-8 text-right save_letter_msg">{this.state.saveLetterMsg}</div>
             <div className="col-4 btn_invite_placement text-right">
               <button
                 className="btn_invite_fn"
@@ -245,11 +300,7 @@ class EditInvite extends Component {
         </div>
       );
     } else {
-      loadingPanel = (
-        <div>
-          {this.state.loadedMsg}
-        </div>
-      )
+      loadingPanel = <div>{this.state.loadedMsg}</div>;
     }
 
     let reviewPanel;
@@ -452,7 +503,12 @@ class EditInvite extends Component {
                     <button
                       className="btn_send_invite"
                       type="button"
-                      onClick={() => this.handleInviteMember(`${member.email}`, `${member.memberName}`)}
+                      onClick={() =>
+                        this.handleInviteMember(
+                          `${member.email}`,
+                          `${member.memberName}`
+                        )
+                      }
                     >
                       <i className="fab fa-angellist" />
                     </button>

@@ -204,6 +204,12 @@ hr.divider {
   margin-bottom: 15px;
 }
 
+.save_letter_msg {
+  font-size: 1em; 
+  margin-top: 25px;
+  color: blue;
+}
+
 @media only screen and (max-device-width: 480px) {
   /* styles for mobile browsers smaller than 480px; (iPhone) */
   div.fixedsize_pos {
@@ -213,7 +219,7 @@ hr.divider {
   }
 
   .btn_invite_fn {
-    width: 55px;
+    width: 50px;
     height: 25px;
     font-size: 8pt;
     box-shadow: 3px 3px 0px 0px black;
@@ -248,7 +254,7 @@ hr.divider {
   }
 
   .btn_invite_placement {
-    margin-left: -25px;
+    margin-left: -30px;
   }
 
   .btn_send_invite {
@@ -386,6 +392,11 @@ hr.divider {
     height: 160px;
     width: 250px;
   }
+
+  .save_letter_msg {
+    margin-top: 25px;
+    font-size: .8em; 
+  }
 }
 @media only screen and (max-device-width: 320px) {
   /* styles for browsers larger than 320px iphone5; */
@@ -494,6 +505,11 @@ hr.divider {
     margin-right: 24px;
     color: green;
   }
+
+  .save_letter_msg {
+    margin-top: 24px;
+    font-size: .75em; 
+  }
 }
 
 @media only screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation: portrait) {
@@ -529,5 +545,10 @@ hr.divider {
     font-size: 0.9em;
     font-weight: 650;
     margin-bottom: 10px;
+  }
+
+  .save_letter_msg {
+    margin-top: 25px;
+    font-size: 1em; 
   }
 }

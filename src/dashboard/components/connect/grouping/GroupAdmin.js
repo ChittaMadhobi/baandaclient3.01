@@ -460,6 +460,9 @@ class GroupAdmin extends Component {
     // console.log("handleFind url:", url);
     try {
       let ret = await axios.get(url);
+      console.log('ret: ', ret);
+      let sortRet =ret.data.Msg.sort((a,b) => ( a.groupName.toLowerCase() > b.groupName.toLowerCase()) ? 1 : -1);
+      console.log('sortRet:', sortRet);
       if (ret.data.status === "Error") {
         throw new Error(ret.data.Msg);
       } else {
