@@ -439,9 +439,9 @@ class Pos extends Component {
           {this.state.itemsInCart.map((obj, i) => (
             <div key={i}>
               <div className="row">
-                <div className="col-9 show_old_member text-left">
+                <div className="col-9 show_items text-left">
                   <button
-                    className="btn_delete_member"
+                    className="btn_delete_item"
                     type="button"
                     onClick={() => this.handleDeleteMember(obj)}
                   >

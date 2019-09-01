@@ -218,7 +218,8 @@ class Store extends Component {
     // storePanel = <div>{storebuttons}</div>;
 
     return (
-      <div className="fixedsize_store">
+      // <div className="fixedsize_store">
+      <div>
         {storebuttons}
         {storePanel}
         <div className="bottom-padding" />

@@ -1,10 +1,10 @@
 .fixedsize_connect {
-    height: 700px;
+    height: 800px;
     width: 110%;
     /* background-color: #f5f2eb; */
     margin-left: -5%;
-    overflow-x: hidden;
-    overflow-y: auto;
+    /* overflow-x: hidden;
+    overflow-y: auto; */
   }
   
   .btn_connecthub {

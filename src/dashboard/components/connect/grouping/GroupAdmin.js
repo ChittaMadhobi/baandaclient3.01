@@ -15,6 +15,8 @@ import { showModal, hideModal } from "../../../../actions/modalActions";
 import "../../../../modal/css/localModal.css";
 import "../../../../modal/css/template.css";
 
+import Invite from './EditInvite';
+
 import "./GroupAdmin.css";
 
 const baandaServer = process.env.REACT_APP_BAANDA_SERVER;
@@ -175,7 +177,8 @@ class GroupAdmin extends Component {
       newMemberPanelFlag: false,
       editMemberPanelFlag: false,
       viewMemberPanelFlag: false,
-      editMemberListFlag: false
+      editMemberListFlag: false,
+      inviteFlag: false
     });
   };
 
@@ -194,7 +197,8 @@ class GroupAdmin extends Component {
       newMemberPanelFlag: false,
       editMemberPanelFlag: false,
       viewMemberPanelFlag: false,
-      editMemberListFlag: false
+      editMemberListFlag: false,
+      inviteFlag: false
     });
   };
 
@@ -202,11 +206,18 @@ class GroupAdmin extends Component {
     await this.setState({
       createGroupFlag: false,
       editGroupFlag: false,
-      viewGroupFlag: true
-      // newMemberPanelFlag: false,
-      // editMemberPanelFlag: false,
-      // viewMemberPanelFlag: false,
-      // editMemberListFlag: false
+      viewGroupFlag: true,
+      inviteFlag: false
+    });
+  };
+
+  handleInvite = async () => {
+    // alert("Handle Invite");
+    await this.setState({
+      createGroupFlag: false,
+      editGroupFlag: false,
+      viewGroupFlag: false,
+      inviteFlag: true
     });
   };
 
@@ -362,12 +373,10 @@ class GroupAdmin extends Component {
     let emailValid = EmailValidator.validate(this.state.email);
     if (!emailValid) {
       await this.setState({
-        emailMsg: "Enter a valid email.",
         emailErrFlag: true
       });
     } else {
       await this.setState({
-        emailMsg: "Enter valid email.",
         emailErrFlag: false
       });
     }
@@ -411,16 +420,6 @@ class GroupAdmin extends Component {
         email: "",
         cell: ""
       });
-      // console.log(
-      //   ">>>>>>>>>>>>>>>> selectedMembers: ",
-      //   this.state.selectedMembers
-      // );
-      // console.log(
-      //   "@@@@@@@@@@@@@@@ createGroupFlag: ",
-      //   this.state.createGroupFlag,
-      //   " editGroupFlag:",
-      //   this.state.editGroupFlag
-      // );
       if (this.state.createGroupFlag) {
         await this.setState({
           newMemberPanelFlag: true,
@@ -433,14 +432,10 @@ class GroupAdmin extends Component {
           editMemberListFlag: true
         });
       }
-      // console.log(
-      //   "################ newMemberPanelFlag: ",
-      //   this.state.newMemberPanelFlag
-      // );
     } else {
       ifExists = false;
     }
-    console.log("new Member:", newMembers);
+    // console.log("new Member:", newMembers);
     return ifExists;
   };
 
@@ -465,12 +460,6 @@ class GroupAdmin extends Component {
     // console.log("handleFind url:", url);
     try {
       let ret = await axios.get(url);
-      // console.log(
-      //   "getGroupsOfCommunit handleFind ret.data:",
-      //   ret.data,
-      //   " ret.status:",
-      //   ret.data.status
-      // );
       if (ret.data.status === "Error") {
         throw new Error(ret.data.Msg);
       } else {
@@ -494,7 +483,7 @@ class GroupAdmin extends Component {
           if (groupOptions.length === 1) {
             // there is only one and hence prepGroupForEdit.
 
-            console.log("I m here 1: ");
+            // console.log("I m here 1: ");
             await this.setState({
               groups: groupOptions,
               groupSelectedToEditFlag: false,
@@ -536,7 +525,7 @@ class GroupAdmin extends Component {
       member: {},
       ascDsc: "dsc"
     };
-    console.log("prepGroupToEdit data:", data, " data1:", data1);
+    // console.log("prepGroupToEdit data:", data, " data1:", data1);
     let members = this.addSelectMemberList(data1);
     // Set flag to set member's list with delete 'X' button except for role='Creator'
     await this.setState({
@@ -789,11 +778,11 @@ class GroupAdmin extends Component {
       addMemberPanel = (
         <div>
           <div className="row">
-            <div className="col-4">&nbsp;</div>
-            <div className="col-4 text-center add-member-header">
+            <div className="col-3">&nbsp;</div>
+            <div className="col-6 text-center add-member-header">
               Add Members
             </div>
-            <div className="col-4">&nbsp;</div>
+            <div className="col-3">&nbsp;</div>
           </div>
           <div className="row">
             <div className="col input_members">
@@ -949,7 +938,7 @@ class GroupAdmin extends Component {
           </div>
         </div>
       );
-    } else {
+    } else if (this.state.viewGroupFlag) {
       groupnavbuttons = (
         <div>
           <div className="row">
@@ -982,16 +971,49 @@ class GroupAdmin extends Component {
           </div>
         </div>
       );
+    } else if (this.state.inviteFlag) {
+      groupnavbuttons = (
+        <div>
+          <div className="row">
+            <div className="col-3 header_grouping_style">Invite</div>
+            <div className="col-9 btn_grouping_placement">
+              <button
+                className="btn_grouping"
+                type="button"
+                onClick={() => this.handleCreate()}
+              >
+                <b>Create</b>
+              </button>
+              &nbsp;
+              <button
+                className="btn_grouping"
+                type="button"
+                onClick={() => this.handleEdit()}
+              >
+                <b>Edit</b>
+              </button>
+              &nbsp;
+              <button
+                className="btn_grouping"
+                type="button"
+                onClick={() => this.handleView()}
+              >
+                <b>View</b>
+              </button>
+              &nbsp;
+              <button
+                className="btn-modal-grouping"
+                type="button"
+                onClick={this.openAlertModal}
+              >
+                <i className="fas fa-info-circle" />
+              </button>
+            </div>
+          </div>
+        </div>
+      );
     }
 
-    // console.log(
-    //   "XXXXXXXXXX >> newMemberPanelFlag:",
-    //   this.state.newMemberPanelFlag
-    // );
-    // console.log(
-    //   "YYYYYYYYYY >> editMemberListFlag:",
-    //   this.state.editMemberListFlag
-    // );
     let newMemberPanel;
     if (this.state.newMemberPanelFlag) {
       // console.log("this.state.selectedMembers: ", this.state.selectedMembers);
@@ -1018,15 +1040,25 @@ class GroupAdmin extends Component {
       //   console.log("this.state.selectedMembers:", this.state.selectedMembers);
       editMemberPanel = (
         <div>
-          <div className="new_member_header text-center">
-            Present Group Members
+          <div className="row">
+            <div className="col-8 new_member_header text-center">
+              Present Group Members
+            </div>
+            <div className="col-4 invite_btn_placement">
+              <button
+                className="btn_invite"
+                type="button"
+                onClick={() => this.handleInvite()}
+              >
+                <b>Invite</b>&nbsp;&nbsp;
+                <i className="far fa-envelope" />
+              </button>
+            </div>
           </div>
           {this.state.selectedMembers.map((member, i) => (
             <div key={i}>
               <div className="row">
                 <div className="col show_old_member text-left">
-                  {/* <i className="fas fa-check-circle" /> &nbsp; */}
-                  {/* {member.memberName}&nbsp;({member.role}) */}
                   {member.role === "Creator" ? (
                     <button
                       className="btn_creator"
@@ -1077,7 +1109,7 @@ class GroupAdmin extends Component {
           {editMemberPanel}
         </div>
       );
-    } else {
+    } else if (this.state.editGroupFlag) {
       outputPanel = (
         <div className="text-center">
           <br />
@@ -1093,6 +1125,8 @@ class GroupAdmin extends Component {
           </p>
         </div>
       );
+    } else if (this.state.inviteFlag) {
+      outputPanel = <div><Invite communityId={this.props.communityid} groupId={this.state.groupId} groupName={this.state.groupName} selectedMembers={this.state.selectedMembers}/></div>;
     }
 
     return (
@@ -1116,12 +1150,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   hideModal: () => dispatch(hideModal()),
   showModal: (modalProps, modalType) => {
-    // console.log(
-    //   "modalProps:" + JSON.stringify(modalProps) + "  |modalType:" + modalType
-    // );
     dispatch(showModal({ modalProps, modalType }));
   }
-  // setQAInitDone: () => dispatch(setQAInitDone(userData))
 });
 
 export default connect(

@@ -1,8 +1,8 @@
 div.fixedsize_grouping {
-  height: 700px;
-  width: 110%;
+  height: 800px;
+  width: 100%;
   /* background-color: #f5f2eb; */
-  margin-left: -5%;
+  /* margin-left: 5%; */
   overflow-x: hidden;
   overflow-y: auto;
 }
@@ -77,6 +77,18 @@ div.fixedsize_grouping {
 
 .btn_creator {
   width: 30px;
+  height: 30px;
+  background-color: #0a7a28;
+  border: none;
+  color: white;
+  font-size: 10pt;
+  box-shadow: 2px 2px 0px 0px black;
+  border-radius: 3px;
+  margin-top: -10px;
+}
+
+.btn_invite {
+  width: 80px;
   height: 30px;
   background-color: #0a7a28;
   border: none;
@@ -280,6 +292,19 @@ hr.adjust {
     box-shadow: 2px 2px 0px 0px black;
     border-radius: 3px;
     margin-top: -10px;
+  }
+
+  .btn_invite {
+    width: 72px;
+    height: 28px;
+    font-size: 8pt;
+    box-shadow: 2px 2px 0px 0px black;
+    border-radius: 3px;
+  }
+
+  .invite_btn_placement {
+     margin-top: -15px;
+     margin-left: -43px;
   }
 
   .header_grouping_style {
@@ -537,6 +562,12 @@ hr.adjust {
     margin-top: 1px;
     font-size: 1.2em;
   }
+
+  .group-select {
+    margin-left: -10px;
+    width: 80%;
+    font-size: 0.7em;
+  }
 }
 
 @media only screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation: portrait) {
@@ -635,5 +666,11 @@ hr.adjust {
   .select_panel_group {
     margin-top: 1px;
     font-size: 1.2em;
+  }
+
+  .group-select {
+    margin-left: -10px;
+    width: 85%;
+    font-size: 0.9em;
   }
 }

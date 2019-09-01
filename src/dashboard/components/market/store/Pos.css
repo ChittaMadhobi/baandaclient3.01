@@ -45,8 +45,8 @@ div.fixedsize_pos {
 
 /* btn_checkout */
 .btn_checkout {
-  width: 80px;
-  height: 30px;
+  width: 110px;
+  height: 32px;
   background-color: #136128;
   border: none;
   color: white;
@@ -54,6 +54,20 @@ div.fixedsize_pos {
   box-shadow: 3px 3px 0px 0px black;
   border-radius: 5px;
   margin-top: -10px;
+  margin-bottom: 20px;
+}
+
+.btn_delete_item {
+  width: 30px;
+  height: 30px;
+  background-color: #ab321a;
+  border: none;
+  color: white;
+  font-size: 10pt;
+  box-shadow: 2px 2px 0px 0px black;
+  border-radius: 3px;
+  margin-top: -10px;
+  margin-left: 50px;
 }
 
 .input_text_pos {
@@ -136,12 +150,19 @@ hr.adjust_pos {
 
 .cart_costs {
   font-size: 1em;
+  font-weight: 700;
   color: green;
-  margin-left: 1px;
+  margin-left: -100px;
+  margin-top: 10px;
 }
 
 .spacing_cart_panel {
   height: 10px;
+}
+
+.show_items {
+  font-size: 1em;
+  margin-top: 10px;
 }
 
 @media only screen and (max-device-width: 480px) {
@@ -184,6 +205,16 @@ hr.adjust_pos {
     font-size: 8pt;
     margin-top: 8px;
     margin-left: -40px;
+    margin-bottom: 10px;
+  }
+
+  .btn_delete_item {
+    width: 28px;
+    height: 28px;
+    font-size: 9pt;
+    border-radius: 3px;
+    margin-top: -10px;
+    margin-left: 10px;
   }
 
   .cost_panel_placement {
@@ -228,7 +259,7 @@ hr.adjust_pos {
   hr.adjust_pos {
     margin-top: 5px;
     margin-left: 8%;
-    width: 80%;
+    width: 90%;
   }
 
   .new_cart_header {
@@ -239,9 +270,13 @@ hr.adjust_pos {
   }
 
   .cart_costs {
-    font-size: 0.9em;
+    font-size: 0.8em;
     color: green;
-    margin-left: -80px;
+    margin-left: -20px;
+  }
+
+  .show_items {
+    font-size: .8em;
   }
 }
 
@@ -280,16 +315,26 @@ hr.adjust_pos {
   }
 
   .btn_checkout {
-    width: 50px;
+    width: 65px;
+    height: 26px;
+    font-size: 7pt;
+    margin-top: -10px;
+    margin-bottom: 10px;
+  }
+
+  .btn_delete_item {
+    width: 27px;
     height: 27px;
     font-size: 8pt;
+    border-radius: 3px;
     margin-top: -10px;
+    margin-left: 5px;
   }
 
   .cost_panel_placement {
     margin-top: 5px;
-    margin-left: 5.5%;
-    width: 88%;
+    margin-left: 2.5%;
+    width: 95%;
     height: 125px;
     font-size: 0.9em;
   }
@@ -315,15 +360,26 @@ hr.adjust_pos {
 
   hr.adjust_pos {
     margin-top: 10px;
-    margin-left: 9%;
-    width: 80%;
+    margin-left: 5%;
+    width: 90%;
   }
 
   .new_cart_header {
-    margin-top: -15px;
+    margin-top: 5px;
     font-size: 0.9em;
     font-weight: 800;
     padding-bottom: 5px;
+  }
+
+  .cart_costs {
+    margin-top: 10px;
+    margin-left: -20px;
+    font-size: 0.75em;
+    color: green;
+  }
+
+  .show_items {
+    font-size: .75em;
   }
 }
 
@@ -334,7 +390,6 @@ hr.adjust_pos {
     padding-top: 5px;
     height: 800px;
     width: 100%;
-    /* background-color: white; */
     margin-left: -1px;
     overflow-x: hidden;
     overflow-y: auto;
@@ -346,7 +401,7 @@ hr.adjust_pos {
     font-size: 9pt;
     box-shadow: 3px 3px 0px 0px black;
     border-radius: 5px;
-    margin-top: 8px;
+    margin-top: -1px;
     margin-left: -15px;
   }
 
@@ -364,6 +419,24 @@ hr.adjust_pos {
     margin-top: -10px;
   }
 
+  .btn_checkout {
+    width: 100px;
+    height: 32px;
+    font-size: 9pt;
+    font-weight: 650;
+    margin-top: -10px;
+    margin-bottom: 10px;
+  }
+
+  .btn_delete_item {
+    width: 30px;
+    height: 30px;
+    font-size: 10pt;
+    border-radius: 3px;
+    margin-top: -10px;
+    margin-left: 5px;
+  }
+
   .cost_panel_placement {
     margin-top: 5px;
     margin-left: 3%;
@@ -371,6 +444,7 @@ hr.adjust_pos {
     height: 125px;
     font-size: 0.9em;
   }
+
   .pos_input_msg {
     margin-top: -2px;
     font-size: 1em;
@@ -385,6 +459,12 @@ hr.adjust_pos {
 
   .item-select {
     width: 80%;
+  }
+
+  hr.adjust_pos {
+    margin-top: 15px;
+    margin-left: 0;
+    width: 100%;
   }
 
   .input_text_pos {
@@ -411,5 +491,12 @@ hr.adjust_pos {
     font-size: 1em;
     font-weight: 800;
     padding-bottom: 5px;
+  }
+
+  .cart_costs {
+    margin-top: 10px;
+    margin-left: -100px;
+    font-size: 1em;
+    color: green;
   }
 }

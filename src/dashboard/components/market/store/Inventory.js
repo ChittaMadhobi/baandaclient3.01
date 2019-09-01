@@ -485,7 +485,7 @@ class Inventory extends Component {
       )
     }
     return (
-      <div className="inventory_panel_placement">
+      <div >
         {searchPanel}
         <div>{adjustPanel}</div>
         <div>{updateSuccessPanel}</div>
