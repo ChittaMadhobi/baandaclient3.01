@@ -1,0 +1,118 @@
+.btn_go_back {
+  width: 110px;
+  height: 32px;
+  background-color: #943f0a;
+  border: none;
+  color: white;
+  font-size: 10pt;
+  box-shadow: 3px 3px 0px 0px black;
+  border-radius: 5px;
+  margin-top: -10px;
+  margin-bottom: 20px;
+}
+
+.btn_proceed {
+  width: 110px;
+  height: 32px;
+  background-color: #2e613e;
+  border: none;
+  color: white;
+  font-size: 10pt;
+  box-shadow: 3px 3px 0px 0px black;
+  border-radius: 5px;
+  margin-top: -10px;
+  margin-bottom: 20px;
+}
+
+.review_header {
+  font-size: 1.1em;
+  margin-top: 10px;
+  color: #28556b;
+  font-weight: 750;
+}
+
+.label_format {
+  font-size: 1em;
+  margin-top: 10px;
+  color: #754c19;
+  font-weight: 650;
+}
+
+.data_format {
+  font-size: 1em;
+  margin-top: 10px;
+  color: #223d1f;
+  font-weight: 650;
+}
+
+hr.review_divide_line {
+  margin-top: 20px;
+  margin-left: 0;
+  width: 100%;
+  margin-bottom: 10px;
+  background-color: #258f41;
+}
+
+/* iPhone, galaxy  & + */
+@media only screen and (max-device-width: 480px) {
+  .btn_go_back {
+    width: 80px;
+    height: 28px;
+    font-size: 9pt;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    margin-left: 20px;
+  }
+
+  .btn_proceed {
+    width: 80px;
+    height: 28px;
+    font-size: 9pt;
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
+
+  .review_header {
+    font-size: 1em;
+    margin-top: 10px;
+    margin-left: 10%;
+    font-weight: 750;
+  }
+
+  .label_format {
+    font-size: 0.9em;
+    margin-top: 10px;
+    color: #754c19;
+    font-weight: 700;
+  }
+
+  .data_format {
+    font-size: 0.9em;
+    margin-top: 10px;
+    font-weight: 650;
+  }
+
+  hr.review_divide_line {
+    margin-top: 5px;
+    margin-left: 8%;
+    width: 90%;
+    margin-bottom: 10px;
+  }
+}
+/* iPhone 5 */
+@media only screen and (max-device-width: 320px) {
+  hr.review_divide_line {
+    margin-top: 10px;
+    margin-left: 5%;
+    width: 90%;
+  }
+}
+/* ipad */
+@media only screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation: portrait) {
+  hr.review_divide_line {
+    margin-top: 20px;
+    margin-left: 0;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+}

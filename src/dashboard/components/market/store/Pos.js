@@ -4,14 +4,39 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import axios from "axios";
 // import _ from "lodash";
+import Select from "react-select";
+import DatePicker from "react-datepicker";
+import moment from "moment";
+import "react-datepicker/dist/react-datepicker.css";
 
 import "./Pos.css";
 
+import { optionsPaySchedule } from "./data/paySchedule";
+import { optionsCurrencyType } from "./data/currencyType";
+import { optionsPayMedium } from "./data/payMedium";
+import { optionsInstallmentType } from "./data/installmentType";
+import { optionsWeekOfDay } from "./data/dayOfWeek";
+
+import PosReview from "./PosReview";
+
 const baandaServer = process.env.REACT_APP_BAANDA_SERVER;
 const serchItemToEdit = "/routes/dashboard/searchItemToEdit?";
+const getCommunityInfo = "/routes/dashboard/getCommunityInfo?";
 
 let options = [];
 let itemsInCartArray = [];
+
+const customStyles = {
+  control: base => {
+    // console.log("customStyles: ", base);
+    return {
+      ...base,
+      height: 30,
+      minHeight: 30,
+      maxHeight: 130
+    };
+  }
+};
 
 class Pos extends Component {
   constructor(props) {
@@ -22,9 +47,10 @@ class Pos extends Component {
       selectedItemId: 0,
       selectedItemPrice: 0.0,
       selectedItemInventory: 0,
-      itemQty: '',
+      itemQty: "",
       calculatedItemCost: 0.0,
       costQtyErrFlag: false,
+      joiningProcess: "",
 
       itemSearchDropdownFlag: false, // Dropdown based on entries in item input panel
 
@@ -38,7 +64,49 @@ class Pos extends Component {
       itemsInCart: [],
       searchAndEditErrorFlag: false,
       itemToBuyFlag: false,
-      showTheCartFlag: false
+      showTheCartFlag: false,
+      checkoutFlag: false,
+
+      totalcost: 0.0,
+      discount: 0.0,
+      tax: 7.5,
+      processingFee: 0.25,
+      toPayTotal: 0.0,
+      amountPending: 0.0,
+
+      paySchedule: { value: "fullpay", label: "Pay in full now" },
+      paidCheck: false,
+      paymentProcessMsg: "",
+      paymentDoneFlag: false,
+      currencyType: {
+        value: "dollar",
+        label: "Dollar $"
+      },
+      payMedium: {
+        value: "cash",
+        label: "Cash $"
+      },
+      amountPaid: 0.0,
+      // payByDate: new Date(),
+      payByDate: moment(),
+      toPayTax: 0.0,
+      toPayDiscount: 0.0,
+      toPayProcessingFee: 0.0,
+
+      installmentType: {
+        value: "monthly",
+        label: "Monthly"
+      },
+      noOfInsallment: 0,
+      amountPerIstallment: 0.0,
+      installmentDateOfMonth: 15,
+      installmentDayOfWeek: {
+        value: "friday",
+        label: "Friday"
+      },
+
+      reviewFlag: false,
+      customerHandlingFlag: false
     };
   }
 
@@ -56,13 +124,109 @@ class Pos extends Component {
     await this.getPosInitData();
   };
 
-  getPosInitData = () => {
+  getPosInitData = async () => {
     // console.log("I am into getPosInitData");
+    let parms = "communityId=" + this.props.communityid;
+    let url = baandaServer + getCommunityInfo + parms;
+    try {
+      let retData = await axios.get(url);
+      // console.log("getPosInitData retData: ", retData);
+      await this.setState({
+        joiningProcess: retData.data.joiningProcess
+      });
+    } catch (err) {
+      console.log("getPosInitData Error: " + err.message);
+    }
   };
 
   onChange = async e => {
-    // console.log("name: ", [e.target.name], " value:", e.target.value);
+    let name = [e.target.name][0];
+    console.log("name:", name);
     await this.setState({ [e.target.name]: e.target.value });
+    if (name === "discount" || name === "tax" || name === "processingFee") {
+      let total = this.state.totalcost;
+      let totDiscount = total * (this.state.discount / 100);
+      let totPostDiscount = total - totDiscount;
+      let totTax = totPostDiscount * (this.state.tax / 100);
+      let totProcessing = totPostDiscount * (this.state.processingFee / 100);
+      // let toPay = totPostDiscount + totTax + totProcessing;
+      let toPay = totPostDiscount + totTax;
+      // console.log('onChange this.state.discount:', this.state.discount);
+      // console.log(
+      //   "onChange total=" +
+      //     total +
+      //     " totDiscount=" +
+      //     totDiscount +
+      //     " amout post discount:" +
+      //     totPostDiscount +
+      //     " totTax=" +
+      //     totTax +
+      //     " totProcessing=" +
+      //     totProcessing +
+      //     " toPay=" +
+      //     toPay
+      // );
+      await this.setState({
+        toPayTotal: toPay,
+        payProcessHandlingFlag: true,
+        toPayTax: totTax,
+        toPayDiscount: totDiscount,
+        toPayProcessingFee: totProcessing
+      });
+    }
+  };
+
+  onChangeAmtPaid = async e => {
+    // console.log("name: ", [e.target.name], " value:", e.target.value);
+    // console.log("toPayTotal:", this.state.toPayTotal);
+    await this.setState({
+      [e.target.name]: e.target.value,
+      amountPending: this.state.toPayTotal - e.target.value
+    });
+  };
+
+  onChangeUpfrontAmtPaid = async e => {
+    let paidAmt = e.target.value;
+    let amtToPay = this.state.toPayTotal - paidAmt;
+    let perInsAmt;
+    if (amtToPay > 0) {
+      if (this.state.noOfInsallment > 0) {
+        perInsAmt = (amtToPay / this.state.noOfInsallment).toFixed(2);
+      } else {
+        perInsAmt = amtToPay;
+      }
+    } else {
+      perInsAmt = 0;
+    }
+    await this.setState({
+      [e.target.name]: paidAmt,
+      amountPending: this.state.toPayTotal - e.target.value,
+      amountPerIstallment: perInsAmt
+    });
+  };
+
+  onChangeNoOfInstallment = async e => {
+    let noOfIns = e.target.value;
+    let toPayInIns;
+    if (noOfIns > 0) {
+      toPayInIns = this.state.amountPending / noOfIns;
+    } else {
+      toPayInIns = this.state.amountPending;
+    }
+    await this.setState({
+      [e.target.name]: e.target.value,
+      amountPerIstallment: toPayInIns
+    });
+  };
+
+  handlePayByDate = async date => {
+    console.log("handlePAyByDate :", date);
+    await this.setState({
+      payByDate: date
+    });
+
+    let main = this.state.payByDate;
+    console.log(main.format("L"));
   };
 
   onChangeItemName = async e => {
@@ -106,7 +270,7 @@ class Pos extends Component {
     try {
       let ret = await axios.get(url);
       if (ret.data.status === "Error") {
-        // console.log('msg:', ret.data.Msg);
+        // console.log("msg:", ret.data.Msg);
         throw new Error(`No items found with this entry.`);
       } else {
         // console.log("ret msg:", ret.data.Msg);
@@ -161,7 +325,7 @@ class Pos extends Component {
       selectedItemId: data.itemId,
       selectedItemPrice: data.itemPrice,
       calculatedItemCost: 0.0,
-      itemQty: '',
+      itemQty: "",
       selectedItemInventory: data.currentInventory,
       costPanelMessage: "Enter quantity please.",
       showTheCartFlag: true
@@ -187,9 +351,10 @@ class Pos extends Component {
       selectedItemPrice: 0,
       selectedItemInventory: 0,
       calculatedItemCost: 0.0,
-      itemQty: '',
+      itemQty: "",
       costPanelMessage: "",
-      itemToBuyFlag: false
+      itemToBuyFlag: false,
+      payProcessHandlingFlag: false
     });
   };
 
@@ -219,7 +384,7 @@ class Pos extends Component {
         selectedItemPrice: 0,
         selectedItemInventory: 0,
         calculatedItemCost: 0.0,
-        itemQty: '',
+        itemQty: "",
         costPanelMessage: "",
         itemsInCart: itemsInCartArray,
         itemToBuyFlag: false
@@ -245,13 +410,157 @@ class Pos extends Component {
     });
   };
 
-  prepForSell = data => {
+  prepForSell = async data => {
     console.log("prepForSell data:", data);
+    await this.setState({
+      itemSelectToBuyFlag: false,
+      itemToBuyFlag: true,
+      selectedItemName: data.itemName,
+      selectedItemId: data.itemId,
+      selectedItemPrice: data.itemPrice,
+      calculatedItemCost: 0.0,
+      itemQty: "",
+      selectedItemInventory: data.currentInventory,
+      costPanelMessage: "Enter quantity please.",
+      showTheCartFlag: true
+    });
   };
 
-  handlecheckout = () => {
-    alert('will handle checkout ...');
-  }
+  handlecheckout = async () => {
+    let total = 0.0;
+    this.state.itemsInCart.forEach(obj => {
+      total = total + obj.itemPrice * obj.itemQty;
+    });
+    // console.log("handlecheckout itemsincart:", this.state.itemsInCart);
+    console.log("handlecheckout Total : ", total);
+    await this.setState({
+      checkoutFlag: true,
+      itemSelectToBuyFlag: false,
+      totalcost: total,
+      payProcessHandlingFlag: false,
+      paymentDoneFlag: false
+    });
+  };
+
+  handleBuy = async () => {
+    // alert('handle buy');
+    await this.setState({
+      checkoutFlag: false,
+      itemSelectToBuyFlag: false,
+      payProcessHandlingFlag: false
+      // showTheCartFlag: true
+    });
+  };
+
+  handlePay = async () => {
+    // alert("handle pay");
+    let total = 0.0;
+    this.state.itemsInCart.forEach(obj => {
+      total = total + obj.itemPrice * obj.itemQty;
+    });
+    let totDiscount = total * (this.state.discount / 100);
+    let totPostDiscount = total - totDiscount;
+    let totTax = totPostDiscount * (this.state.tax / 100);
+    let totProcessing = totPostDiscount * (this.state.processingFee / 100);
+    // let toPay = totPostDiscount + totTax + totProcessing;
+    let toPay = totPostDiscount + totTax;
+
+    // console.log(
+    //   "handlePay total=" +
+    //     total +
+    //     " totDiscount=" +
+    //     totDiscount +
+    //     " amout post discount:" +
+    //     totPostDiscount +
+    //     " totTax=" +
+    //     totTax +
+    //     " totProcessing=" +
+    //     totProcessing +
+    //     " toPay=" +
+    //     toPay
+    // );
+    await this.setState({
+      toPayTotal: toPay,
+      payProcessHandlingFlag: true,
+      toPayTax: totTax,
+      toPayDiscount: totDiscount,
+      toPayProcessingFee: totProcessing
+    });
+  };
+
+  handlePaySchedule = async (selectedOption, { action }) => {
+    console.log("handlePaySchedule:", selectedOption);
+    await this.setState({
+      paySchedule: selectedOption
+    });
+  };
+
+  handleDayOfWeek = async (selectedOption, { action }) => {
+    await this.setState({
+      installmentDayOfWeek: selectedOption
+    });
+  };
+
+  handleCheckPaid = async () => {
+    // alert("handle check paid");
+    await this.setState({
+      paidCheck: !this.state.paidCheck
+    });
+  };
+
+  handleReview = async () => {
+    // alert("handle review");
+    // if (this.state.paidCheck) {
+    // Checked and hence go for review
+    await this.setState({
+      reviewFlag: true,
+      payProcessHandlingFlag: false,
+      showTheCartFlag: false,
+      checkoutFlag: false
+    });
+    // } else {
+    //   await this.setState({
+    //     paymentErrFlag: true,
+    //     paymentProcessMsg: ''
+    //   })
+    // }
+  };
+
+  handleCurrencyType = async (selectedOption, { action }) => {
+    // Uncomment when other options are used as well as remove defaults from options files
+    // await this.setState({
+    //   currencyType: selectedOption
+    // });
+  };
+
+  handlePayMedium = async (selectedOption, { action }) => {
+    // Uncomment when other options are used as well as remove defaults from options files
+    // await this.setState({
+    //   payMedium: selectedOption
+    // });
+  };
+
+  handleInstallmentType = async (selectedOption, { action }) => {
+    console.log("installmentType:", this.state.installmentType);
+    await this.setState({
+      installmentType: selectedOption
+    });
+  };
+
+  handleReturnToPos = async () => {
+    // alert('returned to pos ... handleReturnToPos');
+    console.log("Pos.js This is where ... review is returning to POS");
+    await this.setState({
+      reviewFlag: false,
+      payProcessHandlingFlag: true,
+      showTheCartFlag: true,
+      checkoutFlag: true
+    });
+  };
+
+  handleCustomerCheckout = () => {
+    console.log("Pos.js Here we need to handle customer checkout.");
+  };
 
   render() {
     // console.log("Pos props:", this.props);
@@ -269,6 +578,64 @@ class Pos extends Component {
         </option>
       );
     });
+
+    console.log(
+      "@@@@@@@@@@@@@@ this.state.installmentType.value:",
+      this.state.installmentType.value
+    );
+    let installmentSpec;
+    if (
+      this.state.installmentType.value === "bi-monthly" ||
+      this.state.installmentType.value === "monthly"
+    ) {
+      installmentSpec = (
+        <div>
+          <div className="row">
+            <div className="col-6 float-right installment_spec">
+              Pay dateOfMonth:
+            </div>
+            <div>
+              <input
+                name="installmentDateOfMonth"
+                type="number"
+                min="1"
+                // max="100.00"
+                className="installment_date_of_month"
+                onChange={this.onChange}
+                value={this.state.installmentDateOfMonth}
+                placeholder="A day between 1 to 28"
+                step="1"
+              />
+            </div>
+          </div>
+        </div>
+      );
+    } else if (
+      this.state.installmentType.value === "bi-weekly" ||
+      this.state.installmentType.value === "weekly"
+    ) {
+      installmentSpec = (
+        <div>
+          <div className="row">
+            <div className="col-6 pick_day_of_week">Pay dayOfWeek:</div>
+            <div className="col-6 install_select float-left">
+              <Select
+                value={this.state.installmentDayOfWeek}
+                options={optionsWeekOfDay}
+                className="pay_dayofweek_select"
+                defaultValue={{
+                  value: "friday",
+                  label: "Friday"
+                }}
+                onChange={this.handleDayOfWeek}
+                multi={false}
+                styles={customStyles}
+              />
+            </div>
+          </div>
+        </div>
+      );
+    }
 
     let selectItemdropdown;
     // console.log('this.state.itemSelectToBuyFlag: ',this.state.itemSelectToBuyFlag);
@@ -295,6 +662,457 @@ class Pos extends Component {
       );
     }
     // **************************************
+    // Handles pay-schedule (now-full, part-IOU, installment)
+    let payPanel1;
+    payPanel1 = (
+      <div>
+        <div className="row">
+          <div className="col-4 text-right pay_schedule_label">Schedule:</div>
+          <div className="col-8 text-center paypanel1">
+            <Select
+              value={this.state.paySchedule}
+              options={optionsPaySchedule}
+              className="pay_schedule_select"
+              defaultValue={{ value: "fullPay", label: "Pay in full" }}
+              onChange={this.handlePaySchedule}
+              multi={false}
+              styles={customStyles}
+            />
+          </div>
+        </div>
+        <hr className="adjust_pos" />
+      </div>
+    );
+
+    let payFinalPanel;
+    payFinalPanel = (
+      <div>
+        {/* <div className="paypanel_spacing" /> */}
+        <div className="row">
+          <div className="col-4 text-right paid_in_full_check">
+            {/* <input
+              className="pay-check-input"
+              type="checkbox"
+              // id="inlineCheckbox1"
+              value={this.state.paidCheck}
+              onChange={this.handleCheckPaid}
+            />{" "}
+            &nbsp; Confirm */}
+            &nbsp;
+          </div>
+          <div className="col-8 text-right review_btn_placement">
+            {!this.state.paymentDoneFlag ? (
+              <button
+                className="btn_paid"
+                type="button"
+                onClick={this.handleReview}
+              >
+                Review&nbsp;
+                <i className="fas fa-hands-helping" />
+              </button>
+            ) : null}
+          </div>
+        </div>
+        <div className="row">
+          <div
+            className={`${
+              !this.state.paymentErrFlag
+                ? "col payment_processing_msg text-center"
+                : "col payment_processing_msg_err text-center"
+            }`}
+          >
+            <p>{this.state.paymentProcessMsg}</p>
+          </div>
+        </div>
+      </div>
+    );
+
+    // This handles pay in full
+    let payPanel2;
+    payPanel2 = (
+      <div>
+        <div className="row">
+          <div className="col-6 currency_type">
+            <Select
+              value={this.state.currencyType}
+              options={optionsCurrencyType}
+              className="currency_type_select"
+              defaultValue={{
+                value: "dollar",
+                label: "Dollar $"
+              }}
+              onChange={this.handleCurrencyType}
+              multi={false}
+              styles={customStyles}
+            />
+          </div>
+          <div className="col-6 pay_medium_type">
+            <Select
+              value={this.state.payMedium}
+              options={optionsPayMedium}
+              className="pay_medium_select"
+              defaultValue={{
+                value: "cash",
+                label: "Cash $"
+              }}
+              onChange={this.handlePayMedium}
+              multi={false}
+              styles={customStyles}
+            />
+          </div>
+        </div>
+        <div className="test-center payPanel2_msg">
+          Other options are disabled now.
+        </div>
+        {/* <div className="paypanel_spacing" /> */}
+        <div className="paypanel_spacing" />
+        {payFinalPanel}
+      </div>
+    );
+
+    // This handles part pay + IOU
+    let payPanelA;
+    payPanelA = (
+      <div>
+        <div className="row">
+          <div className="col-6 currency_type">
+            <Select
+              value={this.state.currencyType}
+              options={optionsCurrencyType}
+              className="currency_type_select"
+              defaultValue={{
+                value: "dollar",
+                label: "Dollar $"
+              }}
+              onChange={this.handleCurrencyType}
+              multi={false}
+              styles={customStyles}
+            />
+          </div>
+          <div className="col-6 pay_medium_type">
+            <Select
+              value={this.state.payMedium}
+              options={optionsPayMedium}
+              className="pay_medium_select"
+              defaultValue={{
+                value: "cash",
+                label: "Cash $"
+              }}
+              onChange={this.handlePayMedium}
+              multi={false}
+              styles={customStyles}
+            />
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-6 amount_paid_col">
+            Pay :&nbsp;&nbsp;
+            <input
+              name="amountPaid"
+              type="number"
+              min="0.01"
+              // max="100.00"
+              className="amount_paid"
+              onChange={this.onChangeAmtPaid}
+              value={this.state.amountPaid}
+              step="1"
+            />
+            &nbsp;$
+          </div>
+          <div className="col-6 amt_due">
+            IOU (due):{" "}
+            <font color="red">{this.state.amountPending.toFixed(2)}&nbsp;</font>
+            $
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-3 text-right">Pay by:</div>
+          <div className="col-9 text-left date_picker_sizing">
+            {" "}
+            <DatePicker
+              selected={this.state.payByDate}
+              onChange={this.handlePayByDate}
+              // onSelect={this.handlePayByDate}
+              name="payByDate"
+              dateFormat="MM/DD/YYYY"
+            />
+          </div>
+        </div>
+        <div className="paypanel_spacing" />
+        {payFinalPanel}
+      </div>
+    );
+
+    // This handles - types of installment and whether you want to specify number of installment or amount of installment
+    let payPanelB1;
+    payPanelB1 = (
+      <div>
+        <div className="row">
+          <div className="col-6 paypanelb1">Installment Type:</div>
+          <div className="col-6 install_select float-left">
+            <Select
+              value={this.state.installmentType}
+              options={optionsInstallmentType}
+              className="installment_type_select"
+              defaultValue={{
+                value: "monthly",
+                label: "Monthly"
+              }}
+              onChange={this.handleInstallmentType}
+              multi={false}
+              styles={customStyles}
+            />
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-1">&nbsp;</div>
+          <div className="col-10 amount_paid_col">
+            Amount Pay Now:&nbsp;&nbsp;&nbsp;
+            <input
+              name="amountPaid"
+              type="number"
+              min="0.01"
+              // max="100.00"
+              className="amount_paid"
+              onChange={this.onChangeUpfrontAmtPaid}
+              value={this.state.amountPaid}
+              step="1"
+            />
+            &nbsp;$
+          </div>
+          <div className="col-1">&nbsp;</div>
+        </div>
+        <div className="row">
+          <div className="col-1">&nbsp;</div>
+          <div className="col-10 amount_paid_col">
+            Number of Installment:&nbsp;&nbsp;&nbsp;
+            <input
+              name="noOfInsallment"
+              type="number"
+              min="0.01"
+              // max="100.00"
+              className="no_of_installment"
+              onChange={this.onChangeNoOfInstallment}
+              value={this.state.noOfInsallment}
+              step="1"
+            />
+            &nbsp;$
+          </div>
+          <div className="col-1">&nbsp;</div>
+          <div className="row">
+            <div className="col-1">&nbsp;</div>
+            <div className="col-10 amt_per_installment">
+              Amount Per Installment:{" "}
+              {this.state.amountPerIstallment.toFixed(2)}&nbsp;$
+            </div>
+            <div className="col-1">&nbsp;</div>
+          </div>
+        </div>
+        {installmentSpec}
+        {payFinalPanel}
+      </div>
+    );
+
+    let payProcessingPanel;
+    if (this.state.payProcessHandlingFlag) {
+      console.log("this.state.paySchedule:", this.state.paySchedule);
+      console.log("value: ", this.state.paySchedule.value);
+      if (this.state.paySchedule.value === "fullpay") {
+        payProcessingPanel = (
+          <div>
+            <div className="text-center">
+              <b>Pay Process</b>
+            </div>
+            {payPanel1}
+            {payPanel2}
+            <hr className="adjust_pos" />
+          </div>
+        );
+      } else if (this.state.paySchedule.value === "partpay") {
+        payProcessingPanel = (
+          <div>
+            <div className="text-center">
+              <b>Pay Process</b>
+            </div>
+            {payPanel1}
+            {payPanelA}
+            <hr className="adjust_pos" />
+          </div>
+        );
+      } else if (this.state.paySchedule.value === "installment") {
+        payProcessingPanel = (
+          <div>
+            <div className="text-center">
+              <b>Pay Process</b>
+            </div>
+            {payPanel1}
+            {payPanelB1}
+            <hr className="adjust_pos" />
+          </div>
+        );
+      } else {
+        payProcessingPanel = null;
+      }
+    }
+
+    let checkoutTotalPanel;
+    if (this.state.checkoutFlag) {
+      checkoutTotalPanel = (
+        // <div className="cost_panel_placement">
+        <div>
+          <div className="total_panel_spacing" />
+          <div className="row">
+            <div className="col-9 text-right total_text_format">
+              Items Total:
+            </div>
+            <div className="col-3 text-right total_text_value">
+              {this.state.totalcost.toFixed(2)}&nbsp;$
+            </div>
+          </div>
+          <div className="row total_text_rows">
+            <div className="col-5 text-center total_text_format">Discount:</div>
+            <div className="col-4 text-center total_text_format">
+              <input
+                name="discount"
+                type="number"
+                min="0"
+                max="100.00"
+                className="discount_per"
+                onChange={this.onChange}
+                value={this.state.discount}
+                step="1"
+              />
+            </div>
+            <div className="col-3 text-right total_text_value">
+              {(this.state.totalcost * (this.state.discount / 100)).toFixed(2)}
+              &nbsp;$
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-5 text-center total_text_format">
+              Sales Tax:
+            </div>
+            <div className="col-4 text-center total_text_format">
+              <input
+                name="tax"
+                type="number"
+                min="0"
+                max="100.00"
+                className="discount_per"
+                onChange={this.onChange}
+                value={this.state.tax}
+                step="1"
+              />
+            </div>
+            <div className="col-3 text-right total_text_value">
+              {(
+                (this.state.totalcost -
+                  this.state.totalcost * (this.state.discount / 100)) *
+                (this.state.tax / 100)
+              ).toFixed(2)}
+              &nbsp;$
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-5 text-center total_text_format">
+              Processing:&nbsp; <font color="red">X</font>
+            </div>
+            <div className="col-4 text-left total_text_format">
+              {/* <input
+                name="processingFee"
+                type="number"
+                min="0"
+                max="100.00"
+                className="discount_per"
+                onChange={this.onChange}
+                value={this.state.processingFee}
+                step="1"
+              /> */}
+              {this.state.processingFee.toFixed(2)}&nbsp;%
+            </div>
+            <div className="col-3 text-right processing_fee">
+              {(
+                (this.state.totalcost -
+                  this.state.totalcost * (this.state.discount / 100)) *
+                (this.state.processingFee / 100)
+              ).toFixed(2)}
+              &nbsp;$
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col-9 text-right total_text_format">
+              Grand Total: (to pay)
+            </div>
+            <div className="col-3 text-right total_text_value">
+              {/* <div>The following is GrandTotal = (Items Total - discount + tax + processingFee) </div> */}
+              {(
+                this.state.totalcost -
+                this.state.totalcost * (this.state.discount / 100) +
+                (this.state.totalcost -
+                  this.state.totalcost * (this.state.discount / 100)) *
+                  (this.state.tax / 100) +
+                (this.state.totalcost -
+                  this.state.totalcost * (this.state.discount / 100)) *
+                  (this.state.processingFee / 100)
+              ).toFixed(2)}
+              &nbsp;$
+            </div>
+          </div>
+          <div className="row">
+            <div className="col text-right pay_buttons_pos">
+              {!this.state.paymentDoneFlag ? (
+                <div>
+                  <button
+                    className="btn_pay"
+                    type="button"
+                    onClick={this.handlePay}
+                  >
+                    Pay&nbsp;
+                    <i className="fas fa-money-check" />
+                  </button>
+                  &nbsp;
+                  <button
+                    className="btn_pay"
+                    type="button"
+                    onClick={this.handleBuy}
+                  >
+                    Buy&nbsp;
+                    <i className="fas fa-shopping-cart" />
+                  </button>
+                </div>
+              ) : null}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // Select member / customer here ... should be in separate component
+    // with a props function in this ... to be invoked there if customer change
+    // mind ... must have a 'Done' bubtton to take them to POS landing screen.
+    if (this.state.checkoutFlag) {
+      selectItemdropdown = (
+        <div>
+          <div className="row">
+            <div className="col text-center div_pos_item_select">
+              <select
+                size={selheight}
+                onChange={this.handleItemSelected}
+                className="pos_item_select"
+              >
+                {sellist}
+              </select>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col text-center select_item_msg">
+              Please select your customer by name
+            </div>
+          </div>
+        </div>
+      );
+    }
 
     let searchInputPanel;
     searchInputPanel = (
@@ -372,7 +1190,9 @@ class Pos extends Component {
             </div>
             <div className="col-6 text-left cost_cell_placement">
               Cost:&nbsp;&nbsp;
-              <font color="green">{this.state.calculatedItemCost.toFixed(2)}</font>
+              <font color="green">
+                {this.state.calculatedItemCost.toFixed(2)}
+              </font>
             </div>
           </div>
           <div className="row">
@@ -414,39 +1234,81 @@ class Pos extends Component {
     }
 
     let yourCartPanel;
-    if (this.state.showTheCartFlag) {
+    if (!this.state.checkoutFlag) {
+      if (this.state.showTheCartFlag) {
+        //   console.log("this.state.selectedMembers:", this.state.selectedMembers);
+        yourCartPanel = (
+          <div>
+            <div className="spacing_cart_panel" />
+            <div className="row">
+              <div className="col-9 new_cart_header text-center">
+                Items In Your Cart
+              </div>
+              <div className="col-3 text-left">
+                {this.state.itemsInCart.length === 0 ? null : (
+                  <button
+                    className="btn_checkout"
+                    type="button"
+                    onClick={this.handlecheckout}
+                  >
+                    Checkout&nbsp;
+                    <i className="fas fa-shopping-cart" />
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {this.state.itemsInCart.map((obj, i) => (
+              <div key={i}>
+                <div className="row">
+                  <div className="col-9 show_items text-left">
+                    <button
+                      className="btn_delete_item"
+                      type="button"
+                      onClick={() => this.handleDeleteMember(obj)}
+                    >
+                      <i className="fas fa-trash-alt" />
+                    </button>
+                    &nbsp;&nbsp;
+                    {/* <i className="fas fa-check-circle" /> */}
+                    &nbsp;
+                    {obj.itemName}&nbsp;(Qty:{obj.itemQty})
+                  </div>
+                  <div className="col-3 cart_costs text-right">
+                    {(obj.itemPrice * obj.itemQty).toFixed(2)}&nbsp;$
+                  </div>
+                </div>
+              </div>
+            ))}
+            <hr className="adjust_pos" />
+            <div className="space_below" />
+          </div>
+        );
+      }
+    } else {
+      // if (this.state.showTheCartFlag) {
       //   console.log("this.state.selectedMembers:", this.state.selectedMembers);
       yourCartPanel = (
         <div>
+          <hr className="adjust_pos" />
           <div className="spacing_cart_panel" />
           <div className="row">
-            <div className="col-9 new_cart_header text-center">
-              Items In Your Cart
-            </div>
-            <div className="col-3 text-left">
-              {this.state.itemsInCart.length === 0 ? null : (
-                <button
-                  className="btn_checkout"
-                  type="button"
-                  onClick={this.handlecheckout}
-                >
-                 Checkout&nbsp;<i className="fas fa-shopping-cart" />
-                </button>
-              )}
+            <div className="col new_cart_header text-center">
+              Items In Your Cart at Checkout
             </div>
           </div>
-          
+
           {this.state.itemsInCart.map((obj, i) => (
             <div key={i}>
               <div className="row">
-                <div className="col-9 show_items text-left">
-                  <button
-                    className="btn_delete_item"
-                    type="button"
-                    onClick={() => this.handleDeleteMember(obj)}
-                  >
-                    <i className="fas fa-trash-alt" />
-                  </button>
+                <div className="col-9 show_items_cart text-left">
+                  {/* <button
+                      className="btn_checkout_item"
+                      type="button"
+                      // onClick={() => this.handleDeleteMember(obj)}
+                    > */}
+                  <i className="fas fa-shopping-cart" />
+                  {/* </button> */}
                   &nbsp;&nbsp;
                   {/* <i className="fas fa-check-circle" /> */}
                   &nbsp;
@@ -458,22 +1320,48 @@ class Pos extends Component {
               </div>
             </div>
           ))}
-          <hr className="adjust_pos" />
+          {/* <hr className="adjust_pos" /> */}
           <div className="space_below" />
         </div>
       );
+      // }
     }
 
     let posOutputPanel;
-    posOutputPanel = <div>{searchInputPanel}</div>;
+    if (this.state.reviewFlag) {
+      posOutputPanel = (
+        <div>
+          <PosReview
+            posState={this.state}
+            returnToPos={this.handleReturnToPos}
+            manageCustomer={this.handleCustomerCheckout}
+          />
+        </div>
+      );
+    } else if (this.state.customerHandlingFlag) {
+      console.log("This is where we need to get customer info and finalize");
+    } else {
+      if (!this.state.checkoutFlag) {
+        posOutputPanel = (
+          <div>
+            {searchInputPanel}
+            {buyItemsPanel}
+            {yourCartPanel}
+          </div>
+        );
+      } else {
+        posOutputPanel = (
+          <div>
+            {payProcessingPanel}
+            {checkoutTotalPanel}
+            {yourCartPanel}
+          </div>
+        );
+      }
+    }
+    // posOutputPanel = <div>{searchInputPanel}</div>;
 
-    return (
-      <div className="fixedsize_pos">
-        {posOutputPanel}
-        {buyItemsPanel}
-        {yourCartPanel}
-      </div>
-    );
+    return <div className="fixedsize_pos">{posOutputPanel}</div>;
   }
 }
 

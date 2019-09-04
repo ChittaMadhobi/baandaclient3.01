@@ -43,6 +43,33 @@ div.fixedsize_pos {
   margin-top: -10px;
 }
 
+.btn_pay {
+  width: 80px;
+  height: 32px;
+  background-color: #0e3e75;
+  border: none;
+  color: white;
+  font-size: 11pt;
+  box-shadow: 3px 3px 0px 0px black;
+  border-radius: 5px;
+  margin-top: -10px;
+  margin-right: 3px;
+}
+
+.btn_paid {
+  width: 85px;
+  height: 32px;
+  background-color: #0e7325;
+  border: none;
+  color: white;
+  font-size: 11pt;
+  box-shadow: 3px 3px 0px 0px black;
+  border-radius: 5px;
+  margin-top: -10px;
+  margin-right: 20%;
+  margin-bottom: -15px;
+}
+
 /* btn_checkout */
 .btn_checkout {
   width: 110px;
@@ -65,6 +92,19 @@ div.fixedsize_pos {
   color: white;
   font-size: 10pt;
   box-shadow: 2px 2px 0px 0px black;
+  border-radius: 3px;
+  margin-top: -10px;
+  margin-left: 50px;
+}
+
+.btn_checkout_item {
+  width: 30px;
+  height: 30px;
+  background-color: #089999;
+  border: none;
+  color: white;
+  font-size: 10pt;
+  /* box-shadow: 2px 2px 0px 0px black; */
   border-radius: 3px;
   margin-top: -10px;
   margin-left: 50px;
@@ -96,7 +136,7 @@ div.fixedsize_pos {
 }
 
 .pos_item_select {
-  font-size: 0.8em;
+  font-size: 1em;
   margin-left: 14px;
   margin-right: 15px;
   margin-bottom: 5px;
@@ -105,19 +145,25 @@ div.fixedsize_pos {
 
 .cost_panel_placement {
   margin-top: 5px;
-  margin-left: 20px;
-  margin-right: 45px;
+  margin-left: 30px;
+  margin-right: 0px;
   height: 125px;
-  background-color: #f5f2eb;
+  /* background-color: #f5f2eb; */
   font-size: 0.9em;
-  border: 1px solid;
-  box-shadow: 2px 3px #888888;
+  /* border: 1px solid; */
+  /* box-shadow: 2px 3px #888888; */
 }
 
 .item_qty {
   width: 60px;
   height: 22px;
   color: #1844a3;
+}
+
+.discount_qty {
+  width: 60px;
+  height: 22px;
+  color: red;
 }
 
 .cost_cell_placement {
@@ -140,6 +186,7 @@ hr.adjust_pos {
   /* margin-top: -10px; */
   width: 90%;
   background-color: #1d9113;
+  margin-bottom: -10px;
 }
 
 .new_cart_header {
@@ -152,7 +199,7 @@ hr.adjust_pos {
   font-size: 1em;
   font-weight: 700;
   color: green;
-  margin-left: -100px;
+  margin-left: -160px;
   margin-top: 10px;
 }
 
@@ -165,12 +212,222 @@ hr.adjust_pos {
   margin-top: 10px;
 }
 
+.show_items_cart {
+  margin-left: 95px;
+  font-size: 1em;
+  margin-top: 10px;
+}
+
+.total_text_format {
+  font-size: 1em;
+  color: #0e3e75;
+  font-weight: 650;
+  margin-top: 6px;
+  padding-right: -10px;
+}
+
+.total_text_value {
+  font-size: 1em;
+  color: #0e3e75;
+  font-weight: 650;
+  margin-top: 6px;
+  margin-left: -65px;
+  margin-bottom: 5px;
+}
+
+.total_text_rows {
+  margin-top: 10px;
+}
+
+.searchpanel_placement {
+  margin-left: 10px;
+}
+
+.pay_buttons_pos {
+  margin-left: -80px;
+}
+
+.total_panel_spacing {
+  height: 10px;
+}
+
+.paypanel1 {
+  margin-top: 15px;
+  font-size: 1em;
+  margin-left: -1px;
+  height: 10px;
+}
+
+.pay_schedule_select {
+  width: 80%;
+  font-size: 1em;
+  font-weight: 650;
+  height: 15px;
+  margin-bottom: 5px;
+}
+
+.pay_schedule_label {
+  margin-top: 15px;
+  font-size: 1em;
+  font-weight: 650;
+}
+
+.paid_in_full_check {
+  color: green;
+  margin-top: -5px;
+  font-size: 1em;
+  font-weight: 600;
+}
+
+.payment_processing_msg {
+  color: black;
+  font-size: 1em;
+  font-weight: 650;
+  margin-left: 250px;
+}
+
+.payment_processing_msg_err {
+  color: red;
+  font-size: 1em;
+  font-weight: 650;
+  margin-left: 50px;
+}
+
+.currency_type {
+  width: 80%;
+  font-size: 1em;
+  font-weight: 650;
+  height: 15px;
+}
+
+.pay_medium_type {
+  width: 80%;
+  font-size: 1em;
+  font-weight: 650;
+  height: 15px;
+  margin-bottom: 5px;
+}
+
+.currency_type_select {
+  margin-top: 15px;
+  width: 70%;
+  margin-left: 10%;
+}
+
+.pay_medium_select {
+  margin-top: 15px;
+  width: 70%;
+  margin-right: 10%;
+}
+
+div.paypanel_spacing {
+  height: 15px;
+}
+
+.amt_due {
+  font-weight: 600;
+  margin-top: 40px;
+  margin-bottom: 10px;
+}
+
+.amount_paid_col {
+  margin-top: 25px;
+  margin-bottom: 10px;
+  font-size: 1em;
+  font-weight: 650;
+}
+
+.amount_paid {
+  font-size: 0.9em;
+  color: blue;
+  width: 50%;
+  margin-left: -2%;
+  margin-top: 15px;
+}
+
+.installment_type {
+  height: 100px;
+  font-size: 0.9em;
+  font-weight: 650;
+  margin-top: 30px;
+  margin-left: -10px;
+}
+
+.installment_type_select {
+  margin-left: -5px;
+  margin-top: 25px;
+}
+
+.paypanelb1 {
+  margin-top: 20px;
+  margin-bottom: -20px;
+  font-size: 0.85em;
+  font-weight: 600;
+}
+
+.amt_per_installment {
+  font-size: 1em;
+  font-weight: 600;
+}
+
+.payFinalPanel {
+  font-size: 1em;
+}
+
+.payPanel2_msg {
+  margin-top: 23px;
+  font-weight: 0.9em;
+  color: #ab4915;
+}
+
+.date_picker_sizing {
+  font-size: 1em;
+}
+
+.review_btn_placement {
+  margin-top: -15px;
+}
+
+.processing_fee {
+  margin-top: 10px;
+  margin-left: -6%;
+  color: #9ca2a6;
+}
+
+.installment_spec {
+  font-size: 0.9em;
+  font-weight: 700;
+  margin-left: 10px;
+}
+
+.installment_date_of_month {
+  font-size: 0.9em;
+  color: blue;
+  width: 50%;
+  margin-left: -50%;
+  margin-top: -1px;
+  margin-bottom: 10px;
+}
+
+.pick_day_of_week {
+  margin-top: 20px;
+  margin-bottom: -20px;
+  font-size: 0.85em;
+  font-weight: 600;
+}
+
+.pay_dayofweek_select {
+  margin-left: -5px;
+  margin-top: 25px;
+}
+
 @media only screen and (max-device-width: 480px) {
   /* styles for mobile browsers smaller than 480px; (iPhone) */
   div.fixedsize_pos {
     height: 560px;
     width: 110%;
-    margin-left: -14px;
+    /* margin-left: 10px; */
+    margin-right: -10px;
     overflow-x: hidden;
     overflow-y: auto;
   }
@@ -182,7 +439,7 @@ hr.adjust_pos {
     box-shadow: 3px 3px 0px 0px black;
     border-radius: 5px;
     margin-top: -10px;
-    margin-left: -35px;
+    margin-left: -25px;
   }
 
   .btn_costPanel_add {
@@ -199,6 +456,23 @@ hr.adjust_pos {
     margin-top: -10px;
   }
 
+  .btn_pay {
+    margin-left: 5px;
+    width: 65px;
+    height: 28px;
+    font-size: 10pt;
+    margin-top: 10px;
+  }
+
+  .btn_paid {
+    /* margin-left: -15px; */
+    margin-right: 5px;
+    width: 75px;
+    height: 28px;
+    font-size: 9pt;
+    margin-top: 14px;
+  }
+
   .btn_checkout {
     width: 80px;
     height: 26px;
@@ -206,6 +480,12 @@ hr.adjust_pos {
     margin-top: 8px;
     margin-left: -40px;
     margin-bottom: 10px;
+  }
+
+  .pay_medium_select {
+    margin-top: 15px;
+    width: 70%;
+    margin-left: 25%;
   }
 
   .btn_delete_item {
@@ -219,17 +499,18 @@ hr.adjust_pos {
 
   .cost_panel_placement {
     margin-top: 5px;
-    margin-left: 5%;
-    width: 86%;
+    margin-left: 10px;
+    padding-left: -10px;
+    width: 97%;
     height: 125px;
     font-size: 0.9em;
   }
 
   .input_text_pos {
-    font-size: 0.9em;
-    color: blue;
-    width: 80%;
-    margin-left: -2%;
+    margin-top: -5px;
+    font-size: 1em;
+    width: 90%;
+    margin-left: -5%;
   }
 
   .pos_input_msg {
@@ -257,9 +538,10 @@ hr.adjust_pos {
   }
 
   hr.adjust_pos {
-    margin-top: 5px;
+    margin-top: 15px;
     margin-left: 8%;
     width: 90%;
+    margin-bottom: -15px;
   }
 
   .new_cart_header {
@@ -273,10 +555,214 @@ hr.adjust_pos {
     font-size: 0.8em;
     color: green;
     margin-left: -20px;
+    margin-top: 4px;
   }
 
   .show_items {
-    font-size: .8em;
+    font-size: 0.8em;
+    margin-left: 10px;
+    margin-top: px;
+  }
+
+  .show_items_cart {
+    font-size: 1em;
+    margin-top: 3px;
+    margin-left: 25px;
+    margin-right: -10px;
+    font-size: 0.9em;
+  }
+
+  .total_text_format {
+    font-size: 0.9em;
+    color: #0e3e75;
+    font-weight: 650;
+    margin-top: 10px;
+  }
+
+  .total_text_value {
+    font-size: 0.9em;
+    font-weight: 650;
+    margin-top: 10px;
+    margin-left: -5px;
+  }
+
+  .pay_buttons_pos {
+    margin-left: -10px;
+  }
+
+  .paypanl1 {
+    margin-top: 15px;
+    font-size: 0.9em;
+    margin-left: 1px;
+  }
+
+  .paypanel1 {
+    font-size: 1em;
+    margin-left: -1px;
+    height: 10px;
+  }
+
+  .pay_schedule_select {
+    width: 90%;
+    font-size: 0.9em;
+    height: 15px;
+    margin-bottom: 5px;
+  }
+
+  .currency_type {
+    margin-left: 15px;
+    margin-top: 15px;
+    width: 80%;
+    font-size: 0.9em;
+    height: 15px;
+    margin-bottom: 10px;
+  }
+
+  .pay_medium_type {
+    margin-left: -15px;
+    margin-top: 15px;
+    width: 80%;
+    font-size: 0.9em;
+    height: 15px;
+    margin-bottom: 10px;
+  }
+
+  .pay_schedule_label {
+    margin-top: 18px;
+    font-size: 0.9em;
+    font-weight: 650;
+  }
+
+  .paid_in_full_check {
+    /* margin-left: -5px; */
+    margin-top: 5px;
+    font-size: 0.9em;
+    font-weight: 600;
+  }
+
+  .payment_processing_msg {
+    font-size: 0.9em;
+    font-weight: 650;
+    margin-top: 10px;
+    margin-left: 60px;
+    margin-bottom: -20px;
+  }
+
+  .payment_processing_msg_err {
+    font-size: 0.9em;
+    font-weight: 650;
+    margin-top: 10px;
+    margin-left: 60px;
+    margin-bottom: -20px;
+  }
+
+  .amount_paid_col {
+    margin-left: -5px;
+    margin-top: 10px;
+    margin-bottom: 0px;
+    width: 80%;
+    font-size: 0.9em;
+  }
+
+  .amount_paid {
+    font-size: 0.9em;
+    color: blue;
+    width: 35%;
+    margin-left: -2%;
+    margin-top: 15px;
+  }
+
+  .no_of_installment {
+    font-size: 0.9em;
+    color: blue;
+    width: 25%;
+    margin-left: -2%;
+    margin-top: 15px;
+  }
+
+  .installment_type {
+    height: 100px;
+    font-size: 0.9em;
+    font-weight: 650;
+    margin-top: 30px;
+    margin-left: -10px;
+  }
+
+  .installment_type_select {
+    margin-left: -5px;
+    margin-top: 28px;
+    font-size: 0.9em;
+  }
+
+  .amt_per_installment {
+    margin-top: 10px;
+    margin-left: 15px;
+    font-size: 0.9em;
+    font-weight: 650;
+  }
+
+  .paypanelb1 {
+    margin-top: 30px;
+    margin-bottom: -20px;
+    font-size: 0.85em;
+    font-weight: 600;
+  }
+
+  .payFinalPanel {
+    font-size: 1em;
+  }
+
+  .amt_due {
+    font-weight: 600;
+    margin-top: 30px;
+    margin-bottom: 10px;
+    font-size: 0.9em;
+  }
+
+  .payPanel2_msg {
+    margin-top: 15px;
+    font-weight: 8pt;
+  }
+
+  .date_picker_sizing {
+    font-size: 0.8em;
+  }
+
+  .processing_fee {
+    margin-top: 10px;
+    margin-left: -1%;
+    color: #9ca2a6;
+  }
+
+  .installment_spec {
+    font-size: 0.9em;
+    font-weight: 700;
+    margin-left: 10px;
+    margin-top: 0px;
+  }
+
+  .installment_date_of_month {
+    font-size: 0.9em;
+    color: blue;
+    width: 50%;
+    margin-left: -50%;
+    margin-bottom: 20px;
+  }
+
+  .pick_day_of_week {
+    margin-right: -5px;
+    margin-top: -7px;
+    margin-bottom: 20px;
+    font-size: 0.85em;
+    font-weight: 650;
+  }
+  
+  .pay_dayofweek_select {
+    margin-top: 30px;
+    margin-bottom: 20px;
+    margin-top: -10px;
+    font-size: 0.85em;
+    font-weight: 600;
   }
 }
 
@@ -314,6 +800,20 @@ hr.adjust_pos {
     margin-top: -10px;
   }
 
+  .btn_pay {
+    width: 55px;
+    height: 26px;
+    font-size: 8pt;
+    margin-top: 10px;
+  }
+
+  .btn_paid {
+    width: 65px;
+    height: 26px;
+    font-size: 8pt;
+    margin-top: 20px;
+  }
+
   .btn_checkout {
     width: 65px;
     height: 26px;
@@ -339,11 +839,29 @@ hr.adjust_pos {
     font-size: 0.9em;
   }
 
+  .currency_type {
+    margin-left: 15px;
+    margin-top: 15px;
+    width: 80%;
+    font-size: 0.9em;
+    height: 15px;
+    margin-bottom: 10px;
+  }
+
   .input_text_pos {
+    margin-top: 5px;
     font-size: 0.9em;
     color: blue;
     width: 90%;
     margin-left: -2%;
+  }
+
+  .discount_per {
+    font-size: 0.9em;
+    color: blue;
+    width: 90%;
+    margin-left: -2%;
+    margin-top: 8px;
   }
 
   .div_pos_item_select {
@@ -379,7 +897,147 @@ hr.adjust_pos {
   }
 
   .show_items {
-    font-size: .75em;
+    font-size: 0.8em;
+    margin-left: 5px;
+  }
+
+  .show_items_cart {
+    font-size: 1em;
+    margin-top: 7px;
+    margin-left: 15px;
+    margin-right: -15px;
+    font-size: 0.8em;
+  }
+
+  .pay_buttons_pos {
+    margin-left: -10px;
+  }
+
+  .total_text_format {
+    font-size: 0.85em;
+    font-weight: 650;
+    margin-top: 4px;
+    margin-left: -5px;
+    /* padding-right: -10px; */
+  }
+
+  .total_text_value {
+    font-size: 0.85em;
+    font-weight: 650;
+    margin-top: 6px;
+    margin-left: -5px;
+  }
+
+  .paypanel1 {
+    margin-top: 1px;
+    font-size: 1em;
+    margin-left: -1px;
+    height: 10px;
+  }
+
+  .pay_schedule_select {
+    width: 80%;
+    font-size: 0.75em;
+    height: 15px;
+    margin-bottom: 5px;
+    font-weight: 600;
+  }
+
+  .pay_schedule_label {
+    margin-top: 4px;
+    font-size: 0.9em;
+    font-weight: 650;
+  }
+
+  .amount_paid_col {
+    margin-top: 25px;
+    margin-bottom: -5px;
+    margin-left: -4px;
+    font-size: 0.9em;
+    font-weight: 600;
+  }
+
+  .paid_in_full_check {
+    margin-top: 10px;
+    font-size: 0.8em;
+    font-weight: 600;
+  }
+
+  .amount_paid {
+    font-size: 0.8em;
+    color: blue;
+    width: 30%;
+    margin-left: 2%;
+    margin-top: 5px;
+  }
+
+  .installment_type {
+    height: 100px;
+    font-size: 0.9em;
+    font-weight: 650;
+    margin-top: 30px;
+    margin-left: -10px;
+  }
+
+  .installment_type_select {
+    margin-left: -15px;
+    margin-right: 7px;
+    margin-top: 20px;
+    font-size: 0.85em;
+  }
+
+  .amt_per_installment {
+    font-size: 0.85em;
+    font-weight: 600;
+    margin-bottom: -15px;
+  }
+
+  .paypanelb1 {
+    margin-top: 20px;
+    margin-bottom: -20px;
+    font-size: 0.85em;
+    font-weight: 600;
+  }
+
+  .payFinalPanel {
+    font-size: 0.8em;
+    margin-left: -10px;
+  }
+
+  .pay-check-input {
+    font-size: 0.8em;
+  }
+
+  .amt_due {
+    font-weight: 600;
+    margin-top: 30px;
+    margin-bottom: 10px;
+  }
+
+  .payPanel2_msg {
+    margin-top: 15px;
+    font-weight: 0.8em;
+  }
+
+  .processing_fee {
+    margin-top: 10px;
+    margin-left: -1%;
+    color: #9ca2a6;
+  }
+
+  .installment_spec {
+    font-size: 0.9em;
+    font-weight: 700;
+    margin-left: 10px;
+  }
+
+  .installment_date_of_month {
+    font-size: 0.9em;
+    color: blue;
+    width: 50%;
+    margin-left: -50%;
+    margin-top: -1px;
+    margin-bottom: 10px;
   }
 }
 
@@ -412,6 +1070,20 @@ hr.adjust_pos {
     margin-top: -10px;
   }
 
+  .btn_pay {
+    width: 80px;
+    height: 32px;
+    font-size: 11pt;
+    margin-top: 20px;
+  }
+
+  .btn_paid {
+    width: 80px;
+    height: 32px;
+    font-size: 11pt;
+    margin-top: 5px;
+  }
+
   .btn_costPanel_add {
     width: 70px;
     height: 30px;
@@ -437,12 +1109,27 @@ hr.adjust_pos {
     margin-left: 5px;
   }
 
+  .total_text_format {
+    font-size: 0.9em;
+    font-weight: 650;
+    margin-top: 15px;
+    margin-left: -5px;
+    /* padding-right: -10px; */
+  }
+
   .cost_panel_placement {
     margin-top: 5px;
     margin-left: 3%;
     width: 95%;
     height: 125px;
     font-size: 0.9em;
+  }
+
+  .total_text_value {
+    font-size: 0.9em;
+    font-weight: 650;
+    margin-top: 18px;
+    margin-left: -65px;
   }
 
   .pos_input_msg {
@@ -462,9 +1149,10 @@ hr.adjust_pos {
   }
 
   hr.adjust_pos {
-    margin-top: 15px;
+    margin-top: 20px;
     margin-left: 0;
     width: 100%;
+    margin-bottom: 10px;
   }
 
   .input_text_pos {
@@ -495,8 +1183,71 @@ hr.adjust_pos {
 
   .cart_costs {
     margin-top: 10px;
-    margin-left: -100px;
+    margin-left: -80px;
     font-size: 1em;
     color: green;
+  }
+
+  .show_items {
+    font-size: 1em;
+    margin-top: 10px;
+  }
+
+  .show_items_cart {
+    font-size: 1em;
+    margin-top: 10px;
+    margin-left: 15px;
+  }
+
+  .pay_buttons_pos {
+    margin-left: -10px;
+  }
+
+  .paid_in_full_check {
+    margin-top: 10px;
+    font-size: 1em;
+    font-weight: 600;
+  }
+
+  .paypanelb1 {
+    margin-top: 30px;
+    margin-bottom: -20px;
+    font-size: 1em;
+    font-weight: 600;
+  }
+
+  .amount_paid {
+    font-size: 0.9em;
+    color: blue;
+    width: 40%;
+    margin-left: 2%;
+    margin-top: 15px;
+  }
+
+  .amt_due {
+    font-weight: 600;
+    margin-top: 40px;
+    margin-bottom: 10px;
+  }
+
+  .processing_fee {
+    margin-left: -66px;
+    margin-top: 0.9em;
+    color: #9ca2a6;
+  }
+
+  .installment_spec {
+    font-size: 0.9em;
+    font-weight: 700;
+    margin-left: 10px;
+  }
+
+  .installment_date_of_month {
+    font-size: 0.9em;
+    color: blue;
+    width: 50%;
+    margin-left: -50%;
+    margin-top: -1px;
+    margin-bottom: 10px;
   }
 }
