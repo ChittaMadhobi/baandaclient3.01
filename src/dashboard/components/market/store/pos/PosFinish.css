@@ -1,0 +1,198 @@
+.btn_goPosCustomerFind {
+  width: 100px;
+  height: 32px;
+  background-color: #136128;
+  border: none;
+  color: white;
+  font-size: 10pt;
+  box-shadow: 3px 3px 0px 0px black;
+  border-radius: 5px;
+  margin-top: -10px;
+}
+
+.btn_retToPos {
+  width: 100px;
+  height: 32px;
+  background-color: #9e4c26;
+  border: none;
+  color: white;
+  font-size: 10pt;
+  box-shadow: 3px 3px 0px 0px black;
+  border-radius: 5px;
+  margin-top: -10px;
+}
+
+
+.btn_completePos {
+  width: 100px;
+  height: 32px;
+  background-color: #0d7a25;
+  border: none;
+  color: white;
+  font-size: 10pt;
+  box-shadow: 3px 3px 0px 0px black;
+  border-radius: 5px;
+  margin-top: -10px;
+}
+
+.customer_search {
+  margin-left: 10px;
+}
+
+.input_customer_name {
+  font-size: 1em;
+  color: blue;
+  width: 90%;
+  margin-left: -2%;
+}
+
+.customer_search {
+  margin-top: 20px;
+}
+
+.member-select {
+  width: 80%;
+  font-size: 1em;
+}
+
+.select_member_msg {
+  font-size: 1em;
+}
+
+.select_member_msg_err {
+  font-size: 1em;
+  color: red;
+}
+
+.show_member_header {
+  font-size: 1em;
+  font-weight: 700;
+}
+
+.label_format {
+  font-size: 1em;
+  font-weight: 650;
+  color: #0e2b7d;
+}
+
+.data_format {
+  font-size: 1em;
+  font-weight: 650;
+  color: #73410d;
+}
+
+.confirm_format {
+  font-size: 1em;
+  color: #0d7a25;
+}
+
+.confirm_err_format {
+  color: #142c99;
+  font-size: 1em;
+  font-weight: 600;
+}
+
+@media only screen and (max-device-width: 480px) {
+  .btn_goPosCustomerFind {
+    width: 40px;
+    height: 27px;
+    font-size: 8pt;
+    border-radius: 5px;
+    margin-top: -10px;
+    margin-left: -25px;
+  }
+
+  .btn_retToPos {
+    width: 70px;
+    height: 28px;
+    font-size: .85em;
+    border-radius: 5px;
+    margin-top: 10px;
+    margin-left: -10px;
+  }
+  
+  
+  .btn_completePos {
+    width: 70px;
+    height: 28px;
+    font-size: .85em;
+    border-radius: 5px;
+    margin-top: 10px;
+    margin-right: 5px;
+  }
+
+  .input_customer_name {
+    margin-top: -5px;
+    font-size: 1em;
+    width: 90%;
+    margin-left: -5%;
+  }
+
+  .select_member_msg {
+    font-size: 0.75em;
+  }
+
+  .select_member_msg_err {
+    font-size: 0.75em;
+    color: red;
+  }
+
+  .label_format {
+    font-size: 0.85em;
+    font-weight: 650;
+  }
+
+  .data_format {
+    font-size: 0.85em;
+    font-weight: 650;
+  }
+
+  .confirm_format {
+    font-size: .9em;
+    font-weight: 650;
+    margin-top: 15px;
+    margin-left: -10px;
+  }
+
+  .confirm_err_format {
+    color: #142c99;
+    font-size: 1em;
+    font-weight: 600;
+    margin-top: 10px;
+  }
+}
+
+@media only screen and (max-device-width: 320px) {
+  .btn_goPosCustomerFind {
+    width: 40px;
+    height: 24px;
+    font-size: 7pt;
+    border-radius: 5px;
+    margin-top: -12px;
+    margin-left: -29px;
+  }
+  .input_customer_name {
+    margin-top: 5px;
+    font-size: 0.9em;
+    width: 90%;
+    margin-left: -2%;
+  }
+}
+
+@media only screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation: portrait) {
+  /* For portrait layouts only */
+  .btn_goPosCustomerFind {
+    width: 100px;
+    height: 30px;
+    font-size: 9pt;
+    border-radius: 5px;
+    margin-top: -1px;
+    margin-left: -15px;
+  }
+
+  .input_customer_name {
+    font-size: 1em;
+    width: 90%;
+    margin-left: -2%;
+  }
+}

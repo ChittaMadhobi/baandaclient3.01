@@ -17,7 +17,8 @@ import { optionsPayMedium } from "./data/payMedium";
 import { optionsInstallmentType } from "./data/installmentType";
 import { optionsWeekOfDay } from "./data/dayOfWeek";
 
-import PosReview from "./PosReview";
+import PosReview from "./pos/PosReview";
+import PosFinish from "./pos/PosFinish";
 
 const baandaServer = process.env.REACT_APP_BAANDA_SERVER;
 const serchItemToEdit = "/routes/dashboard/searchItemToEdit?";
@@ -554,17 +555,25 @@ class Pos extends Component {
       reviewFlag: false,
       payProcessHandlingFlag: true,
       showTheCartFlag: true,
-      checkoutFlag: true
+      checkoutFlag: true,
+      customerHandlingFlag: false
     });
   };
 
-  handleCustomerCheckout = () => {
+  handleCustomerCheckout = async () => {
     console.log("Pos.js Here we need to handle customer checkout.");
+    await this.setState({
+      reviewFlag: false,
+      payProcessHandlingFlag: false,
+      showTheCartFlag: false,
+      checkoutFlag: false,
+      customerHandlingFlag: true
+    });
   };
 
   render() {
     // console.log("Pos props:", this.props);
-    // console.log("this.state:", this.state);
+    // console.log("Pos state:", this.state);
 
     // This section is for item search drop down
     // **************************************************
@@ -579,10 +588,10 @@ class Pos extends Component {
       );
     });
 
-    console.log(
-      "@@@@@@@@@@@@@@ this.state.installmentType.value:",
-      this.state.installmentType.value
-    );
+    // console.log(
+    //   "@@@@@@@@@@@@@@ this.state.installmentType.value:",
+    //   this.state.installmentType.value
+    // );
     let installmentSpec;
     if (
       this.state.installmentType.value === "bi-monthly" ||
@@ -1334,12 +1343,23 @@ class Pos extends Component {
           <PosReview
             posState={this.state}
             returnToPos={this.handleReturnToPos}
+            communityid={this.props.communityid}
             manageCustomer={this.handleCustomerCheckout}
           />
         </div>
       );
     } else if (this.state.customerHandlingFlag) {
       console.log("This is where we need to get customer info and finalize");
+      posOutputPanel = (
+        <div>
+          <PosFinish
+            posState={this.state}
+            communityid={this.props.communityid}
+            returnToPos={this.handleReturnToPos}
+            manageCustomer={this.handleCustomerCheckout}
+          />
+        </div>
+      );
     } else {
       if (!this.state.checkoutFlag) {
         posOutputPanel = (
