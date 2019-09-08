@@ -112,7 +112,7 @@ class CommCreate extends Component {
   };
 
   render() {
-    console.log("comm create this props auth:", this.props.auth);
+    // console.log("comm create this props auth:", this.props.auth);
 
     let createEditToggleButton;
     let creationPanel;

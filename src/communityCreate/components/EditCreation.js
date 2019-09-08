@@ -5,7 +5,7 @@ class EditCreation extends Component {
         return (
             <div>
                 <p align="justify">
-                    <b>Name: </b>
+                    Coming soon ... work in progress
 
                 </p>
             </div>
