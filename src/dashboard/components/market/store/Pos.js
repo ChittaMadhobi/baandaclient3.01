@@ -37,7 +37,7 @@ const customStyles = {
       maxHeight: 130
     };
   }
-};
+};  
 
 class Pos extends Component {
   constructor(props) {
@@ -72,7 +72,7 @@ class Pos extends Component {
       discount: 0.0,
       tax: 7.5,
       processingFee: 0.25,
-      toPayTotal: 0.0,
+      toPayTotal: 0.00,
       amountPending: 0.0,
 
       paySchedule: { value: "fullpay", label: "Pay in full now" },
@@ -98,7 +98,7 @@ class Pos extends Component {
         value: "monthly",
         label: "Monthly"
       },
-      noOfInsallment: 0,
+      noOfInstallment: 0,
       amountPerIstallment: 0.0,
       installmentDateOfMonth: 15,
       installmentDayOfWeek: {
@@ -117,12 +117,24 @@ class Pos extends Component {
       this.props.history.push("/login");
     }
     this.props.history.goForward();
+
+    // while( this.state.itemsInCart.length > 0){
+    //   this.state.itemsInCart.pop();
+    // }
   }
 
   componentDidMount = async () => {
     // call to get the joiningProcess from communities using communityId
     // call getPosInitData()
     await this.getPosInitData();
+
+    while( this.state.itemsInCart.length > 0){
+      this.state.itemsInCart.pop();
+    }
+
+    while( this.state.item.length > 0){
+      this.state.item.pop();
+    }
   };
 
   getPosInitData = async () => {
@@ -145,75 +157,130 @@ class Pos extends Component {
     console.log("name:", name);
     await this.setState({ [e.target.name]: e.target.value });
     if (name === "discount" || name === "tax" || name === "processingFee") {
-      let total = this.state.totalcost;
-      let totDiscount = total * (this.state.discount / 100);
-      let totPostDiscount = total - totDiscount;
-      let totTax = totPostDiscount * (this.state.tax / 100);
+      let total = parseFloat((this.state.totalcost * 1).toFixed(2));
+      let totDiscount = parseFloat((total * (this.state.discount / 100)).toFixed(2));
+      let totPostDiscount = parseFloat((total - totDiscount).toFixed(2));
+      let totTax = parseFloat((totPostDiscount * (this.state.tax / 100)).toFixed(2));
       let totProcessing = totPostDiscount * (this.state.processingFee / 100);
+
+      let totPending = parseFloat(((totPostDiscount + totTax) - this.state.amountPaid).toFixed(2));
+   
+      let amtPerInstallment = 0;
+      if ( this.state.noOfInstallment === 0) {
+        amtPerInstallment = 0;
+      } else {
+        amtPerInstallment = parseFloat((totPending / this.state.noOfInstallment).toFixed(2));
+      }
       // let toPay = totPostDiscount + totTax + totProcessing;
-      let toPay = totPostDiscount + totTax;
-      // console.log('onChange this.state.discount:', this.state.discount);
-      // console.log(
-      //   "onChange total=" +
-      //     total +
-      //     " totDiscount=" +
-      //     totDiscount +
-      //     " amout post discount:" +
-      //     totPostDiscount +
-      //     " totTax=" +
-      //     totTax +
-      //     " totProcessing=" +
-      //     totProcessing +
-      //     " toPay=" +
-      //     toPay
-      // );
+      let toPay = parseFloat(((totPostDiscount * 1) + (totTax * 1)).toFixed(2));
+      let showPaySchedule;
+      if (this.state.payProcessHandlingFlag) {
+        showPaySchedule = true;
+      } else {
+        showPaySchedule = false;
+      }
+      console.log('onChange this.state.discount:', this.state.discount);
+      console.log(
+        "onChange [" + name + "] total=" +
+          total +
+          " totDiscount=" +
+          totDiscount +
+          " amout post discount:" +
+          totPostDiscount +
+          " totTax=" +
+          totTax +
+          " totProcessing=" +
+          totProcessing +
+          " toPay=" +
+          toPay + " this.state.amountPaid:" + this.state.amountPaid +
+          " totPending=" + totPending
+      );
+      
       await this.setState({
         toPayTotal: toPay,
-        payProcessHandlingFlag: true,
+        payProcessHandlingFlag: showPaySchedule,
         toPayTax: totTax,
         toPayDiscount: totDiscount,
-        toPayProcessingFee: totProcessing
+        toPayProcessingFee: totProcessing,
+        amountPending: totPending,
+        amountPerIstallment: amtPerInstallment
       });
-    }
+    } 
   };
 
   onChangeAmtPaid = async e => {
     // console.log("name: ", [e.target.name], " value:", e.target.value);
     // console.log("toPayTotal:", this.state.toPayTotal);
+    let name = [e.target.name][0]
+    
+    let val = 0.00;
+    if  ( e.target.value !== ''){
+      val = parseFloat(e.target.value);
+    }
+    console.log('onChangeAmtPaid [e.target.name]:', name, ' value:', e.target.value, ' this.state.toPayTotal:', this.state.toPayTotal, ' val=', val);
     await this.setState({
-      [e.target.name]: e.target.value,
-      amountPending: this.state.toPayTotal - e.target.value
+      [e.target.name]: val,
+      amountPending: this.state.toPayTotal - val
     });
   };
 
   onChangeUpfrontAmtPaid = async e => {
+    let name = [e.target.name][0];
     let paidAmt = e.target.value;
+    let paidAmtType = typeof paidAmt;
+    let localPaidAmt = 0.00
+    if (paidAmtType === 'string') {
+      if ( paidAmt === '') {
+        localPaidAmt = 0.00
+      } else {
+        localPaidAmt = parseFloat(paidAmt);
+      }
+    } else {
+      localPaidAmt = paidAmt;
+    }
+    console.log('e.targer.name:', name, ' paidAmt:', paidAmt, 'typeOf paidAmt:', typeof paidAmt, ' localpaidamt:', localPaidAmt);
     let amtToPay = this.state.toPayTotal - paidAmt;
     let perInsAmt;
+    
     if (amtToPay > 0) {
-      if (this.state.noOfInsallment > 0) {
-        perInsAmt = (amtToPay / this.state.noOfInsallment).toFixed(2);
+      if (this.state.noOfInstallment > 0) {
+        perInsAmt = parseFloat((amtToPay / this.state.noOfInstallment).toFixed(2));
       } else {
-        perInsAmt = amtToPay;
+        perInsAmt = parseFloat(amtToPay.toFixed(2));
       }
     } else {
       perInsAmt = 0;
     }
+    console.log('name:', name, ' paidAmt:', paidAmt, ' amtToPay:', amtToPay);
     await this.setState({
-      [e.target.name]: paidAmt,
+      [e.target.name]: localPaidAmt,
       amountPending: this.state.toPayTotal - e.target.value,
       amountPerIstallment: perInsAmt
     });
   };
 
   onChangeNoOfInstallment = async e => {
-    let noOfIns = e.target.value;
+    let paidAmt;
+    // if ( this.state.amountPaid === 0){
+      paidAmt = this.state.amountPaid;
+    // } else {
+    //   paidAmt = parseFloat(this.state.amountPaid.toFixed(2));
+    // }
+    let totAmount = parseFloat(this.state.toPayTotal.toFixed(2));
+    let noOfIns=0;
+    if ( e.target.value >= 0 ) {
+      noOfIns = e.target.value;
+    } else {
+      noOfIns = 0
+    }
+    
     let toPayInIns;
     if (noOfIns > 0) {
-      toPayInIns = this.state.amountPending / noOfIns;
+      toPayInIns = parseFloat(((totAmount - paidAmt) / parseInt(noOfIns)).toFixed(2));
     } else {
-      toPayInIns = this.state.amountPending;
+      toPayInIns = (totAmount - paidAmt);
     }
+    console.log('paidAmt=', paidAmt, ' totAmt=', totAmount, ' noOfIns=', noOfIns, ' toPayInIns=', toPayInIns);
     await this.setState({
       [e.target.name]: e.target.value,
       amountPerIstallment: toPayInIns
@@ -430,7 +497,7 @@ class Pos extends Component {
   handlecheckout = async () => {
     let total = 0.0;
     this.state.itemsInCart.forEach(obj => {
-      total = total + obj.itemPrice * obj.itemQty;
+      total = parseFloat((total + obj.itemPrice * obj.itemQty).toFixed(2));
     });
     // console.log("handlecheckout itemsincart:", this.state.itemsInCart);
     console.log("handlecheckout Total : ", total);
@@ -455,45 +522,58 @@ class Pos extends Component {
 
   handlePay = async () => {
     // alert("handle pay");
-    let total = 0.0;
+    let total = 0.00;
     this.state.itemsInCart.forEach(obj => {
-      total = total + obj.itemPrice * obj.itemQty;
+      total = total + parseFloat((obj.itemPrice * obj.itemQty).toFixed(2));
     });
-    let totDiscount = total * (this.state.discount / 100);
-    let totPostDiscount = total - totDiscount;
-    let totTax = totPostDiscount * (this.state.tax / 100);
+    let totDiscount = parseFloat((total * (this.state.discount / 100)).toFixed(2));
+    let totPostDiscount = parseFloat((total - totDiscount).toFixed(2));
+    let totTax = parseFloat((totPostDiscount * (this.state.tax / 100)).toFixed(2));
     let totProcessing = totPostDiscount * (this.state.processingFee / 100);
     // let toPay = totPostDiscount + totTax + totProcessing;
-    let toPay = totPostDiscount + totTax;
-
-    // console.log(
-    //   "handlePay total=" +
-    //     total +
-    //     " totDiscount=" +
-    //     totDiscount +
-    //     " amout post discount:" +
-    //     totPostDiscount +
-    //     " totTax=" +
-    //     totTax +
-    //     " totProcessing=" +
-    //     totProcessing +
-    //     " toPay=" +
-    //     toPay
-    // );
+    let toPay = parseFloat((totPostDiscount + totTax).toFixed(2));
+    console.log('handlePay toPay:', toPay.toFixed(2));
+    console.log(
+      "handlePay total=" +
+        total +
+        " totDiscount=" +
+        totDiscount +
+        " amout post discount:" +
+        totPostDiscount +
+        " totTax=" +
+        totTax +
+        " totProcessing=" +
+        totProcessing +
+        " toPay=" +
+        toPay
+    );
     await this.setState({
       toPayTotal: toPay,
       payProcessHandlingFlag: true,
       toPayTax: totTax,
       toPayDiscount: totDiscount,
-      toPayProcessingFee: totProcessing
+      toPayProcessingFee: totProcessing,
+      amountPending: toPay
     });
   };
 
   handlePaySchedule = async (selectedOption, { action }) => {
-    console.log("handlePaySchedule:", selectedOption);
-    await this.setState({
-      paySchedule: selectedOption
-    });
+    console.log("handlePaySchedule:", selectedOption, ' value:', selectedOption.value);
+    if ( selectedOption.value === 'fullpay') {
+      console.log('Inside fullpay >>>>>>>>>>>>>>>>');
+      await this.setState({
+        paySchedule: selectedOption,
+        amountPaid: 0,
+        amountPending: this.state.toPayTotal,
+        // amountPerIstallment: 0,
+        // noOfInstallment: 0
+      });
+    } else {
+      await this.setState({
+        paySchedule: selectedOption
+      });
+    }
+
   };
 
   handleDayOfWeek = async (selectedOption, { action }) => {
@@ -510,21 +590,20 @@ class Pos extends Component {
   };
 
   handleReview = async () => {
-    // alert("handle review");
-    // if (this.state.paidCheck) {
     // Checked and hence go for review
+    let paydateofmonth = this.state.installmentDateOfMonth;
+    if ( this.state.paySchedule.value === 'monthly' || this.state.paySchedule.value === 'bi-monthly'){
+      if ( this.state.installmentDateOfMonth > 28 || this.state.installmentDateOfMonth < 1 ) {
+        paydateofmonth = 15;
+      }
+    }
     await this.setState({
       reviewFlag: true,
       payProcessHandlingFlag: false,
       showTheCartFlag: false,
-      checkoutFlag: false
+      checkoutFlag: false,
+      installmentDateOfMonth: paydateofmonth
     });
-    // } else {
-    //   await this.setState({
-    //     paymentErrFlag: true,
-    //     paymentProcessMsg: ''
-    //   })
-    // }
   };
 
   handleCurrencyType = async (selectedOption, { action }) => {
@@ -542,7 +621,7 @@ class Pos extends Component {
   };
 
   handleInstallmentType = async (selectedOption, { action }) => {
-    console.log("installmentType:", this.state.installmentType);
+    // console.log("installmentType:", this.state.installmentType);
     await this.setState({
       installmentType: selectedOption
     });
@@ -571,9 +650,79 @@ class Pos extends Component {
     });
   };
 
+  handleSaleComplete = async () => {
+    // alert('Sale is complete and I am at pos. Get ready for the next sale.')
+    
+    while( this.state.itemsInCart.length > 0){
+      this.state.itemsInCart.pop();
+    }
+    while( this.state.item.length > 0){
+      this.state.item.pop();
+    }
+
+    await this.setState({
+      selectedItemName: "",
+      selectedItemId: 0,
+      selectedItemPrice: 0.0,
+      selectedItemInventory: 0,
+      itemQty: "",
+      calculatedItemCost: 0.0,
+      costQtyErrFlag: false,
+      joiningProcess: "",
+
+      itemSearchDropdownFlag: false, 
+
+      searchItemName: "",
+      posItemNameErrFlag: false,
+      posItemNameMsg: "Part/full item name to filter.",
+
+      itemSelectToBuyFlag: false,
+      searchAndEditMsg: "Please scroll & select an item.",
+      item: [], 
+      // itemsInCart: this.state.itemsInCart.splice(0, this.state.itemsInCart.length),
+      searchAndEditErrorFlag: false,
+      itemToBuyFlag: false,
+      showTheCartFlag: false,
+      checkoutFlag: false,
+
+      totalcost: 0.0,
+      discount: 0.0,
+      tax: 7.5,
+      processingFee: 0.25,
+      toPayTotal: 0.00,
+      amountPending: 0.0,
+
+      paySchedule: { value: "fullpay", label: "Pay in full now" },
+      paidCheck: false,
+      paymentProcessMsg: "",
+      paymentDoneFlag: false,
+      amountPaid: 0.0,
+      // payByDate: new Date(),
+      payByDate: moment(),
+      toPayTax: 0.0,
+      toPayDiscount: 0.0,
+      toPayProcessingFee: 0.0,
+
+      installmentType: {
+        value: "monthly",
+        label: "Monthly"
+      },
+      noOfInstallment: 0,
+      amountPerIstallment: 0.0,
+      installmentDateOfMonth: 15,
+      installmentDayOfWeek: {
+        value: "friday",
+        label: "Friday"
+      },
+
+      reviewFlag: false,
+      customerHandlingFlag: false
+    });
+  }
+
   render() {
     // console.log("Pos props:", this.props);
-    // console.log("Pos state:", this.state);
+    console.log("Pos state:", this.state);
 
     // This section is for item search drop down
     // **************************************************
@@ -617,6 +766,7 @@ class Pos extends Component {
               />
             </div>
           </div>
+          <div className="date_of_month">DateOfMonth will be 15 if not within 1 to 28.</div>
         </div>
       );
     } else if (
@@ -682,7 +832,7 @@ class Pos extends Component {
               value={this.state.paySchedule}
               options={optionsPaySchedule}
               className="pay_schedule_select"
-              defaultValue={{ value: "fullPay", label: "Pay in full" }}
+              defaultValue={{ value: "fullpay", label: "Pay in full" }}
               onChange={this.handlePaySchedule}
               multi={false}
               styles={customStyles}
@@ -896,13 +1046,13 @@ class Pos extends Component {
           <div className="col-10 amount_paid_col">
             Number of Installment:&nbsp;&nbsp;&nbsp;
             <input
-              name="noOfInsallment"
+              name="noOfInstallment"
               type="number"
               min="0.01"
               // max="100.00"
               className="no_of_installment"
               onChange={this.onChangeNoOfInstallment}
-              value={this.state.noOfInsallment}
+              value={this.state.noOfInstallment}
               step="1"
             />
             &nbsp;$
@@ -912,7 +1062,7 @@ class Pos extends Component {
             <div className="col-1">&nbsp;</div>
             <div className="col-10 amt_per_installment">
               Amount Per Installment:{" "}
-              {this.state.amountPerIstallment.toFixed(2)}&nbsp;$
+              {this.state.amountPerIstallment}&nbsp;$
             </div>
             <div className="col-1">&nbsp;</div>
           </div>
@@ -964,6 +1114,12 @@ class Pos extends Component {
       }
     }
 
+    let totalCostdisp = parseFloat(this.state.totalcost.toFixed(2));
+    let discountAmtdisp = parseFloat((totalCostdisp * (this.state.discount / 100)).toFixed(2));
+    let salesTaxdisp = parseFloat(((totalCostdisp - discountAmtdisp) * (this.state.tax/100)).toFixed(2));
+    let processingFeedisp = parseFloat(((totalCostdisp - discountAmtdisp) * (this.state.processingFee/100)).toFixed(2));
+    let grandTotaldisp = (totalCostdisp - discountAmtdisp + salesTaxdisp).toFixed(2);
+
     let checkoutTotalPanel;
     if (this.state.checkoutFlag) {
       checkoutTotalPanel = (
@@ -975,7 +1131,8 @@ class Pos extends Component {
               Items Total:
             </div>
             <div className="col-3 text-right total_text_value">
-              {this.state.totalcost.toFixed(2)}&nbsp;$
+              {/* {this.state.totalcost.toFixed(2)}&nbsp;$ */}
+              {totalCostdisp}
             </div>
           </div>
           <div className="row total_text_rows">
@@ -993,7 +1150,8 @@ class Pos extends Component {
               />
             </div>
             <div className="col-3 text-right total_text_value">
-              {(this.state.totalcost * (this.state.discount / 100)).toFixed(2)}
+              {/* {(this.state.totalcost * (this.state.discount / 100)).toFixed(2)} */}
+              {discountAmtdisp}
               &nbsp;$
             </div>
           </div>
@@ -1014,11 +1172,12 @@ class Pos extends Component {
               />
             </div>
             <div className="col-3 text-right total_text_value">
-              {(
+              {/* {(
                 (this.state.totalcost -
                   this.state.totalcost * (this.state.discount / 100)) *
                 (this.state.tax / 100)
-              ).toFixed(2)}
+              ).toFixed(2)} */}
+              {salesTaxdisp}
               &nbsp;$
             </div>
           </div>
@@ -1037,14 +1196,15 @@ class Pos extends Component {
                 value={this.state.processingFee}
                 step="1"
               /> */}
-              {this.state.processingFee.toFixed(2)}&nbsp;%
+              &nbsp;&nbsp;{this.state.processingFee.toFixed(2)}&nbsp;%
             </div>
             <div className="col-3 text-right processing_fee">
-              {(
+              {/* {(
                 (this.state.totalcost -
                   this.state.totalcost * (this.state.discount / 100)) *
                 (this.state.processingFee / 100)
-              ).toFixed(2)}
+              ).toFixed(2)} */}
+              {processingFeedisp}
               &nbsp;$
             </div>
           </div>
@@ -1055,8 +1215,8 @@ class Pos extends Component {
             </div>
             <div className="col-3 text-right total_text_value">
               {/* <div>The following is GrandTotal = (Items Total - discount + tax + processingFee) </div> */}
-              {(
-                this.state.totalcost -
+              {/* {(
+                this.state.totalcost * -
                 this.state.totalcost * (this.state.discount / 100) +
                 (this.state.totalcost -
                   this.state.totalcost * (this.state.discount / 100)) *
@@ -1064,7 +1224,8 @@ class Pos extends Component {
                 (this.state.totalcost -
                   this.state.totalcost * (this.state.discount / 100)) *
                   (this.state.processingFee / 100)
-              ).toFixed(2)}
+              ).toFixed(2)} */}
+              {grandTotaldisp}
               &nbsp;$
             </div>
           </div>
@@ -1338,6 +1499,7 @@ class Pos extends Component {
 
     let posOutputPanel;
     if (this.state.reviewFlag) {
+      console.log('Going to PosReview');
       posOutputPanel = (
         <div>
           <PosReview
@@ -1356,6 +1518,7 @@ class Pos extends Component {
             posState={this.state}
             communityid={this.props.communityid}
             returnToPos={this.handleReturnToPos}
+            saleCompleteExit={this.handleSaleComplete}
             manageCustomer={this.handleCustomerCheckout}
           />
         </div>

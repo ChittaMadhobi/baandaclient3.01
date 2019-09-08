@@ -8,7 +8,10 @@ class PosReview extends Component {
     this.state = {
       fullPayFlag: false,
       partPayFlag: false,
-      installmentFlag: false
+      installmentFlag: false,
+
+      isError: false,
+      ValidationMsg: ''
     };
   }
 
@@ -17,6 +20,21 @@ class PosReview extends Component {
       "this.props.posState.payByDate.format('L'):",
       this.props.posState.payByDate.format("L")
     );
+  };
+
+  componentDidMount = () => {
+    this.validate();
+  };
+
+  validate = async () => {
+    if ( this.props.posState.paySchedule.value === 'installment') {
+      if ( this.props.posState.noOfInstallment === 0) {
+        await this.setState({
+          isError: true,
+          ValidationMsg: 'Error: Go Back to set the installment payments properly.'
+        });
+      }
+    }
   };
 
   handleProceed = () => {
@@ -39,11 +57,10 @@ class PosReview extends Component {
       installmentSpec = (
         <div>
           <div className="row">
-            <div className="col-4 text-right label_format">
-              By :&nbsp;
-            </div>
+            <div className="col-4 text-right label_format">By :&nbsp;</div>
             <div className="col-8 text-left data_format">
-              {this.props.posState.installmentDateOfMonth}&nbsp;(Day of the month)
+              {this.props.posState.installmentDateOfMonth}&nbsp;(Day of the
+              month)
             </div>
           </div>
         </div>
@@ -55,11 +72,10 @@ class PosReview extends Component {
       installmentSpec = (
         <div>
           <div className="row">
-            <div className="col-4 text-right label_format">
-              By :&nbsp;
-            </div>
+            <div className="col-4 text-right label_format">By :&nbsp;</div>
             <div className="col-8 text-left data_format">
-              {this.props.posState.installmentDayOfWeek.label}&nbsp;(Day of the week)
+              {this.props.posState.installmentDayOfWeek.label}&nbsp;(Day of the
+              week)
             </div>
           </div>
         </div>
@@ -121,7 +137,7 @@ class PosReview extends Component {
           <div className="row">
             <div className="col-4 text-right label_format">Pay in:&nbsp;</div>
             <div className="col-8 text-left data_format">
-              {this.props.posState.noOfInsallment}&nbsp;installments. &nbsp;
+              {this.props.posState.noOfInstallment}&nbsp;installments. &nbsp;
             </div>
           </div>
           <div className="row">
@@ -141,6 +157,63 @@ class PosReview extends Component {
             </div>
           </div>
           {installmentSpec}
+        </div>
+      );
+    }
+
+    let reviewButtons;
+    if (!this.state.isError) {
+      reviewButtons = (
+        <div>
+          <div className="row">
+            <div className="col-4">{this.state.reviewMsg}</div>
+            <div className="col-8 review_btn_placement">
+              <button
+                className="btn_go_back"
+                type="button"
+                onClick={this.handleGoBack}
+              >
+                Go Back&nbsp;
+                <i className="fas fa-shopping-cart" />
+              </button>
+              &nbsp;&nbsp;
+              <button
+                className="btn_proceed"
+                type="button"
+                onClick={this.handleProceed}
+              >
+                Proceed&nbsp;
+                <i className="far fa-handshake" />
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+    } else {
+      reviewButtons = (
+        <div>
+          <div className="row">
+            <div className="col-4">{this.state.reviewMsg}</div>
+            <div className="col-8 review_btn_placement">
+              <button
+                className="btn_go_back"
+                type="button"
+                onClick={this.handleGoBack}
+              >
+                Go Back&nbsp;
+                <i className="fas fa-shopping-cart" />
+              </button>
+              &nbsp;&nbsp;
+              <button
+                className="btn_proceed_err"
+                type="button"
+                // onClick={this.handleProceed}
+              >
+                Proceed&nbsp;
+                <i className="far fa-handshake" />
+              </button>
+            </div>
+          </div>
         </div>
       );
     }
@@ -171,54 +244,38 @@ class PosReview extends Component {
         <div className="row">
           <div className="col-4 text-right label_format">Item Total:&nbsp;</div>
           <div className="col-8 text-left data_format">
-            {Number.parseFloat(this.props.posState.totalcost).toFixed(2)}&nbsp;$
+            {parseFloat(this.props.posState.totalcost).toFixed(2)}&nbsp;$
           </div>
         </div>
         <div className="row">
           <div className="col-4 text-right label_format">Discount:&nbsp;</div>
           <div className="col-8 text-left data_format">
-            {Number.parseFloat(this.props.posState.toPayDiscount).toFixed(2)}
+            {parseFloat(this.props.posState.toPayDiscount).toFixed(2)}
             &nbsp;$
           </div>
         </div>
         <div className="row">
           <div className="col-4 text-right label_format">Tax:&nbsp;</div>
           <div className="col-8 text-left data_format">
-            {Number.parseFloat(this.props.posState.toPayTax).toFixed(2)}&nbsp;$
+            {parseFloat(this.props.posState.toPayTax).toFixed(2)}&nbsp;$
           </div>
         </div>
         <div className="row">
           <div className="col-4 text-right label_format">To be paid:&nbsp;</div>
           <div className="col-8 text-left data_format">
-            {Number.parseFloat(this.props.posState.toPayTotal).toFixed(2)}
+            {parseFloat(this.props.posState.toPayTotal).toFixed(2)}
             &nbsp;$
           </div>
         </div>
         <hr className="review_divide_line" />
         {payProcessPanel}
+        {reviewButtons}
+        <hr className="review_divide_line" />
         <div className="row">
-          <div className="col-4">{this.state.reviewMsg}</div>
-          <div className="col-8 review_btn_placement">
-            <button
-              className="btn_go_back"
-              type="button"
-              onClick={this.handleGoBack}
-            >
-              Go Back&nbsp;
-              <i className="fas fa-shopping-cart" />
-            </button>
-            &nbsp;&nbsp;
-            <button
-              className="btn_proceed"
-              type="button"
-              onClick={this.handleProceed}
-            >
-              Proceed&nbsp;
-              <i className="far fa-handshake" />
-            </button>
+          <div className="col text-center validation_msg">
+            {this.state.ValidationMsg}
           </div>
         </div>
-        <hr className="review_divide_line" />
       </div>
     );
 

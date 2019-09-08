@@ -421,6 +421,13 @@ div.paypanel_spacing {
   margin-top: 25px;
 }
 
+.date_of_month {
+  margin-top: -20px;
+  color: #87460c;
+  font-size: 1em;
+  margin-bottom: 10px;
+}
+
 @media only screen and (max-device-width: 480px) {
   /* styles for mobile browsers smaller than 480px; (iPhone) */
   div.fixedsize_pos {
@@ -764,6 +771,12 @@ div.paypanel_spacing {
     font-size: 0.85em;
     font-weight: 600;
   }
+
+  .date_of_month {
+    margin-top: -20px;
+    font-size: .85em;
+    margin-bottom: 12px;
+  }
 }
 
 @media only screen and (max-device-width: 320px) {
@@ -1038,6 +1051,12 @@ div.paypanel_spacing {
     margin-left: -50%;
     margin-top: -1px;
     margin-bottom: 10px;
+  }
+
+  .date_of_month {
+    margin-top: -20px;
+    font-size: .8em;
+    margin-bottom: 12px;
   }
 }
 

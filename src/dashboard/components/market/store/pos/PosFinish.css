@@ -20,6 +20,7 @@
   box-shadow: 3px 3px 0px 0px black;
   border-radius: 5px;
   margin-top: -10px;
+  margin-right: 10px;
 }
 
 
@@ -29,10 +30,11 @@
   background-color: #0d7a25;
   border: none;
   color: white;
-  font-size: 10pt;
+  font-size: 11pt;
   box-shadow: 3px 3px 0px 0px black;
   border-radius: 5px;
-  margin-top: -10px;
+  margin-top: 15px;
+  margin-right: 30px;
 }
 
 .customer_search {
@@ -90,6 +92,20 @@
   color: #142c99;
   font-size: 1em;
   font-weight: 600;
+} 
+
+.input_invoice_note {
+  font-size: 1em;
+  margin-top: 10px;
+  width: 90%;
+  margin-bottom: 10px;
+}
+
+.final_message {
+  font-size: 1.1em;
+  font-weight: 650;
+  color: #6f23a1;
+  margin-top: 100px;
 }
 
 @media only screen and (max-device-width: 480px) {
@@ -103,22 +119,22 @@
   }
 
   .btn_retToPos {
-    width: 70px;
+    width: 75px;
     height: 28px;
-    font-size: .85em;
+    font-size: .80em;
     border-radius: 5px;
     margin-top: 10px;
-    margin-left: -10px;
+    margin-left: -20px;
   }
   
   
   .btn_completePos {
-    width: 70px;
+    width: 65px;
     height: 28px;
-    font-size: .85em;
+    font-size: .80em;
     border-radius: 5px;
     margin-top: 10px;
-    margin-right: 5px;
+    margin-right: 3px;
   }
 
   .input_customer_name {
@@ -160,6 +176,12 @@
     font-weight: 600;
     margin-top: 10px;
   }
+
+  .input_invoice_note {
+    font-size: .9em;
+    margin-top: 15px;
+    width: 100%;
+  }
 }
 
 @media only screen and (max-device-width: 320px) {
@@ -177,6 +199,25 @@
     width: 90%;
     margin-left: -2%;
   }
+
+  .btn_retToPos {
+    width: 75px;
+    height: 28px;
+    font-size: .75em;
+    border-radius: 5px;
+    margin-top: 10px;
+    margin-left: -10px;
+  }
+
+  .btn_completePos {
+    width: 65px;
+    height: 28px;
+    font-size: .75em;
+    border-radius: 5px;
+    margin-top: 10px;
+    margin-right: 5px;
+  }
+  
 }
 
 @media only screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation: portrait) {
@@ -194,5 +235,24 @@
     font-size: 1em;
     width: 90%;
     margin-left: -2%;
+  }
+
+  .btn_retToPos {
+    width: 100px;
+    height: 32px;
+    font-size: 10pt;
+    border-radius: 5px;
+    margin-top: -10px;
+    margin-right: 5px;
+  }
+  
+  
+  .btn_completePos {
+    width: 100px;
+    height: 32px;
+    font-size: 10pt;
+    border-radius: 5px;
+    margin-top: 15px;
+    margin-right: 30px;
   }
 }

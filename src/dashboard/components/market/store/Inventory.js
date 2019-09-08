@@ -211,7 +211,7 @@ class Inventory extends Component {
     }
     let url = baandaServer + updateInventory;
     console.log('updateInventory url: ', url, ' data:', data);
-    alert('check url and data before axios.post ');
+    // alert('check url and data before axios.post ');
     try {
       let ret = await axios.post(url, data);
 

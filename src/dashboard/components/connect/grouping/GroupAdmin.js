@@ -395,6 +395,7 @@ class GroupAdmin extends Component {
       member: member,
       ascDsc: "dsc"
     };
+    console.log("handleSaveMember data:", data);
     await this.addSelectMemberList(data);
     // console.log("handleSaveMember data:", data);
     // let addMember = await this.addSelectMemberList(data);

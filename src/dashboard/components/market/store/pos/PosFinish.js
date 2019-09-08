@@ -8,6 +8,7 @@ import "./PosFinish.css";
 
 const baandaServer = process.env.REACT_APP_BAANDA_SERVER;
 const getMembersOfCommunity = "/routes/dashboard/getMembersOfCommunity?";
+const saveInvoice = "/routes/dashboard/saveInvoice";
 
 class PosFinish extends Component {
   constructor(props) {
@@ -24,12 +25,21 @@ class PosFinish extends Component {
       memberSelectedFlag: false,
       posCustomerNameMsg: "Part/full Customer name to filter.",
       confirmErrorMsg: "On Finish, invoice will be in your email.",
+      customerNote: "",
+      saleCompleteFlag: false,
 
       membersRaw: [],
       filtered: [],
-      members: []
+      members: [],
+      picCaption: ""
     };
   }
+
+  onChange = async e => {
+    console.log("name: ", [e.target.name], " value:", e.target.value);
+    await this.setState({ [e.target.name]: e.target.value });
+    // console.log("itemPrice:", this.state.itemPrice);
+  };
 
   onChangeCustomerName = async e => {
     // console.log("name: ", [e.target.name], " value:", e.target.value);
@@ -81,10 +91,35 @@ class PosFinish extends Component {
       memberSelectedFlag: false
     });
     // If there is no match ... show error (no Match found)
-
-    // If there is one match ... proceed to completion of transaction
-
-    // If there are more than many ... as user to select one from the choices.
+    if (selectedMembers.length === 0) {
+      await this.setState({
+        members: [],
+        searchAndEditErrorFlag: true,
+        memberSelectToEditFlag: false,
+        memberSelectedFlag: false,
+        searchAndEditMsg: "Error: No member found with that filter.",
+        memberSelected: null
+      });
+    } else if (selectedMembers.length === 1) {
+      // If there is one match ... proceed to completion of transaction
+      await this.setState({
+        members: selectedMembers,
+        memberSelected: selectedMembers[0],
+        searchAndEditErrorFlag: false,
+        memberSelectToEditFlag: false,
+        memberSelectedFlag: true,
+        searchAndEditMsg: ""
+      });
+    } else {
+      // If there are more than many ... as user to select one from the choices.
+      await this.setState({
+        members: selectedMembers,
+        memberSelectToEditFlag: true,
+        memberSelectedFlag: false,
+        searchAndEditMsg: "",
+        memberSelected: null
+      });
+    }
   };
 
   // Load all members of all groups of the community in a state variable
@@ -166,9 +201,124 @@ class PosFinish extends Component {
     });
   };
 
-  handleReturnToPos = () => {};
+  handleReturnToPos = () => {
+    // console.log("handleGoBack ..");
+    this.props.returnToPos();
+  };
 
-  handleCompletePos = () => {};
+  handleConfirm = async () => {
+    await this.setState(prevstate => ({
+      decisionFlag: !prevstate.decisionFlag,
+      confirmErrorMsg: "On Finish, invoice will be in your email."
+    }));
+    console.log("this.state:", this.state);
+  };
+
+  handleCompletePos = async () => {
+    // alert('Now to complete ... complex ... start with backend.')
+    if (!this.state.decisionFlag) {
+      await this.setState({
+        confirmErrorMsg: "Error: Please confirm to complete."
+      });
+    } else {
+      let inputData = this.packageDataForDB();
+      let url = baandaServer + saveInvoice;
+
+      console.log("################### inputData: ", inputData);
+      console.log('url: ', url);
+      try {
+        // let ret = await axios.post(url, data);
+        let msg = await axios.post(url, inputData);
+        console.log('return msg:', msg);
+        await this.setState({
+          memberSelectedFlag: false,
+          memberSelectToEditFlag: false,
+          saleCompleteFlag: true
+        });
+      } catch (err) {
+        console.log("PosFinish Error:", err.message);
+      }
+    }
+  };
+
+  packageDataForDB = () => {
+    let instType = "";
+    let payByDoM = "";
+    let payByDoW = "";
+    let paidamt = 0;
+    if (this.props.posState.paySchedule === "installment") {
+      instType = this.props.posState.installmentType.value;
+      if (
+        this.props.posState.installmentType.value === "monthly" ||
+        this.props.posState.installmentType.value === "monthly"
+      ) {
+        payByDoM = this.props.posState.installmentDateOfMonth;
+      } else {
+        payByDoW = this.props.posState.installmentDayOfWeek.value;
+      }
+    }
+
+    let lastpaymentday = null;
+    if (this.props.posState.paySchedule.value === "fullpay") {
+      paidamt = this.props.posState.toPayTotal;
+      lastpaymentday = Date.now();
+    } else {
+      paidamt = this.props.posState.amountPaid;
+    }
+    let nextpayday = null;
+    if (this.props.posState.paySchedule === "partpay") {
+      nextpayday = this.props.posState.payByDate;
+      lastpaymentday = Date.now();
+    }
+
+    let itemsArray = [];
+    let itemObj = {};
+    this.props.posState.itemsInCart.forEach(obj => {
+      itemObj = {
+        itemId: obj.itemId,
+        itemName: obj.itemName,
+        itemUnit: "number",
+        unitName: "each",
+        price: obj.itemPrice,
+        quantity: parseInt(obj.itemQty, 10),
+        cost: parseFloat((obj.itemPrice * parseInt(obj.itemQty, 10)).toFixed(2))
+      };
+      itemsArray.push(itemObj);
+    });
+
+    let exportData = {
+      invoiceOfBaandaId: this.state.memberSelected.baandaId,
+      invoiceOfEmail: this.state.memberSelected.email,
+      customerName: this.state.memberSelected.memberName,
+      communityId: this.props.communityid,
+      paySchedule: this.props.posState.paySchedule,
+      paySchedulePolicy: {
+        installmentType: instType,
+        payByDateOfMonth: payByDoM,
+        payByDayOfWeek: payByDoW,
+        nextSchedulePayDay: nextpayday
+      },
+      finBreakdown: {
+        totalInvoiceAmount: this.props.posState.toPayTotal,
+        amountPaid: paidamt,
+        lastPaymentDate: lastpaymentday,
+        discountAmount: this.props.posState.toPayDiscount,
+        taxAmount: this.props.posState.toPayTax,
+        baandaServiceFee: this.props.posState.toPayProcessingFee
+      },
+      itemDetails: itemsArray,
+      invoiceNote: this.state.customerNote,
+      updatedBy: this.props.auth.user.baandaId
+    };
+
+    return exportData;
+  };
+
+  handleExit = () => {
+    // alert('figure out where to go ... ');
+    this.props.saleCompleteExit();
+  }
+
   render() {
     console.log("props:", this.props);
     console.log("state:", this.state);
@@ -268,19 +418,19 @@ class PosFinish extends Component {
             <div className="col-4 text-right label_format">
               Member Name:&nbsp;
             </div>
-            <div className="col-4 text-left data_format">
+            <div className="col-8 text-left data_format">
               {this.state.memberSelected.memberName}
             </div>
           </div>
           <div className="row">
             <div className="col-4 text-right label_format">Email:&nbsp;</div>
-            <div className="col-4 text-left data_format">
+            <div className="col-8 text-left data_format">
               {this.state.memberSelected.email}
             </div>
           </div>
           <div className="row">
             <div className="col-4 text-right label_format">Cell:&nbsp;</div>
-            <div className="col-4 text-left data_format">
+            <div className="col-8 text-left data_format">
               {this.state.memberSelected.cell === ""
                 ? "Not available"
                 : this.state.memberSelected.cell}
@@ -288,10 +438,27 @@ class PosFinish extends Component {
           </div>
           <div className="row">
             <div className="col-4 text-right label_format">Type:&nbsp;</div>
-            <div className="col-4 text-left data_format">
+            <div className="col-8 text-left data_format">
               {this.state.memberSelected.memberType === "individual"
                 ? "Person"
                 : "Community"}
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-4 text-right label_format">Note:&nbsp;</div>
+            <div className="col-8 text-left data-format">
+              <textarea
+                name="customerNote"
+                maxLength="500"
+                placeholder="Notes on invoice - optional (less than 500 chars)."
+                rows="3"
+                wrap="hard"
+                spellCheck="true"
+                className="input_invoice_note"
+                onChange={this.onChange}
+                value={this.state.customerNote}
+                required
+              />
             </div>
           </div>
           <div className="row">
@@ -309,7 +476,7 @@ class PosFinish extends Component {
                 type="button"
                 onClick={this.handleReturnToPos}
               >
-                Return&nbsp;
+                Go back&nbsp;
                 <i className="fas fa-undo" />
               </button>
               &nbsp;&nbsp;
@@ -332,13 +499,38 @@ class PosFinish extends Component {
       );
     }
 
+    let finishPanel;
+    if (this.state.saleCompleteFlag) {
+      finishPanel = (
+        <div>
+          <div className="final_message text-center">
+            Thank you for your business.
+          </div>
+          <div className="text-center">
+            <button
+              className="btn_completePos"
+              type="button"
+              onClick={this.handleExit}
+            >
+              Exit&nbsp;
+              <i className="far fa-check-circle" />
+            </button>
+          </div>
+        </div>
+      );
+    }
+
     let posFinishOutput;
-    posFinishOutput = (
-      <div>
-        {searchInputPanel}
-        {showMemberSelectedPanel}
-      </div>
-    );
+    if (this.state.saleCompleteFlag) {
+      posFinishOutput = <div>{finishPanel}</div>;
+    } else {
+      posFinishOutput = (
+        <div>
+          {searchInputPanel}
+          {showMemberSelectedPanel}
+        </div>
+      );
+    }
 
     return <div>{posFinishOutput}</div>;
   }
