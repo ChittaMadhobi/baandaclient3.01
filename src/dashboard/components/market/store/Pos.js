@@ -24,7 +24,7 @@ const baandaServer = process.env.REACT_APP_BAANDA_SERVER;
 const serchItemToEdit = "/routes/dashboard/searchItemToEdit?";
 const getCommunityInfo = "/routes/dashboard/getCommunityInfo?";
 
-let options = [];
+let options = [];  
 let itemsInCartArray = [];
 
 const customStyles = {
