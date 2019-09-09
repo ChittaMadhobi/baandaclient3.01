@@ -6,7 +6,7 @@ div.fixedsize_initProfile {
   overflow-x: hidden;
   overflow-y: auto;
 }
-
+ 
 .btn-submit_initprofile {
   width: 100px;
   height: 30px;
@@ -222,8 +222,8 @@ div.message_text {
 
   .main > textarea {
     width: inherit;
-    margin-left: 1px;
-    margin-top: 3px;
+    margin-left: 1%;
+    margin-top: 20px;
     margin-right: 2px;
     margin-bottom: -3px;
   }

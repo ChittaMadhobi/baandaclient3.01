@@ -291,6 +291,15 @@ div.space-between-domains {
     border: none;
   }
 
+  .btn-lobby-starthere {
+    width: 90px;
+    height: 28px;
+    /* color: blue; */
+    font-size: 9pt;
+    margin-top: -15px;
+    margin-bottom: 25px;
+  }
+
   .joinMsg {
     font-size: .7em;
     margin-top: 15px;

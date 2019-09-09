@@ -478,7 +478,8 @@ class NewCreation extends Component {
         caption: this.state.picCaption
       }
     };
-
+    console.log('savePublishInDB url:', url);
+    console.log('savePublishInDB Data:', commData);
     try {
       let ret = await axios.post(url, commData);
       if (ret.length === 0) {
@@ -489,7 +490,7 @@ class NewCreation extends Component {
         await this.setState({
           savedFlag: true,
           saveReviewMsg:
-            "Successfully published. Work on it via Engage panel in Home. Click Close to complete."
+            "Successfully published. Click Home on Navbar/Side Drawer and then click on Engage."
         });
         // console.log('Saved message successfully ...');
       }
@@ -504,17 +505,31 @@ class NewCreation extends Component {
     let valid = await this.saveValidation();
     if (valid) {
       try {
-        await this.savePublishInDB();
+        let pubret = await this.savePublishInDB();
+        console.log('publishComm:', pubret);
+        if ( pubret.status === 'Success') {
+          await this.setState({
+            saveValidFlag: true,
+            saveReviewMsg:
+              "Successfully published. This will be available in your Engage (Dashboard). "
+          });
+        } else {
+          await this.setState({
+            saveValidFlag: false,
+            saveReviewMsg:
+              `Error: Problem saving. Report to baanda support jit@baanda.com with the msg: ${pubret.Msg}`
+          });
+        }
       } catch (err) {
         console.log("publish comm err:", err);
       }
       // Here we need to push one to the lobby
       // this.props.history.push('/lobby');
-      await this.setState({
-        saveValidFlag: false,
-        saveReviewMsg:
-          "Successfully published. This will be available in your Engage (Dashboard). "
-      });
+      // await this.setState({
+      //   saveValidFlag: false,
+      //   saveReviewMsg:
+      //     "Successfully published. This will be available in your Engage (Dashboard). "
+      // });
     } else {
       await this.setState({
         saveValidFlag: true,
@@ -1053,7 +1068,7 @@ class NewCreation extends Component {
                   : "save_review_msg_err"
               }`}
             >
-              {this.state.saveReviewMsg}
+              <b>{this.state.saveReviewMsg}</b>
             </div>
           </div>
           <div className="col-5">{saveReviewPanel}</div>

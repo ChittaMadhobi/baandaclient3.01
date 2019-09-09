@@ -83,9 +83,10 @@ class UserInitPersona extends Component {
     );
   };
   // Try to see if backbutton cannot be used. 
-  componentWillUnmount() {
+  UNSAFE_componentWillUnmount() {
     this.props.history.goForward();
   }
+
   async componentDidMount() {
     if (this.props.auth.isAuthenticated) {
       // Do this only if users's isInitDone is false.
@@ -111,9 +112,11 @@ class UserInitPersona extends Component {
   addToSlider = async baandaid => {
     let url =
       baandaServer + PERSONA_QUESTION_API_POST + "?baandaid=" + baandaid;
+      // console.log('UserInitPersona addToSlider url: ', url);
     try {
       let value;
       let retdata = await axios.get(url);
+      // console.log('UserInitPersona addToSlider getQuestion retData: ', retdata);
       if (retdata.data) {
         let noOfRecs = retdata.data.length;
         for (var i = 0; i < noOfRecs; i++) {
@@ -195,9 +198,10 @@ class UserInitPersona extends Component {
     // this.props.history.push("/mirror");
     this.props.history.push("/mirror");
   };
-
+ 
   render() {
-    // console.log("this.props:", this.props.auth);
+    console.log("UserInitPersona.js this.props:", this.props);
+    console.log("UserInitPersona.js this.state:", this.state);
 
     let loading;
     if (this.state.isLoading) {

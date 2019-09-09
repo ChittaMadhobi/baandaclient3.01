@@ -1,7 +1,7 @@
 div.fixedsize_grouping {
   height: 700px;
   width: 100%;
-  background-color: #f5f2eb;
+  /* background-color: #f5f2eb; */
   /* margin-left: 5%; */
   overflow-x: hidden;
   overflow-y: auto;

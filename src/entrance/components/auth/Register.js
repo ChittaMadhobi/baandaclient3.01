@@ -15,7 +15,9 @@ class Register extends Component {
       email: "",
       password: "",
       password2: "",
-      errors: {}
+      errors: {},
+
+      registeredFlag: false
     };
 
     this.onChange = this.onChange.bind(this);
@@ -39,7 +41,7 @@ class Register extends Component {
     this.setState({ [e.target.name]: e.target.value });
   }
 
-  onSubmit(e) {
+  async onSubmit(e) {
     e.preventDefault(); // In form, we do not want to have default functions
     const newUser = {
       name: this.state.name,
@@ -52,6 +54,11 @@ class Register extends Component {
     this.props.registerUser(newUser, this.props.history);
     // 2nd parm enable redirection from actions. We are not using it here.
     console.log("props.auth.message 2:", this.props.auth.message);
+    if (!this.props.auth.user.message) {
+      await this.setState({
+        registeredFlag: true
+      })
+    }
   }
 
   render() {
@@ -59,20 +66,19 @@ class Register extends Component {
     // console.log("Register props:", this.props);
     // console.log("Errors:", errors);
 
-    let msg = (!this.props.auth.user.message) ?  
-              "Please check your email box to confirm the email." :
-              this.props.auth.user.message;
+    let msg = !this.props.auth.user.message
+      ? "Please check your email box to confirm the email."
+      : this.props.auth.user.message;
 
-    return (
-      <div className="register">
-        <p className="top-padding" />
-        <div className="container">
+    let formPanel;
+
+    if (!this.state.registeredFlag) {
+      formPanel = (
+        <div>
           <div className="row">
             <div className="col-md-8 m-auto">
               <h1 className="display-4 text-center">Sign Up</h1>
-              <p className="lead text-center">
-                Create your DevConnector account
-              </p>
+              <p className="lead text-center">Create your DevConnector account</p>
               <form noValidate onSubmit={this.onSubmit}>
                 <div className="form-group">
                   <input
@@ -138,10 +144,27 @@ class Register extends Component {
                   )}
                 </div>
                 <input type="submit" className="btn btn-info btn-block mt-4" />
-                <p className="text-center h6 text-muted">{msg}</p>
+                {/* <p className="text-center h6 text-muted">{msg}</p> */}
               </form>
             </div>
           </div>
+        </div>
+      );
+    } else {
+      formPanel = (
+        <div>
+          <br/><br/><br/><br/><br/>
+          <p className="text-center h6 text-muted">{msg}</p>
+        </div>
+      )
+    }
+
+
+    return (
+      <div className="register">
+        <p className="top-padding" />
+        <div className="container">
+          {formPanel}
         </div>
       </div>
     );

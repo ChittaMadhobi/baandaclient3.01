@@ -96,8 +96,10 @@ class Lobby extends Component {
 
   render() {
     // console.log('this.props: ', this.props);
-    let joinMsg = "2 Invites, 1 Match";
-    let dashMsg = "3 New Messages";
+    // let joinMsg = "2 Invites, 1 Match";
+    // let dashMsg = "3 New Messages";
+    let joinMsg = "";
+    let dashMsg = "";
 
     let teamUp = (
       <div className="domain-box">

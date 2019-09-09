@@ -9,12 +9,12 @@ import { showModal, hideModal } from "../../../actions/modalActions";
 import "../../../modal/css/localModal.css";
 import "../../../modal/css/template.css";
 
-import Catalog from '../market/catalog/Catalog';
-import ViewCatalog from '../market/catalog/ViewCatalog';
-import Store from '../market/store/Store';
-import ViewStore from '../market/store/ViewStore';
+import Catalog from "../market/catalog/Catalog";
+import ViewCatalog from "../market/catalog/ViewCatalog";
+import Store from "../market/store/Store";
+import ViewStore from "../market/store/ViewStore";
 
-import ConnectHub from '../connect/ConnectHub';
+import ConnectHub from "../connect/ConnectHub";
 
 import "./MarketMain.css";
 
@@ -43,8 +43,8 @@ class MarketMain extends Component {
   goToDashboard = async () => {
     // this.props.history.push("/lobby");
     // this.props.history.push("/dashboard");
-    this.props.dashReturnMethod()
-  }
+    this.props.dashReturnMethod();
+  };
 
   // This is to show the info panel
   openAlertModal = () => {
@@ -128,23 +128,57 @@ class MarketMain extends Component {
 
     // This will handle only catalog portion definitions
     let catalogOutputPanel;
-    if (this.props.role === 'Creator' || this.props.role === 'Admin') {
+    if (this.props.role === "Creator" || this.props.role === "Admin") {
       // catalogOutputPanel = <div><Catalog commName={this.props.commName} communityid={this.props.communityid} goToDashboard={this.props.dashReturnMethod()}/></div>;
-      catalogOutputPanel = <div><Catalog commName={this.props.commName} communityid={this.props.communityid} goToDashboard={this.goToDashboard} role={this.props.role}/></div>;
+      catalogOutputPanel = (
+        <div>
+          <Catalog
+            commName={this.props.commName}
+            communityid={this.props.communityid}
+            goToDashboard={this.goToDashboard}
+            role={this.props.role}
+          />
+        </div>
+      );
     } else {
-      catalogOutputPanel = <div><ViewCatalog /></div>;
+      catalogOutputPanel = (
+        <div>
+          <ViewCatalog />
+        </div>
+      );
     }
 
     let storeOutputPanel;
-    if (this.props.role === 'Creator' || this.props.role === 'Admin') {
+    if (this.props.role === "Creator" || this.props.role === "Admin") {
       // catalogOutputPanel = <div><Catalog commName={this.props.commName} communityid={this.props.communityid} goToDashboard={this.props.dashReturnMethod()}/></div>;
-      storeOutputPanel = <div><Store commName={this.props.commName} communityid={this.props.communityid} goToDashboard={this.goToDashboard} role={this.props.role}/></div>;
+      storeOutputPanel = (
+        <div>
+          <Store
+            commName={this.props.commName}
+            communityid={this.props.communityid}
+            goToDashboard={this.goToDashboard}
+            role={this.props.role}
+          />
+        </div>
+      );
     } else {
-      storeOutputPanel = <div><ViewStore /></div>;
+      storeOutputPanel = (
+        <div>
+          <ViewStore />
+        </div>
+      );
     }
 
-    let connectOutputPanel = <div><ConnectHub commName={this.props.commName} communityid={this.props.communityid} goToDashboard={this.goToDashboard} role={this.props.role}/></div>;
-    
+    let connectOutputPanel = (
+      <div>
+        <ConnectHub
+          commName={this.props.commName}
+          communityid={this.props.communityid}
+          goToDashboard={this.goToDashboard}
+          role={this.props.role}
+        />
+      </div>
+    );
 
     // activePanel will invoke the module that is clicked on.
     let activePanel;
@@ -153,7 +187,48 @@ class MarketMain extends Component {
     } else if (this.state.storeFlag) {
       activePanel = storeOutputPanel;
     } else if (this.state.reportsFlag) {
-      activePanel = <div>Reports</div>;
+      activePanel = (
+        <div className="text-center">
+          <br />
+          <br />
+          <h5>Reports & Intelligence</h5>
+          <br />
+          <br />
+          <div className="row">
+            <div className="col-1">&nbsp;</div>
+            <div className="col-10">
+              <p align="justify">
+                Reports are liguistic & data based & sometimes directly
+                actionable. Like, pending payment can be reminded with a click
+                of a button.
+              </p>
+              <p align="justify">
+                Intelligence are composed of graphs, charts, predictions on data
+                level. Additionally, it will provide member sentiments, DCCS
+                (dynamic co-op chemistry scores), comparison charts and other
+                humanoid feedback based reporting. 
+              </p>
+            </div>
+            <div className="col-1">&nbsp;</div>
+          </div>
+          <br />
+          <div className="row">
+            <div className="col-1">&nbsp;</div>
+            <div className="col-10">
+              <p align="justify">
+                These will be progressively released and expected to grow &
+                evolve for a long time to comme. This would be output of many of
+                AI aspects that I intend to cover.
+              </p>
+              <p align="justify">
+                The next release will contain basic payment pending and due-to
+                receive actionable report by October 10 2019 release.
+              </p>
+            </div>
+            <div className="col-1">&nbsp;</div>
+          </div>
+        </div>
+      );
     } else if (this.state.connectFlag) {
       activePanel = <div>{connectOutputPanel}</div>;
     }
@@ -175,7 +250,7 @@ class MarketMain extends Component {
             >
               <b>Catalog</b>
             </button>
-            &nbsp; 
+            &nbsp;
             <button
               className={`${
                 this.state.storeFlag
@@ -199,7 +274,7 @@ class MarketMain extends Component {
             >
               <b>Reports</b>
             </button>
-            &nbsp; 
+            &nbsp;
             <button
               className={`${
                 this.state.connectFlag
@@ -211,7 +286,7 @@ class MarketMain extends Component {
             >
               <b>Connect</b>
             </button>
-            &nbsp; 
+            &nbsp;
             <button
               className="btn-modal_market"
               type="button"
@@ -219,7 +294,7 @@ class MarketMain extends Component {
             >
               <b>Info</b>
             </button>
-            &nbsp; 
+            &nbsp;
             <button
               className="btn-back"
               type="button"
@@ -258,9 +333,11 @@ const mapDispatchToProps = dispatch => ({
   // setQAInitDone: () => dispatch(setQAInitDone(userData))
 });
 
-export default withRouter(connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MarketMain));
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(MarketMain)
+);
 
 // export default MarketMain;

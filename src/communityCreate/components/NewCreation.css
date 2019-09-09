@@ -47,6 +47,7 @@ p.intent_msg {
 }
 
 .save_review_msg {
+  margin-top: 10px;
   font-size: 1em;
   color: black;
 }
@@ -498,7 +499,8 @@ p.intent_msg {
   }
 
   .input_text {
-    margin-left: 1%;
+    margin-top: 10px;
+    margin-left: 2%;
   }
 
   .intent-select {

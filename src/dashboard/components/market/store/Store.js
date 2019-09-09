@@ -16,7 +16,7 @@ import "../../../../modal/css/localModal.css";
 import "../../../../modal/css/template.css";
 
 import Inventory from "./Inventory";
-import Pos from './Pos';
+import Pos from "./Pos";
 
 // import cosmicDoorway from "../../market/image/cosmicDoorway.jpg";
 // import Select from "react-select";
@@ -43,32 +43,32 @@ class Store extends Component {
     };
   }
 
-   // This is to show the info panel
-   openAlertModal = () => {
+  // This is to show the info panel
+  openAlertModal = () => {
     let msg = {
       Header: "Your Store",
       Body: {
         oneLineSummary: `This has all the information about the activities of the store..`,
         steps: [
           {
-            step: "Catalog",
+            step: "POS (Point 0f Sales)",
             stepNote:
-              "Catalog lets you enter new items your catalog and edit them. Only creator and adminstrators can manage catalog."
+              "At POS, you will be able to sell your items to members of your community. Even if your community is public, one has to join without invite first to buy goods or services."
           },
           {
             step: "Inventory",
             stepNote:
-              "This will let you enter, update, inventory of items of your catalog."
+              "This will let you enter, update, inventory of items and prices of your catalog of good and services."
           },
           {
-            step: "Reports",
+            step: "PO (Purchase Order)",
             stepNote:
-              "This provide you with various lists and report of catalog, inventory, sales, IOU (pending payments), feedbacks, and other intels progressively."
+              "This will enable you to purchase items, raise purchase orders (if needed), to fill your inventory."
           },
           {
-            step: "Connect",
+            step: "Finance",
             stepNote:
-              "This will enable you to send request to other Baandas, respond to requests, messages, as well as send  messages with reference to the members of this community only. This will also enable you to provide multidimensional feedback of your experiences (in general), to particular baanda, and eventually request conflict resolution. This will also let you make and revoke someone for adminstrator."
+              "This is for your account paybale and receivable. By default, it is set to receviable. For cash paments, your (creators) acceptance is accepted as received."
           }
         ],
         footnote:
@@ -210,9 +210,36 @@ class Store extends Component {
           />
         </div>
       );
-    } 
-    else {
-      storePanel = <div>Not Inventory</div>;
+    } else if (this.state.poActiveFlag) {
+      storePanel = (
+        <div className="text-center">
+          <br />
+          <br />
+          <h4>PO - Purchase Order</h4>
+          <div className="row">
+            <div className="col-2">&nbsp;</div>
+            <div className="col-8">
+              <p>Coming Soon - To be published by November 30</p>
+            </div>
+            <div className="col-2">&nbsp;</div>
+          </div>
+        </div>
+      );
+    } else {
+      storePanel = (
+        <div className="text-center">
+          <br />
+          <br />
+          <h4>Finance (payble & receivable)</h4>
+          <div className="row">
+            <div className="col-2">&nbsp;</div>
+            <div className="col-8">
+              <p>Coming Soon - To be published by November 30</p>
+            </div>
+            <div className="col-2">&nbsp;</div>
+          </div>
+        </div>
+      );
     }
 
     // storePanel = <div>{storebuttons}</div>;
