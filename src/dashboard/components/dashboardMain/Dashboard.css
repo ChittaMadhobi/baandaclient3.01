@@ -1,3 +1,627 @@
-.abcd {
-    color: red;
-}
+div.fixedsize_dash {
+    height: 700px;
+    width: 100%;
+    margin-left: -5%;
+    /* background-color: #f0e9df; */
+    /* background-color: #f5f2eb; */
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+  
+  .btn-modal_dash {
+    width: 50px;
+    height: 32px;
+    background-color: #555f6b;
+    border: none;
+    color: white;
+    font-size: 9pt;
+    box-shadow: 3px 3px 0px 0px black;
+    border-radius: 5px;
+  }
+  
+  .btn_mirror_dash {
+    width: 50px;
+    height: 32px;
+    background-color: #0c5e22;
+    border: none;
+    color: white;
+    font-size: 9pt;
+    box-shadow: 3px 3px 0px 0px black;
+    border-radius: 5px;
+  }
+  
+  .page-top {  
+    margin-top: -8px;
+    padding-bottom: 10px;
+  }
+  
+  .dash_header {
+    color: #18385e;
+    font-size: 16pt;
+    font-weight: 700;
+  }
+  
+  .question-text {
+    padding-top: 2px;
+    padding-left: 20px;
+    font-size: 1em;
+    text-align: left;
+    color: #164e87;
+    font-weight: 600;
+    background-color: #f5f2eb;
+  }
+  
+  .btn_access_list {
+    width: 80px;
+    height: 27px;
+    background-color: #0c5e22;
+    /* background-color: #555f6b; */
+    border: none;
+    color: white;
+    font-size: 10pt;
+    box-shadow: 3px 3px 0px 0px black;
+    border-radius: 5px;
+    margin-left: 10px;
+    margin-bottom: 2px;
+    margin-top: -2px;
+  }
+  
+  .dark-row {
+    width: 100%;
+    background-color: #dbc49c;
+    font-size: 1em;
+    margin-left: 10px;
+    padding-right: 4px;
+    padding-top: 3px;
+    padding-left: 10px;
+  }
+  
+  .light-row {
+    width: 100%;
+    /* background-color: white; */
+    font-size: 1em;
+    margin-left: 10px;
+    padding-right: 4px;
+    padding-top: 3px;
+    padding-left: 10px;
+  }
+  
+  .caption_bold {
+    font-weight: 700;
+  }
+  
+  .access_list_header {
+    color: #0c5e22;
+    font-size: 1em;
+    font-weight: 800;
+  }
+  
+  .header-spacing {
+    height: 30px;
+  }
+  
+  .pqa_msg {
+    font-size: 1em;
+  }
+  
+  .pqa_btn_space {
+    height: 10px;
+  }
+  
+  .table_header {
+    padding-bottom: 5px;
+  }
+  
+  .header_hr {
+    margin-bottom: -20px;
+  }
+  
+  .selection_header_font {
+    font-size: 1em;
+    font-weight: 700;
+    color: #0c5e22;
+  }
+  
+  @media only screen and (min-width: 960px) {
+    /* styles for browsers larger than 960px; */
+    
+    .dash_header {
+      /* margin-top: -5px;  */
+      color: #18385e;
+      font-size: 1em;
+      font-weight: 800;
+    }
+    .question-text {
+      padding-top: 3px;
+      font-size: 1em;
+      text-align: left;
+      color: #164e87;
+      font-weight: 700;
+    }
+  
+    .pqa_msg {
+      font-size: 0.95em;
+    }
+  
+    .pqa_btn_space {
+      height: 60px;
+    }
+  
+    .light-row {
+      width: 100%;
+      /* background-color: white; */
+      font-size: .9em;
+      margin-left: 10px;
+      padding-right: 4px;
+      padding-top: 3px;
+      padding-left: 10px;
+    }
+  
+    .dark-row {
+      width: 100%;
+      background-color: #dbc49c;
+      font-size: .9em;
+      margin-left: 10px;
+      padding-right: 4px;
+      padding-top: 3px;
+      padding-left: 10px;
+    }
+  
+    .btn_access_list {
+      width: 80px;
+      height: 27px;
+      background-color: #0c5e22;
+      border: none;
+      color: white;
+      font-size: 10pt;
+      box-shadow: 3px 3px 0px 0px black;
+      border-radius: 5px;
+      margin-left: 20px;
+      margin-bottom: 4px;
+      margin-top: -2px;
+    }
+  }
+  
+  @media only screen and (min-width: 1440px) {
+    /* styles for browsers larger than 1440px; */
+    .dash_header {
+      margin-top: -5px;
+      color: #18385e;
+      font-size: 1.2em;
+      font-weight: 600;
+    }
+    .question-text {
+      padding-top: 3px;
+      font-size: 1.3em;
+      text-align: left;
+      color: #164e87;
+      font-weight: 700;
+    }
+  
+    .light-row {
+      width: 100%;
+      /* background-color: white; */
+      font-size: 0.9em;
+      margin-left: 10px;
+      padding-right: 4px;
+      padding-top: 3px;
+    }
+  
+    .dark-row {
+      width: 100%;
+      background-color: #dbc49c;
+      font-size: .9em;
+      margin-left: 10px;
+      padding-right: 4px;
+      padding-top: 3px;
+    }
+  
+    .btn_access_list {
+      width: 80px;
+      height: 27px;
+      background-color: #0c5e22;
+      border: none;
+      color: white;
+      font-size: 10pt;
+      box-shadow: 3px 3px 0px 0px black;
+      border-radius: 5px;
+      margin-left: 10px;
+      margin-bottom: 2px;
+      margin-top: -2px;
+    }
+  
+  }
+  @media only screen and (min-width: 2000px) {
+    /* for sumo sized (mac) screens */
+    .question-text {
+      padding-top: 3px;
+      font-size: 1.3em;
+      text-align: left;
+      color: #164e87;
+      font-weight: 700;
+    }
+  
+  
+    .light-row {
+      width: 100%;
+      /* background-color: white; */
+      font-size: 0.9em;
+      margin-left: 10px;
+      padding-right: 4px;
+      padding-top: 3px;
+    }
+  
+    .dark-row {
+      width: 100%;
+      background-color: #dbc49c;
+      font-size: .9em;
+      margin-left: 10px;
+      padding-right: 4px;
+      padding-top: 3px;
+    }
+  
+    .btn_access_list {
+      width: 80px;
+      height: 27px;
+      background-color: #0c5e22;
+      border: none;
+      color: white;
+      font-size: 10pt;
+      box-shadow: 3px 3px 0px 0px black;
+      border-radius: 5px;
+      margin-left: 10px;
+      margin-bottom: 2px;
+      margin-top: -2px;
+    }
+  }
+  
+  @media only screen and (max-device-width: 480px) {
+    /* styles for mobile browsers smaller than 480px; (iPhone) */
+    .btn-modal_dash {
+      width: 50px;
+      height: 27px;
+      font-size: 8pt;
+      padding-top: 2px;
+      box-shadow: 3px 3px 0px 0px black;
+      border-radius: 5px;
+    }
+  
+    .btn_mirror_dash {
+      width: 50px;
+      height: 27px;
+      font-size: 8pt;
+      padding-top: 2px;
+      box-shadow: 3px 3px 0px 0px black;
+      border-radius: 5px;
+    }
+  
+    .dark-row {
+      width: 100%;
+      /* background-color: #dbc49c; */
+      font-size: 0.67em;
+      margin-left: -10px;
+      padding-right: 4px;
+      padding-top: 6px;
+      padding-bottom: -2px;
+      padding-left: 15px;
+      margin-bottom: 3px;
+    }
+  
+    .light-row {
+      width: 100%;
+      /* background-color: #f0e9df; */
+      /* background-color: white; */
+      font-size: 0.67em;
+      margin-left: -10px;
+      padding-right: 4px;
+      padding-top: 6px;
+      padding-bottom: -2px;
+      padding-left: 15px;
+      margin-bottom: 3px;
+    }
+  
+    .btn_access_list {
+      width: 45px;
+      height: 27px;
+      background-color: #0c5e22;
+      border: none;
+      color: white;
+      font-size: 9pt;
+      box-shadow: 3px 3px 0px 0px black;
+      border-radius: 5px;
+      margin-left: -2px;
+      margin-bottom: 3px;
+      margin-top: -5px;
+    }
+  
+    .dash_header {
+      margin-top: 5px;
+      color: #18385e;
+      font-size: 9pt;
+      font-weight: 800;
+    }
+  
+    div.fixedsize_dash {
+      height: 500px;
+      margin-top: -12px;
+      margin-left: -14px;
+      width: 108%;
+      overflow: auto;
+      max-height: 550px;
+    }
+    .question-text {
+      padding-top: 2px;
+      margin-left: -5px;
+      font-size: 0.75em;
+      text-align: left;
+      color: #164e87;
+      font-weight: 700;
+    }
+    .table_header {
+      padding-bottom: 10px;
+      margin-top: -12px;
+    }
+  
+    .pqa_msg {
+      font-size: 0.65em;
+    }
+  
+    .pqa_btn_space {
+      height: 40px;
+    }
+  }
+  
+  @media only screen and (max-device-width: 320px) {
+    /* styles for browsers larger than 320px iphone5; */
+  
+  
+    .dark-row {
+      width: 100%;
+      font-size: 0.57em;
+      margin-left: 3px;
+      padding-right: 4px;
+      padding-top: 6px;
+      padding-bottom: -4px;
+      padding-left: 5px;
+      margin-bottom: 3px;
+    }
+  
+    .light-row {
+      width: 100%;
+      /* background-color: white; */
+      font-size: 0.57em;
+      margin-left: 3px;
+      padding-right: 4px;
+      padding-top: 6px;
+      padding-bottom: -4px;
+      padding-left: 5px;
+      margin-bottom: 3px;
+    }
+  
+    .btn_access_list {
+      width: 34px;
+      height: 27px;
+      font-size: 7pt;
+      box-shadow: 3px 3px 0px 0px black;
+      border-radius: 5px;
+      margin-left: -10px;
+      margin-bottom: 3px;
+      margin-top: -5px;
+    }
+  
+    .header-spacing {
+      height: 10px;
+    }
+  
+    .selection_header_font {
+      font-size: .9em;
+      font-weight: 700;
+      color: #0c5e22;
+      margin-bottom: -19px;
+    }
+  
+    .dash_header {
+      margin-top: 5px;
+      color: #18385e;
+      font-size: 9pt;
+      font-weight: 800;
+    }
+  
+    div.fixedsize_dash {
+      height: 500px;
+      margin-top: -12px;
+      margin-left: -14px;
+      width: 108%;
+      overflow: auto;
+      max-height: 550px;
+    }
+  }
+  
+  @media only screen and (device-width: 768px) {
+    /* default iPad screens */
+    .btn-modal_dash {
+      width: 50px;
+      height: 27px;
+      font-size: 8pt;
+      padding-top: 2px;
+      box-shadow: 3px 3px 0px 0px black;
+      border-radius: 5px;
+    }
+  
+    .btn_mirror_dash {
+      width: 50px;
+      height: 27px;
+      font-size: 8pt;
+      padding-top: 2px;
+      box-shadow: 3px 3px 0px 0px black;
+      border-radius: 5px;
+    }
+  
+    div.fixedsize_dash {
+      height: 850px;
+      width: 110%;
+      margin-left: -5%;
+      /* background-color: rgb(245, 245, 228); */
+      background-color: #f0e9df;
+      overflow-x: hidden;
+      overflow-y: auto;
+      /* max-height: 100%; */
+    }
+  
+    .btn_access_list {
+      width: 40px;
+      height: 27px;
+      background-color: #0c5e22;
+      border: none;
+      color: white;
+      font-size: 9pt;
+      box-shadow: 3px 3px 0px 0px black;
+      border-radius: 5px;
+      margin-left: -10px;
+      margin-bottom: 2px;
+      margin-top: -2px;
+    }
+    
+    .dark-row {
+      width: 100%;
+      background-color: #dbc49c;
+      font-size: 1em;
+      margin-left: 10px;
+      padding-right: 4px;
+      padding-top: 3px;
+    }
+    
+    .light-row {
+      width: 100%;
+      font-size: 1em;
+      margin-left: 10px;
+      padding-right: 4px;
+      padding-top: 3px;
+    }
+    
+  
+    .btn_mirror_dash {
+      width: 100px;
+      height: 30px;
+      background-color: #0c5e22;
+      border: none;
+      color: white;
+      font-size: 9pt;
+      box-shadow: 3px 3px 0px 0px black;
+      border-radius: 5px;
+      margin-left: -10px;
+    }
+  
+    .pqa_msg {
+      font-size: 0.95em;
+    }
+  
+    .pqa_btn_space {
+      height: 60px;
+    }
+  }
+  /* different techniques for iPad screening */
+  @media only screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation: portrait) {
+    /* For portrait layouts only */
+  
+    .btn-modal_dash {
+      width: 110px;
+      height: 35px;
+      font-size: 12pt;
+      padding-top: 2px;
+      box-shadow: 3px 3px 0px 0px black;
+      border-radius: 5px;
+    }
+  
+    .btn_mirror_dash {
+      width: 110px;
+      height: 35px;
+      font-size: 12pt;
+      padding-top: 2px;
+      box-shadow: 3px 3px 0px 0px black;
+      border-radius: 5px;
+    }
+  
+    div.fixedsize_dash {
+      height: 1170px;
+      width: 110%;
+      margin-left: -5%;
+      /* background-color: rgb(245, 245, 228); */
+      background-color: #f0e9df;
+      overflow-x: hidden;
+      overflow-y: auto;
+      /* max-height: 100%; */
+    }
+  
+    .btn_access_list {
+      width: 80px;
+      height: 27px;
+      background-color: #0c5e22;
+      border: none;
+      color: white;
+      font-size: 9pt;
+      box-shadow: 3px 3px 0px 0px black;
+      border-radius: 5px;
+      margin-left: 10px;
+      margin-bottom: 4px;
+      margin-top: -2px;
+    }
+    
+    .dark-row {
+      width: 100%;
+      background-color: #dbc49c;
+      font-size: .9em;
+      margin-left: 10px;
+      padding-right: 4px;
+      padding-top: 3px;
+    }
+    
+    .light-row {
+      width: 100%;
+      /* background-color: white; */
+      font-size: .9em;
+      margin-left: 10px;
+      padding-right: 4px;
+      padding-top: 3px;
+    }
+  
+    /* .question-text {
+      padding-top: 1px;
+      font-size: 1.2em;
+      text-align: left;
+      color: #164e87;
+      font-weight: 700;
+    }
+  
+    .table_header {
+      padding-bottom: 10px;
+      margin-top: 5px;
+    } */
+  
+    .slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 8px;
+      height: 12px;
+      background: #45590b;
+      cursor: pointer;
+    }
+  
+    .btn_mirror_dash {
+      width: 110px;
+      height: 35px;
+      font-size: 10pt;
+      border-radius: 4px;
+    }
+  
+    .pqa_msg {
+      margin-top: -5px;
+      font-size: 1em;
+      padding-bottom: 5px;
+    }
+  
+    .pqa_btn_space {
+      height: 60px;
+    }
+  }
+  
