@@ -84,9 +84,9 @@ class NewCreation extends Component {
       commDecriptionErrFlag: false,
 
       intentErrFlg: false,
-      commNameMsg: "A reference name (5-to-20 Chars).",
-      commCaptionMsg: "A caption for others (15-to-50 chars).",
-      commDescriptionMsg: "Describe your community - (min:50 max:1000 chars)",
+      commNameMsg: "A unique reference name (2-to-20 Chars).",
+      commCaptionMsg: "A caption to capture the attention of a viewer.",
+      commDescriptionMsg: "Describe the community for the viewers.",
 
       streetAddress: "",
       streetAddressMsg: "Enter street address with unit number (optional)",
@@ -123,7 +123,7 @@ class NewCreation extends Component {
 
   async componentDidMount() {
     if (!this.props.auth.isAuthenticated) {
-      this.props.history.push('/login');
+      this.props.history.push("/login");
     }
     let retdata;
     try {
@@ -273,11 +273,8 @@ class NewCreation extends Component {
   }
 
   async onChange(e) {
-    // let name = [e.target.name];
-    // let value = e.target.value;
+    e.preventDefault();
     await this.setState({ [e.target.name]: e.target.value });
-
-    // console.log('onChange name:', name, ' value:', value);
   }
 
   async handleJoinProcess(e) {
@@ -333,16 +330,15 @@ class NewCreation extends Component {
   saveValidation = async () => {
     let isValid = true;
     let v = this.state.commName.trim().length;
-    if (v < 5) {
-      // console.log("in commName  v < 5: ", v);
+    if (v < 2) {
       await this.setState({
-        commNameMsg: "The name is short. Should be between 5 to 20.",
+        commNameMsg: "The name (min 2 chars) should be unique.",
         commNameErrFlag: true
       });
       isValid = false;
     } else {
       await this.setState({
-        commNameMsg: "A reference name (5-to-20 Chars).",
+        commNameMsg: "A unique reference name (2-to-20 Chars).",
         commNameErrFlag: false
       });
     }
@@ -362,31 +358,30 @@ class NewCreation extends Component {
       }
     }
 
-    v = this.state.commCaption.trim().length;
-    if (v < 15) {
-      await this.setState({
-        commCaptionMsg: "The caption is short. Should be between 15 to 50.",
-        commCaptionErrFlag: true
-      });
-      isValid = true;
-    } else {
-      await this.setState({
-        commCaptionMsg: "A caption for others (15-to-50 chars).",
-        commCaptionErrFlag: false
-      });
-    }
+    // v = this.state.commCaption.trim().length;
+    // if (v < 15) {
+    //   await this.setState({
+    //     commCaptionMsg: "The caption is short. Should be between 15 to 50.",
+    //     commCaptionErrFlag: true
+    //   });
+    //   isValid = true;
+    // } else {
+    //   await this.setState({
+    //     commCaptionMsg: "A caption for others (15-to-50 chars).",
+    //     commCaptionErrFlag: false
+    //   });
+    // }
     v = this.state.commDescription.trim().length;
-    if (v < 15) {
+    if (v < 5) {
       await this.setState({
-        commDescriptionMsg:
-          "Description is short. Should be between 50 to 1000. Now lenght is " +
-          this.state.commDescription.trim().length,
+        commDescriptionMsg: "Must have a description (minimum 5 chars).",
+        // this.state.commDescription.trim().length,
         commDecriptionErrFlag: true
       });
       isValid = false;
     } else {
       await this.setState({
-        commDescriptionMsg: "Describe your community - (min:50 max:1000 chars)",
+        commDescriptionMsg: "Describe the community for the viewers.",
         commDecriptionErrFlag: false
       });
     }
@@ -404,22 +399,23 @@ class NewCreation extends Component {
       });
     }
 
-    if (
-      this.state.fileUploads[0].s3Url === "" ||
-      this.state.picCaption === ""
-    )
     // if (
-    //   this.state.fileUploads[0].s3Url === "" 
+    //   this.state.fileUploads[0].s3Url === "" ||
+    //   this.state.picCaption === ""
     // )
-     {
+    // console.log(
+    //   "this.state.fileUploads[0].s3Url: ",
+    //   this.state.fileUploads[0].s3Url
+    // );
+    if (this.state.fileUploads[0].s3Url === "") {
       await this.setState({
-        pictureMsg: "Must upload a picture & enter a caption.",
+        picturesMsg: "Please upload the picture.",
         pictureErrFlag: true
       });
       isValid = false;
     } else {
       await this.setState({
-        pictureMsg: "Upload a picture and provide a caption.",
+        picturesMsg: "Upload a picture and provide a caption.",
         pictureErrFlag: false
       });
     }
@@ -442,7 +438,7 @@ class NewCreation extends Component {
         throw new Error(`Commune name already exists ${this.state.commName}`);
       }
     } catch (err) {
-      console.log('err:', err.message);
+      console.log("err:", err.message);
       ifExists = false;
     }
 
@@ -478,58 +474,56 @@ class NewCreation extends Component {
         caption: this.state.picCaption
       }
     };
-    console.log('savePublishInDB url:', url);
-    console.log('savePublishInDB Data:', commData);
+    // console.log("savePublishInDB url:", url);
+    // console.log("savePublishInDB Data:", commData);
+    let retValue = {};
     try {
       let ret = await axios.post(url, commData);
-      if (ret.length === 0) {
-        throw new Error(
-          "Did not save ... something wrong. Check with engineers."
-        );
-      } else {
+      // console.log("savePublishDB ret:", ret);
+      retValue = ret;
+      if (ret.status === "Success") {
         await this.setState({
+          savedValidFlag: true,
           savedFlag: true,
+          reviewFlag: false,
           saveReviewMsg:
-            "Successfully published. Click Home on Navbar/Side Drawer and then click on Engage."
+            "Successfully published. It will now be available in Home->Engage."
         });
-        // console.log('Saved message successfully ...');
-      }
+      } 
     } catch (err) {
-      console.log('savePublishInDB save error: ', err.message);
+      console.log("savePublishInDB save error: ", err.message);
+      retValue = {
+        status: 'Error', Msg: err.message
+      }
     }
+    return retValue;
   };
 
   // Validate whethere the form is ready for publishing
   publishComm = async () => {
-
     let valid = await this.saveValidation();
     if (valid) {
       try {
         let pubret = await this.savePublishInDB();
-        console.log('publishComm:', pubret);
-        if ( pubret.status === 'Success') {
+        // console.log("publishComm:", pubret.data);
+        if (pubret.data.status === "Success") {
           await this.setState({
-            saveValidFlag: true,
+            saveValidFlag: false,
+            reviewFlag: true,
+            savedFlag: true,
             saveReviewMsg:
               "Successfully published. This will be available in your Engage (Dashboard). "
           });
+          // console.log('saveValidFlag:', this.state.saveValidFlag, ' savedFlag:', this.state.savedFlag + ' reviewFlag:' + this.state.reviewFlag + ' Msg:', this.state.saveReviewMsg);
         } else {
           await this.setState({
             saveValidFlag: false,
-            saveReviewMsg:
-              `Error: Problem saving. Report to baanda support jit@baanda.com with the msg: ${pubret.Msg}`
+            saveReviewMsg: `Error: Problem saving. Report to baanda support jit@baanda.com with the msg: ${pubret.Msg}`
           });
         }
       } catch (err) {
         console.log("publish comm err:", err);
       }
-      // Here we need to push one to the lobby
-      // this.props.history.push('/lobby');
-      // await this.setState({
-      //   saveValidFlag: false,
-      //   saveReviewMsg:
-      //     "Successfully published. This will be available in your Engage (Dashboard). "
-      // });
     } else {
       await this.setState({
         saveValidFlag: true,
@@ -617,7 +611,8 @@ class NewCreation extends Component {
         </span>
       </div>
     );
-
+    // console.log('this.state.reviewFlag:', this.state.reviewFlag);
+    // console.log('this.state.savedFlag:', this.state.savedFlag);
     let saveReviewPanel;
     if (!this.state.reviewFlag) {
       // Edit mode
@@ -1068,7 +1063,7 @@ class NewCreation extends Component {
                   : "save_review_msg_err"
               }`}
             >
-              <b>{this.state.saveReviewMsg}</b>
+              <b>{this.state.saveReviewMsg}&nbsp;{this.state.saveValidFlag}</b>
             </div>
           </div>
           <div className="col-5">{saveReviewPanel}</div>
@@ -1108,22 +1103,9 @@ class NewCreation extends Component {
       showPanel = <div>{reviewPanel}</div>;
     }
 
-    // let testpanel = (
-    //   <div>
-    //     <p align="justify">1. It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</p>
-    //     <p align="justify">2. It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</p>
-    //     <p align="justify">3. It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</p>
-    //     <p align="justify">4. It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</p>
-
-    //   </div>
-    // )
     return (
       <div>
-        {/* <div className="text-center">
-          <h6>New Community</h6>
-        </div> */}
         <div className="fixedsize_create_comm text-center">{showPanel}</div>
-        {/* <div className="fixedsize_create_comm_x">{testpanel}</div> */}
         <ModalContainer />
       </div>
     );

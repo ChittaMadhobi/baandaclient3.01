@@ -43,7 +43,7 @@ class Catalog extends Component {
       merchandiseType: "Goods",
 
       itemName: "",
-      itemNameMsg: "A unique item name between 10 to 100 chars",
+      itemNameMsg: "A unique item name (Minimum 2 chars)",
       itemNameErrFlag: false,
       searchItemName: "",
 
@@ -53,7 +53,7 @@ class Catalog extends Component {
 
       itemDescription: "",
       itemDecriptionErrFlag: "",
-      itemDescriptionMsg: "Enter the description (50 to 1000 characters). ",
+      itemDescriptionMsg: "Enter the description of the item. ",
 
       unitType: "Number",
       itemPrice: 0.0,
@@ -277,7 +277,7 @@ class Catalog extends Component {
       merchandiseType: "Goods",
 
       itemName: "",
-      itemNameMsg: "A unique item name (10 to 100 chars).",
+      itemNameMsg: "A unique item name (min 2 chars).",
       itemNameErrFlag: false,
       searchItemName: "",
 
@@ -287,7 +287,7 @@ class Catalog extends Component {
 
       itemDescription: "",
       itemDecriptionErrFlag: "",
-      itemDescriptionMsg: "Enter the description (50 to 1000 characters). ",
+      itemDescriptionMsg: "Enter the description of the item. ",
 
       unitType: "Number",
       itemPrice: 0.0,
@@ -345,9 +345,7 @@ class Catalog extends Component {
   };
 
   onChange = async e => {
-    // console.log("name: ", [e.target.name], " value:", e.target.value);
     await this.setState({ [e.target.name]: e.target.value });
-    // console.log("itemPrice:", this.state.itemPrice);
   };
 
   
@@ -365,13 +363,13 @@ class Catalog extends Component {
       } else {
         await this.setState({
           itemNameErrFlag: false,
-          itemNameMsg: "A unique item name (10 to 100 chars)."
+          itemNameMsg: "A unique item name (Minimum 2 chars)."
         });
       }
     } else {
       await this.setState({
         itemNameErrFlag: false,
-        itemNameMsg: "A unique item name (10 to 100 chars)."
+        itemNameMsg: "A unique item name (Minimum 2 chars)."
       });
     }
   };
@@ -575,9 +573,9 @@ class Catalog extends Component {
     let isValid = true;
 
     // Check item Name
-    if (data.itemName.length < 10) {
+    if (data.itemName.length < 2) {
       await this.setState({
-        itemNameMsg: "Item name should be at least 10 chars long.",
+        itemNameMsg: "Item name should be at least 2 chars long.",
         itemNameErrFlag: true
       });
       isValid = false;
@@ -598,18 +596,18 @@ class Catalog extends Component {
     }
 
     // Description
-    if (data.itemDescription.length < 50) {
-      await this.setState({
-        itemDescriptionMsg: "Description should be at least 50 chars long.",
-        itemDecriptionErrFlag: true
-      });
-      isValid = false;
-    } else {
-      await this.setState({
-        itemDescriptionMsg: "Enter Description (50 to 1000 characters).",
-        itemDecriptionErrFlag: false
-      });
-    }
+    // if (data.itemDescription.length < 50) {
+    //   await this.setState({
+    //     itemDescriptionMsg: "Description should be at least 50 chars long.",
+    //     itemDecriptionErrFlag: true
+    //   });
+    //   isValid = false;
+    // } else {
+    //   await this.setState({
+    //     itemDescriptionMsg: "Enter Description (50 to 1000 characters).",
+    //     itemDecriptionErrFlag: false
+    //   });
+    // }
 
     // Price
     // console.log("price:", data.itemPrice);
@@ -1196,8 +1194,8 @@ class Catalog extends Component {
     if (this.state.searchCatalogFlag) {
       searchPanel = (
         <div className="text-center">
-          <div className="row searchpanel_placement">
-            <div className="col-10 search_input_placement">
+          <div className="row">
+            <div className="col-10">
               <input
                 name="searchItemName"
                 type="text"
@@ -1205,7 +1203,7 @@ class Catalog extends Component {
                 onChange={this.onChange}
                 size="50"
                 maxLength="50"
-                className="input_text_catlog"
+                className="input_text_catlogx"
                 placeholder="Item name to edit"
               />
               <div

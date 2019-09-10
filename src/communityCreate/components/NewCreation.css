@@ -47,14 +47,12 @@ p.intent_msg {
 }
 
 .save_review_msg {
-  margin-top: 10px;
+  margin-top: 30px;
   font-size: 1em;
-  color: black;
 }
 
 .save_review_msg_err {
   font-size: 1em;
-  color: red;
 }
 
 .input_textarea_pic_caption {
@@ -133,6 +131,7 @@ p.intent_msg {
   font-size: 10pt;
   box-shadow: 3px 3px 0px 0px black;
   border-radius: 5px;
+  margin-top: 30px;
 }
 
 
@@ -192,7 +191,7 @@ p.intent_msg {
 }
 
 .spacing {
-  height: 30px;
+  height: 100px;
 }
 
 .pic_msg_placement {
@@ -375,6 +374,7 @@ p.intent_msg {
 
   .save_review_msg {
     font-size: 0.7em;
+    color: black;
   }
 
   .save_review_msg_err {
@@ -383,7 +383,7 @@ p.intent_msg {
   }
 
   .spacing {
-    height: 50px;
+    height: 100px;
   }
 
   .input_text_street {
@@ -449,7 +449,6 @@ p.intent_msg {
 
   .save_review_msg_err {
     font-size: .7em;
-    color: red;
   }
 
   .input_text_street {

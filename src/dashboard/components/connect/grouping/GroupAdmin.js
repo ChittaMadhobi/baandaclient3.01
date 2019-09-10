@@ -407,13 +407,13 @@ class GroupAdmin extends Component {
     // alert("addSelectMemberList start");
     let ifExists = true;
     let url = baandaServer + saveGetGroupMembers;
-    // console.log(">>> addSelectMemberList:", url, " input data:", data);
+    console.log(">>> addSelectMemberList:", url, " input data:", data);
 
     let newMembers = await axios.post(url, data);
 
     // There will minimum one member. We need to handle other error conditions
     // here (when we get sanity in our development process).
-    // console.log("############## newMembers data:", newMembers.data);
+    console.log("############## newMembers data:", newMembers.data);
     if (newMembers.data.length > 0) {
       await this.setState({
         selectedMembers: newMembers.data,
@@ -458,10 +458,10 @@ class GroupAdmin extends Component {
       "&groupName=" +
       this.state.searchGroupName;
     let url = baandaServer + getGroupsOfCommunity + params;
-    // console.log("handleFind url:", url);
+    console.log("handleFind url:", url);
     try {
       let ret = await axios.get(url);
-      console.log('ret: ', ret);
+      // console.log('ret: ', ret);
       let sortRet =ret.data.Msg.sort((a,b) => ( a.groupName.toLowerCase() > b.groupName.toLowerCase()) ? 1 : -1);
       console.log('sortRet:', sortRet);
       if (ret.data.status === "Error") {
@@ -494,6 +494,7 @@ class GroupAdmin extends Component {
               groupsSelectedErrFlag: false,
               showgroupEditPanelFlag: true,
               groupName: groupOptions[0].label.groupName,
+              groupId: groupOptions[0].label.groupId,
               groupDescription: groupOptions[0].label.description,
               editMemberPanelFlag: true
               // editMemberListFlag: true
@@ -593,8 +594,8 @@ class GroupAdmin extends Component {
   };
 
   render() {
-    // console.log("GroupAdmin props:", this.props);
-    // console.log("GroupAdmin state.groups:", this.state);
+    console.log("GroupAdmin props:", this.props);
+    console.log("GroupAdmin state:", this.state);
 
     let groupOpsBtn;
 
@@ -1116,7 +1117,7 @@ class GroupAdmin extends Component {
     } else if (this.state.editGroupFlag) {
       outputPanel = (
         <div className="text-center">
-          <br />
+          <br /> 
           <br />
           <br />
           <h6>Coming soon - in November 2019 Release</h6>

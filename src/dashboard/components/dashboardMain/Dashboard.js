@@ -10,6 +10,7 @@ import "../../../modal/css/template.css";
 
 // Navigation imports
 import Market from '../market/MarketMain';
+import NotMarket from '../non-market/NotMarket';
 
 
 import "./Dashboard.css";
@@ -31,6 +32,8 @@ class Dashboard extends Component {
       commName: '',
       communityid: 0,
       role: '',
+      intent: '',
+      focus: '',
       
       // active panel flags
       accessListPanelFlag: true,
@@ -177,7 +180,19 @@ class Dashboard extends Component {
         marketFlag: true,
         commName: commName,
         communityid: communityid,
-        role: role
+        role: role,
+        intent: intent,
+        focus: focus
+      })
+    } else {
+      await this.setState({
+        accessListPanelFlag: false,
+        marketFlag: false,
+        commName: commName,
+        communityid: communityid,
+        role: role,
+        intent: intent,
+        focus: focus
       })
     }
   };
@@ -277,19 +292,29 @@ class Dashboard extends Component {
       </div>
     );
 
+    
     // This is your store, market for handling catalog, inventory, this.connects, intel etc. All for the community you selected. 
-    let marketPanel = (
-      <div>
-        <Market commName={this.state.commName} communityid={this.state.communityid} role={this.state.role} dashReturnMethod={this.returnToDashboard}/>
-      </div>
-    )
+    let marketPanel;
+    if (this.state.marketFlag) {
+      marketPanel = (
+        <div>
+          <Market commName={this.state.commName} communityid={this.state.communityid} role={this.state.role} dashReturnMethod={this.returnToDashboard}/>
+        </div>
+      )  
+    } else {
+      marketPanel = (
+        <div>
+          <NotMarket commName={this.state.commName} communityid={this.state.communityid} role={this.state.role} intent={this.state.intent} focus={this.state.focus} dashReturnMethod={this.returnToDashboard}/>
+        </div>
+      )  
+    }
 
     let outputPanel;
     if (this.state.accessListPanelFlag) {
       outputPanel = engageLandingPanel;
-    } else if (this.state.marketFlag) {
+    } else  {
       outputPanel = marketPanel;
-    }
+    } 
     return (
       <div className="text-center">
         {outputPanel}
