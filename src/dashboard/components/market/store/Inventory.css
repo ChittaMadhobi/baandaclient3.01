@@ -147,6 +147,10 @@
   font-weight: 700;
 }
 
+.inventory_spacing {
+  height: 150px;
+}
+
 @media only screen and (max-device-width: 480px) {
   .btn_goFind_inventory {
     width: 50px;
@@ -376,7 +380,7 @@
   .inventory_comment {
     width: 90%;
     font-size: 1em;
-    margin-top: 10px;
+    margin-top: 2px;
   }
 
   .inventory_comment_placement {

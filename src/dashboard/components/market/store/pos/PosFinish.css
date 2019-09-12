@@ -1,3 +1,16 @@
+div.fixedsize_pos_finish {
+  height: 700px;
+  width: 110%;
+  background-color: #f5f2eb;
+  margin-left: 2%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.pos_finish_spacing {
+  height: 100px;
+}
+
 .btn_goPosCustomerFind {
   width: 100px;
   height: 32px;
@@ -22,7 +35,6 @@
   margin-top: -10px;
   margin-right: 10px;
 }
-
 
 .btn_completePos {
   width: 100px;
@@ -92,7 +104,7 @@
   color: #142c99;
   font-size: 1em;
   font-weight: 600;
-} 
+}
 
 .input_invoice_note {
   font-size: 1em;
@@ -121,17 +133,16 @@
   .btn_retToPos {
     width: 75px;
     height: 28px;
-    font-size: .80em;
+    font-size: 0.8em;
     border-radius: 5px;
     margin-top: 10px;
     margin-left: -20px;
   }
-  
-  
+
   .btn_completePos {
     width: 65px;
     height: 28px;
-    font-size: .80em;
+    font-size: 0.8em;
     border-radius: 5px;
     margin-top: 10px;
     margin-right: 3px;
@@ -164,7 +175,7 @@
   }
 
   .confirm_format {
-    font-size: .9em;
+    font-size: 0.9em;
     font-weight: 650;
     margin-top: 15px;
     margin-left: -10px;
@@ -178,7 +189,7 @@
   }
 
   .input_invoice_note {
-    font-size: .9em;
+    font-size: 0.9em;
     margin-top: 15px;
     width: 100%;
   }
@@ -203,7 +214,7 @@
   .btn_retToPos {
     width: 75px;
     height: 28px;
-    font-size: .75em;
+    font-size: 0.75em;
     border-radius: 5px;
     margin-top: 10px;
     margin-left: -10px;
@@ -212,12 +223,11 @@
   .btn_completePos {
     width: 65px;
     height: 28px;
-    font-size: .75em;
+    font-size: 0.75em;
     border-radius: 5px;
     margin-top: 10px;
     margin-right: 5px;
   }
-  
 }
 
 @media only screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation: portrait) {
@@ -245,8 +255,7 @@
     margin-top: -10px;
     margin-right: 5px;
   }
-  
-  
+
   .btn_completePos {
     width: 100px;
     height: 32px;

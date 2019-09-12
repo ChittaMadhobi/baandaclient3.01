@@ -115,7 +115,7 @@ class ConnectHub extends Component {
               type="button"
               onClick={() => this.handleSelect("grouping")}
             >
-              <b>Grouping</b>
+              <b>Group</b>
             </button>
             &nbsp;
             <button

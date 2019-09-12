@@ -111,7 +111,7 @@ class Lobby extends Component {
         </div>
         <div className="row">
           <div className="col panel_text">
-            Co-op, Co-live, Co-serve & Co-Fun
+            Co-op, Co-live & Co-serve 
           </div>
         </div>
         <div className="space-between-domains" />
@@ -138,7 +138,7 @@ class Lobby extends Component {
         </div>
         <div className="row">
           <div className="col panel_text">
-            Search, Browse, Matched, & Connect
+            Search, Browse, Match & Connect
           </div>
         </div>
         <div className="space-between-domains" />
@@ -220,7 +220,7 @@ class Lobby extends Component {
         <div className="lobbyheader">
           <div className="row text-center text_white">
             <div className="col-12">
-              Band Together - Bond Together - Build Together
+              Build Together - Band Together - Bond Together
             </div>
           </div>
         </div>

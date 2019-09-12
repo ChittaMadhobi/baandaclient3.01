@@ -544,7 +544,7 @@ class Catalog extends Component {
         await this.saveItem(data);
         // console.log("SaveItem Response:", response);
         await this.setState({
-          saveReviewMsg: "Saved. Please enter the next item. Close to return.",
+          saveReviewMsg: "Saved. Please enter your next item. Close to return.",
           saveValidFlag: false,
           itemName: "",
           itemDescription: "",
@@ -1131,8 +1131,8 @@ class Catalog extends Component {
             <div
               className={`${
                 !this.state.saveValidFlag
-                  ? "save_review_msg"
-                  : "save_review_msg_err"
+                  ? "save_catalog_msg"
+                  : "save_catalog_msg_err"
               }`}
             >
               {this.state.saveReviewMsg}
@@ -1140,7 +1140,7 @@ class Catalog extends Component {
           </div>
           <div className="col-5">{saveReviewPanel}</div>
         </div>
-        <div className="spacing" />
+        <div className="spacing_catalog_panel" />
       </div>
     );
 
@@ -1263,6 +1263,7 @@ class Catalog extends Component {
     return (
       <div className="fixedsize_catalog">
         {createCatalogPanel}
+        <div className="pacing_catalog_panel" />
         <ModalContainer />
       </div>
     );

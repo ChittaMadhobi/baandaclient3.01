@@ -24,7 +24,7 @@ const baandaServer = process.env.REACT_APP_BAANDA_SERVER;
 const serchItemToEdit = "/routes/dashboard/searchItemToEdit?";
 const getCommunityInfo = "/routes/dashboard/getCommunityInfo?";
 
-let options = [];  
+let options = [];
 let itemsInCartArray = [];
 
 const customStyles = {
@@ -37,7 +37,7 @@ const customStyles = {
       maxHeight: 130
     };
   }
-};  
+};
 
 class Pos extends Component {
   constructor(props) {
@@ -70,9 +70,9 @@ class Pos extends Component {
 
       totalcost: 0.0,
       discount: 0.0,
-      tax: 7.5,
+      tax: 0.0,
       processingFee: 0.25,
-      toPayTotal: 0.00,
+      toPayTotal: 0.0,
       amountPending: 0.0,
 
       paySchedule: { value: "fullpay", label: "Pay in full now" },
@@ -102,12 +102,13 @@ class Pos extends Component {
       amountPerIstallment: 0.0,
       installmentDateOfMonth: 15,
       installmentDayOfWeek: {
-        value: "friday",
+        value: "Fri",
         label: "Friday"
       },
 
       reviewFlag: false,
-      customerHandlingFlag: false
+      customerHandlingFlag: false,
+      buyItemErrFlag: false
     };
   }
 
@@ -128,11 +129,11 @@ class Pos extends Component {
     // call getPosInitData()
     await this.getPosInitData();
 
-    while( this.state.itemsInCart.length > 0){
+    while (this.state.itemsInCart.length > 0) {
       this.state.itemsInCart.pop();
     }
 
-    while( this.state.item.length > 0){
+    while (this.state.item.length > 0) {
       this.state.item.pop();
     }
   };
@@ -158,30 +159,40 @@ class Pos extends Component {
     await this.setState({ [e.target.name]: e.target.value });
     if (name === "discount" || name === "tax" || name === "processingFee") {
       let total = parseFloat((this.state.totalcost * 1).toFixed(2));
-      let totDiscount = parseFloat((total * (this.state.discount / 100)).toFixed(2));
+      let totDiscount = parseFloat(
+        (total * (this.state.discount / 100)).toFixed(2)
+      );
       let totPostDiscount = parseFloat((total - totDiscount).toFixed(2));
-      let totTax = parseFloat((totPostDiscount * (this.state.tax / 100)).toFixed(2));
+      let totTax = parseFloat(
+        (totPostDiscount * (this.state.tax / 100)).toFixed(2)
+      );
       let totProcessing = totPostDiscount * (this.state.processingFee / 100);
 
-      let totPending = parseFloat(((totPostDiscount + totTax) - this.state.amountPaid).toFixed(2));
-   
+      let totPending = parseFloat(
+        (totPostDiscount + totTax - this.state.amountPaid).toFixed(2)
+      );
+
       let amtPerInstallment = 0;
-      if ( this.state.noOfInstallment === 0) {
+      if (this.state.noOfInstallment === 0) {
         amtPerInstallment = 0;
       } else {
-        amtPerInstallment = parseFloat((totPending / this.state.noOfInstallment).toFixed(2));
+        amtPerInstallment = parseFloat(
+          (totPending / this.state.noOfInstallment).toFixed(2)
+        );
       }
       // let toPay = totPostDiscount + totTax + totProcessing;
-      let toPay = parseFloat(((totPostDiscount * 1) + (totTax * 1)).toFixed(2));
+      let toPay = parseFloat((totPostDiscount * 1 + totTax * 1).toFixed(2));
       let showPaySchedule;
       if (this.state.payProcessHandlingFlag) {
         showPaySchedule = true;
       } else {
         showPaySchedule = false;
       }
-      console.log('onChange this.state.discount:', this.state.discount);
+      console.log("onChange this.state.discount:", this.state.discount);
       console.log(
-        "onChange [" + name + "] total=" +
+        "onChange [" +
+          name +
+          "] total=" +
           total +
           " totDiscount=" +
           totDiscount +
@@ -192,10 +203,13 @@ class Pos extends Component {
           " totProcessing=" +
           totProcessing +
           " toPay=" +
-          toPay + " this.state.amountPaid:" + this.state.amountPaid +
-          " totPending=" + totPending
+          toPay +
+          " this.state.amountPaid:" +
+          this.state.amountPaid +
+          " totPending=" +
+          totPending
       );
-      
+
       await this.setState({
         toPayTotal: toPay,
         payProcessHandlingFlag: showPaySchedule,
@@ -205,19 +219,28 @@ class Pos extends Component {
         amountPending: totPending,
         amountPerIstallment: amtPerInstallment
       });
-    } 
+    }
   };
 
   onChangeAmtPaid = async e => {
     // console.log("name: ", [e.target.name], " value:", e.target.value);
     // console.log("toPayTotal:", this.state.toPayTotal);
-    let name = [e.target.name][0]
-    
-    let val = 0.00;
-    if  ( e.target.value !== ''){
+    let name = [e.target.name][0];
+
+    let val = 0.0;
+    if (e.target.value !== "") {
       val = parseFloat(e.target.value);
     }
-    console.log('onChangeAmtPaid [e.target.name]:', name, ' value:', e.target.value, ' this.state.toPayTotal:', this.state.toPayTotal, ' val=', val);
+    console.log(
+      "onChangeAmtPaid [e.target.name]:",
+      name,
+      " value:",
+      e.target.value,
+      " this.state.toPayTotal:",
+      this.state.toPayTotal,
+      " val=",
+      val
+    );
     await this.setState({
       [e.target.name]: val,
       amountPending: this.state.toPayTotal - val
@@ -228,30 +251,41 @@ class Pos extends Component {
     let name = [e.target.name][0];
     let paidAmt = e.target.value;
     let paidAmtType = typeof paidAmt;
-    let localPaidAmt = 0.00
-    if (paidAmtType === 'string') {
-      if ( paidAmt === '') {
-        localPaidAmt = 0.00
+    let localPaidAmt = 0.0;
+    if (paidAmtType === "string") {
+      if (paidAmt === "") {
+        localPaidAmt = 0.0;
       } else {
         localPaidAmt = parseFloat(paidAmt);
       }
     } else {
       localPaidAmt = paidAmt;
     }
-    console.log('e.targer.name:', name, ' paidAmt:', paidAmt, 'typeOf paidAmt:', typeof paidAmt, ' localpaidamt:', localPaidAmt);
+    console.log(
+      "e.targer.name:",
+      name,
+      " paidAmt:",
+      paidAmt,
+      "typeOf paidAmt:",
+      typeof paidAmt,
+      " localpaidamt:",
+      localPaidAmt
+    );
     let amtToPay = this.state.toPayTotal - paidAmt;
     let perInsAmt;
-    
+
     if (amtToPay > 0) {
       if (this.state.noOfInstallment > 0) {
-        perInsAmt = parseFloat((amtToPay / this.state.noOfInstallment).toFixed(2));
+        perInsAmt = parseFloat(
+          (amtToPay / this.state.noOfInstallment).toFixed(2)
+        );
       } else {
         perInsAmt = parseFloat(amtToPay.toFixed(2));
       }
     } else {
       perInsAmt = 0;
     }
-    console.log('name:', name, ' paidAmt:', paidAmt, ' amtToPay:', amtToPay);
+    console.log("name:", name, " paidAmt:", paidAmt, " amtToPay:", amtToPay);
     await this.setState({
       [e.target.name]: localPaidAmt,
       amountPending: this.state.toPayTotal - e.target.value,
@@ -262,25 +296,36 @@ class Pos extends Component {
   onChangeNoOfInstallment = async e => {
     let paidAmt;
     // if ( this.state.amountPaid === 0){
-      paidAmt = this.state.amountPaid;
+    paidAmt = this.state.amountPaid;
     // } else {
     //   paidAmt = parseFloat(this.state.amountPaid.toFixed(2));
     // }
     let totAmount = parseFloat(this.state.toPayTotal.toFixed(2));
-    let noOfIns=0;
-    if ( e.target.value >= 0 ) {
+    let noOfIns = 0;
+    if (e.target.value >= 0) {
       noOfIns = e.target.value;
     } else {
-      noOfIns = 0
+      noOfIns = 0;
     }
-    
+
     let toPayInIns;
     if (noOfIns > 0) {
-      toPayInIns = parseFloat(((totAmount - paidAmt) / parseInt(noOfIns)).toFixed(2));
+      toPayInIns = parseFloat(
+        ((totAmount - paidAmt) / parseInt(noOfIns)).toFixed(2)
+      );
     } else {
-      toPayInIns = (totAmount - paidAmt);
+      toPayInIns = totAmount - paidAmt;
     }
-    console.log('paidAmt=', paidAmt, ' totAmt=', totAmount, ' noOfIns=', noOfIns, ' toPayInIns=', toPayInIns);
+    console.log(
+      "paidAmt=",
+      paidAmt,
+      " totAmt=",
+      totAmount,
+      " noOfIns=",
+      noOfIns,
+      " toPayInIns=",
+      toPayInIns
+    );
     await this.setState({
       [e.target.name]: e.target.value,
       amountPerIstallment: toPayInIns
@@ -294,7 +339,7 @@ class Pos extends Component {
     });
 
     let main = this.state.payByDate;
-    console.log(main.format("L"));
+    console.log("handlePayByDate >>>>>> Date:", main.format("L"));
   };
 
   onChangeItemName = async e => {
@@ -325,7 +370,9 @@ class Pos extends Component {
 
   handleFind = async () => {
     await this.setState({
-      itemToBuyFlag: false
+      itemToBuyFlag: false,
+      searchAndEditMsg: "",
+      searchAndEditErrorFlag: false
     });
     let ifExists = true;
     let params =
@@ -353,27 +400,81 @@ class Pos extends Component {
         } else if (ret.data.Msg.length === 1) {
           // display the item for edit
           // console.log(">>>>>> item Id:", ret.data.Msg[0].itemId);
-          this.prepForSell(ret.data.Msg[0]);
+          let ifExist = false;
+          this.state.itemsInCart.forEach(elm => {
+            if (elm.itemId === ret.data.Msg[0].itemId) {
+              ifExist = true;
+            }
+          });
+          if (!ifExist) {
+            this.prepForSell(ret.data.Msg[0]);
+          } else {
+            await this.setState({
+              itemSelectToBuyFlag: false,
+              searchAndEditMsg: "The item's in the cart. Delete & buy again.",
+              searchAndEditErrorFlag: true
+            });
+          }
         } else {
           let option = {};
           options = [];
+          let infoMsg = false;
           ret.data.Msg.forEach(async obj => {
             option = {
               value: obj.itemId,
               label: obj
-              // price: obj.itemPrice,
-              // inventory: obj.currentInventory
             };
-            options.push(option);
+            // console.log("itemsInCart:", this.state.itemsInCart);
+            let ifExist = false;
+            this.state.itemsInCart.forEach(elm => {
+              if (elm.itemId === obj.itemId) {
+                ifExist = true;
+              }
+            });
+            if (!ifExist) {
+              options.push(option);
+            } else {
+              infoMsg = true;
+            }
             // console.log("obj:", obj, " itemId:", obj.itemId);
           });
-          // console.log('option', options);
-          await this.setState({
-            itemSelectToBuyFlag: true,
-            searchAndEditMsg: "Please scroll & select an item.",
-            item: options,
-            searchAndEditErrorFlag: false
-          });
+          console.log("option", options);
+          if (infoMsg) {
+            console.log('options.length: ', options.length);
+            console.log('options: ', options);
+            if (options.length === 1) {
+              await this.setState({
+                itemSelectToBuyFlag: false,
+                itemToBuyFlag: true,
+                selectedItemName: options[0].label.itemName,
+                selectedItemId: options[0].label.itemId,
+                selectedItemPrice: options[0].label.itemPrice,
+                calculatedItemCost: 0.0,
+                itemQty: "",
+                selectedItemInventory: options[0].label.currentInventory,
+                costPanelMessage: "Enter quantity please.",
+                showTheCartFlag: true
+              });
+              
+              console.log('@@@ this.state:', this.state);
+              this.prepForSell(options);
+            } else {
+              await this.setState({
+                itemSelectToBuyFlag: true,
+                item: options,
+                searchAndEditMsg:
+                  "To change items in cart, delete & buy again.",
+                searchAndEditErrorFlag: true
+              });
+            }
+          } else {
+            await this.setState({
+              itemSelectToBuyFlag: true,
+              searchAndEditMsg: "Please scroll & select an item.",
+              item: options,
+              searchAndEditErrorFlag: false
+            });
+          }
         }
       }
     } catch (err) {
@@ -386,6 +487,7 @@ class Pos extends Component {
 
   handleItemSelected = async e => {
     let data = JSON.parse(e.target.value);
+    // console.log('handleItemSelected data:', data);
     await this.setState({
       itemSelectToBuyFlag: false,
       itemToBuyFlag: true,
@@ -428,43 +530,77 @@ class Pos extends Component {
 
   handleAddCostPanel = async () => {
     // alert("On handleAddCostPanel");
-    if (this.state.itemQty && this.state.itemQty !== 0) {
-      let sizedItemName;
-      if (this.state.selectedItemName.length > 25) {
-        sizedItemName = this.state.selectedItemName.substring(0, 24);
+    if (this.state.itemQty && this.state.itemQty >= 0) {
+      if (this.state.selectedItemInventory - this.state.itemQty >= 0) {
+        let sizedItemName;
+        if (this.state.selectedItemName.length > 25) {
+          sizedItemName = this.state.selectedItemName.substring(0, 24);
+        } else {
+          sizedItemName = this.state.selectedItemName;
+        }
+        // itemsInCart
+        let data = {
+          itemId: this.state.selectedItemId,
+          itemName: sizedItemName,
+          itemPrice: this.state.selectedItemPrice,
+          itemQty: this.state.itemQty
+        };
+
+        itemsInCartArray.push(data);
+        // Initialize cost Panel
+        await this.setState({
+          itemSelectToBuyFlag: false,
+          costQtyErrFlag: false,
+          selectedItemName: "",
+          selectedItemId: 0,
+          selectedItemPrice: 0,
+          selectedItemInventory: 0,
+          calculatedItemCost: 0.0,
+          itemQty: "",
+          costPanelMessage: "",
+          itemsInCart: itemsInCartArray,
+          itemToBuyFlag: false,
+          buyItemErrFlag: false
+        });
       } else {
-        sizedItemName = this.state.selectedItemName;
+        await this.setState({
+          buyItemErrFlag: true,
+          costQtyErrFlag: false
+        });
       }
-      // itemsInCart
-      let data = {
-        itemId: this.state.selectedItemId,
-        itemName: sizedItemName,
-        itemPrice: this.state.selectedItemPrice,
-        itemQty: this.state.itemQty
-      };
-      itemsInCartArray.push(data);
-      // Initialize cost Panel
-      await this.setState({
-        itemSelectToBuyFlag: false,
-        costQtyErrFlag: false,
-        selectedItemName: "",
-        selectedItemId: 0,
-        selectedItemPrice: 0,
-        selectedItemInventory: 0,
-        calculatedItemCost: 0.0,
-        itemQty: "",
-        costPanelMessage: "",
-        itemsInCart: itemsInCartArray,
-        itemToBuyFlag: false
-      });
     } else {
       await this.setState({
-        costQtyErrFlag: true
+        costQtyErrFlag: true,
+        buyItemErrFlag: false
       });
     }
 
     // console.log("itemsInCartArray:", itemsInCartArray);
   };
+
+  // subtractInventoryFromItem = async (data) => {
+
+  //   let localItem = this.state.item;
+  //   console.log('localItem item:', localItem);
+  //   console.log('input data:',  data);
+  //   let i=0, j;
+  //   let qty;
+  //   localItem.forEach(obj => {
+  //     console.log('obj.label.itemId:',obj.label.itemId, ' data.itemId:', data.itemId);
+  //     if (obj.label.itemId === data.itemId ){
+  //       j = i;
+  //       console.log('B i:',j, ' localItem[i].currentInventory:',localItem[j].currentInventory)
+  //       qty = obj.label.currentInventory;
+  //       localItem[i].label.currentInventory = (qty - parseInt(data.itemQty));
+  //       console.log('A i:',i, ' localItem[i].currentInventory:',localItem[i].currentInventory)
+  //     }
+  //     i++;
+  //   });
+  //   await this.setState({
+  //     item: localItem
+  //   });
+  //   console.log('>>> item: ', this.state.item);
+  // }
 
   handleDeleteMember = async item => {
     // let itemObj = JSON.parse(item);
@@ -474,7 +610,10 @@ class Pos extends Component {
 
     itemsInCartArray.splice(index, 1);
     await this.setState({
-      itemsInCart: itemsInCartArray
+      itemsInCart: itemsInCartArray,
+      searchAndEditErrorFlag: false,
+      searchAndEditMsg: "",
+      itemSelectToBuyFlag: false
     });
   };
 
@@ -522,17 +661,21 @@ class Pos extends Component {
 
   handlePay = async () => {
     // alert("handle pay");
-    let total = 0.00;
+    let total = 0.0;
     this.state.itemsInCart.forEach(obj => {
       total = total + parseFloat((obj.itemPrice * obj.itemQty).toFixed(2));
     });
-    let totDiscount = parseFloat((total * (this.state.discount / 100)).toFixed(2));
+    let totDiscount = parseFloat(
+      (total * (this.state.discount / 100)).toFixed(2)
+    );
     let totPostDiscount = parseFloat((total - totDiscount).toFixed(2));
-    let totTax = parseFloat((totPostDiscount * (this.state.tax / 100)).toFixed(2));
+    let totTax = parseFloat(
+      (totPostDiscount * (this.state.tax / 100)).toFixed(2)
+    );
     let totProcessing = totPostDiscount * (this.state.processingFee / 100);
     // let toPay = totPostDiscount + totTax + totProcessing;
     let toPay = parseFloat((totPostDiscount + totTax).toFixed(2));
-    console.log('handlePay toPay:', toPay.toFixed(2));
+    console.log("handlePay toPay:", toPay.toFixed(2));
     console.log(
       "handlePay total=" +
         total +
@@ -558,13 +701,18 @@ class Pos extends Component {
   };
 
   handlePaySchedule = async (selectedOption, { action }) => {
-    console.log("handlePaySchedule:", selectedOption, ' value:', selectedOption.value);
-    if ( selectedOption.value === 'fullpay') {
-      console.log('Inside fullpay >>>>>>>>>>>>>>>>');
+    console.log(
+      "handlePaySchedule:",
+      selectedOption,
+      " value:",
+      selectedOption.value
+    );
+    if (selectedOption.value === "fullpay") {
+      console.log("Inside fullpay >>>>>>>>>>>>>>>>");
       await this.setState({
         paySchedule: selectedOption,
         amountPaid: 0,
-        amountPending: this.state.toPayTotal,
+        amountPending: this.state.toPayTotal
         // amountPerIstallment: 0,
         // noOfInstallment: 0
       });
@@ -573,7 +721,6 @@ class Pos extends Component {
         paySchedule: selectedOption
       });
     }
-
   };
 
   handleDayOfWeek = async (selectedOption, { action }) => {
@@ -592,8 +739,14 @@ class Pos extends Component {
   handleReview = async () => {
     // Checked and hence go for review
     let paydateofmonth = this.state.installmentDateOfMonth;
-    if ( this.state.paySchedule.value === 'monthly' || this.state.paySchedule.value === 'bi-monthly'){
-      if ( this.state.installmentDateOfMonth > 28 || this.state.installmentDateOfMonth < 1 ) {
+    if (
+      this.state.paySchedule.value === "monthly" ||
+      this.state.paySchedule.value === "bi-monthly"
+    ) {
+      if (
+        this.state.installmentDateOfMonth > 28 ||
+        this.state.installmentDateOfMonth < 1
+      ) {
         paydateofmonth = 15;
       }
     }
@@ -640,7 +793,7 @@ class Pos extends Component {
   };
 
   handleCustomerCheckout = async () => {
-    console.log("Pos.js Here we need to handle customer checkout.");
+    // console.log("Pos.js Here we need to handle customer checkout.");
     await this.setState({
       reviewFlag: false,
       payProcessHandlingFlag: false,
@@ -652,11 +805,11 @@ class Pos extends Component {
 
   handleSaleComplete = async () => {
     // alert('Sale is complete and I am at pos. Get ready for the next sale.')
-    
-    while( this.state.itemsInCart.length > 0){
+
+    while (this.state.itemsInCart.length > 0) {
       this.state.itemsInCart.pop();
     }
-    while( this.state.item.length > 0){
+    while (this.state.item.length > 0) {
       this.state.item.pop();
     }
 
@@ -670,7 +823,7 @@ class Pos extends Component {
       costQtyErrFlag: false,
       joiningProcess: "",
 
-      itemSearchDropdownFlag: false, 
+      itemSearchDropdownFlag: false,
 
       searchItemName: "",
       posItemNameErrFlag: false,
@@ -678,7 +831,7 @@ class Pos extends Component {
 
       itemSelectToBuyFlag: false,
       searchAndEditMsg: "Please scroll & select an item.",
-      item: [], 
+      item: [],
       // itemsInCart: this.state.itemsInCart.splice(0, this.state.itemsInCart.length),
       searchAndEditErrorFlag: false,
       itemToBuyFlag: false,
@@ -689,7 +842,7 @@ class Pos extends Component {
       discount: 0.0,
       tax: 7.5,
       processingFee: 0.25,
-      toPayTotal: 0.00,
+      toPayTotal: 0.0,
       amountPending: 0.0,
 
       paySchedule: { value: "fullpay", label: "Pay in full now" },
@@ -718,11 +871,11 @@ class Pos extends Component {
       reviewFlag: false,
       customerHandlingFlag: false
     });
-  }
+  };
 
   render() {
-    // console.log("Pos props:", this.props);
-    console.log("Pos state:", this.state);
+    // console.log("Pos.js props:", this.props);
+    console.log("Pos.js state:", this.state);
 
     // This section is for item search drop down
     // **************************************************
@@ -737,10 +890,6 @@ class Pos extends Component {
       );
     });
 
-    // console.log(
-    //   "@@@@@@@@@@@@@@ this.state.installmentType.value:",
-    //   this.state.installmentType.value
-    // );
     let installmentSpec;
     if (
       this.state.installmentType.value === "bi-monthly" ||
@@ -766,7 +915,9 @@ class Pos extends Component {
               />
             </div>
           </div>
-          <div className="date_of_month">DateOfMonth will be 15 if not within 1 to 28.</div>
+          <div className="date_of_month">
+            DateOfMonth will be 15 if not within 1 to 28.
+          </div>
         </div>
       );
     } else if (
@@ -846,19 +997,8 @@ class Pos extends Component {
     let payFinalPanel;
     payFinalPanel = (
       <div>
-        {/* <div className="paypanel_spacing" /> */}
         <div className="row">
-          <div className="col-4 text-right paid_in_full_check">
-            {/* <input
-              className="pay-check-input"
-              type="checkbox"
-              // id="inlineCheckbox1"
-              value={this.state.paidCheck}
-              onChange={this.handleCheckPaid}
-            />{" "}
-            &nbsp; Confirm */}
-            &nbsp;
-          </div>
+          <div className="col-4 text-right paid_in_full_check">&nbsp;</div>
           <div className="col-8 text-right review_btn_placement">
             {!this.state.paymentDoneFlag ? (
               <button
@@ -965,7 +1105,7 @@ class Pos extends Component {
         </div>
         <div className="row">
           <div className="col-6 amount_paid_col">
-            Pay :&nbsp;&nbsp;
+            Pay :&nbsp;$&nbsp;
             <input
               name="amountPaid"
               type="number"
@@ -976,12 +1116,10 @@ class Pos extends Component {
               value={this.state.amountPaid}
               step="1"
             />
-            &nbsp;$
           </div>
           <div className="col-6 amt_due">
-            IOU (due):{" "}
+            IOU (due):&nbsp;$&nbsp;
             <font color="red">{this.state.amountPending.toFixed(2)}&nbsp;</font>
-            $
           </div>
         </div>
         <div className="row">
@@ -1026,7 +1164,7 @@ class Pos extends Component {
         <div className="row">
           <div className="col-1">&nbsp;</div>
           <div className="col-10 amount_paid_col">
-            Amount Pay Now:&nbsp;&nbsp;&nbsp;
+            Amount Pay Now:&nbsp;$&nbsp;&nbsp;
             <input
               name="amountPaid"
               type="number"
@@ -1037,14 +1175,13 @@ class Pos extends Component {
               value={this.state.amountPaid}
               step="1"
             />
-            &nbsp;$
           </div>
           <div className="col-1">&nbsp;</div>
         </div>
         <div className="row">
           <div className="col-1">&nbsp;</div>
           <div className="col-10 amount_paid_col">
-            Number of Installment:&nbsp;&nbsp;&nbsp;
+            Number of Installment:&nbsp;$&nbsp;&nbsp;
             <input
               name="noOfInstallment"
               type="number"
@@ -1055,14 +1192,13 @@ class Pos extends Component {
               value={this.state.noOfInstallment}
               step="1"
             />
-            &nbsp;$
           </div>
           <div className="col-1">&nbsp;</div>
           <div className="row">
             <div className="col-1">&nbsp;</div>
             <div className="col-10 amt_per_installment">
-              Amount Per Installment:{" "}
-              {this.state.amountPerIstallment}&nbsp;$
+              Amount Per Installment: $&nbsp;
+              {this.state.amountPerIstallment.toFixed(2)}
             </div>
             <div className="col-1">&nbsp;</div>
           </div>
@@ -1074,8 +1210,8 @@ class Pos extends Component {
 
     let payProcessingPanel;
     if (this.state.payProcessHandlingFlag) {
-      console.log("this.state.paySchedule:", this.state.paySchedule);
-      console.log("value: ", this.state.paySchedule.value);
+      // console.log("this.state.paySchedule:", this.state.paySchedule);
+      // console.log("value: ", this.state.paySchedule.value);
       if (this.state.paySchedule.value === "fullpay") {
         payProcessingPanel = (
           <div>
@@ -1115,10 +1251,23 @@ class Pos extends Component {
     }
 
     let totalCostdisp = parseFloat(this.state.totalcost.toFixed(2));
-    let discountAmtdisp = parseFloat((totalCostdisp * (this.state.discount / 100)).toFixed(2));
-    let salesTaxdisp = parseFloat(((totalCostdisp - discountAmtdisp) * (this.state.tax/100)).toFixed(2));
-    let processingFeedisp = parseFloat(((totalCostdisp - discountAmtdisp) * (this.state.processingFee/100)).toFixed(2));
-    let grandTotaldisp = (totalCostdisp - discountAmtdisp + salesTaxdisp).toFixed(2);
+    let discountAmtdisp = parseFloat(
+      (totalCostdisp * (this.state.discount / 100)).toFixed(2)
+    );
+    let salesTaxdisp = parseFloat(
+      ((totalCostdisp - discountAmtdisp) * (this.state.tax / 100)).toFixed(2)
+    );
+    let processingFeedisp = parseFloat(
+      (
+        (totalCostdisp - discountAmtdisp) *
+        (this.state.processingFee / 100)
+      ).toFixed(2)
+    );
+    let grandTotaldisp = (
+      totalCostdisp -
+      discountAmtdisp +
+      salesTaxdisp
+    ).toFixed(2);
 
     let checkoutTotalPanel;
     if (this.state.checkoutFlag) {
@@ -1128,11 +1277,11 @@ class Pos extends Component {
           <div className="total_panel_spacing" />
           <div className="row">
             <div className="col-9 text-right total_text_format">
-              Items Total:
+              Total Amount:
             </div>
             <div className="col-3 text-right total_text_value">
               {/* {this.state.totalcost.toFixed(2)}&nbsp;$ */}
-              {totalCostdisp}
+              $&nbsp;{totalCostdisp.toFixed(2)}
             </div>
           </div>
           <div className="row total_text_rows">
@@ -1151,8 +1300,7 @@ class Pos extends Component {
             </div>
             <div className="col-3 text-right total_text_value">
               {/* {(this.state.totalcost * (this.state.discount / 100)).toFixed(2)} */}
-              {discountAmtdisp}
-              &nbsp;$
+              $&nbsp;{discountAmtdisp.toFixed(2)}
             </div>
           </div>
           <div className="row">
@@ -1172,13 +1320,7 @@ class Pos extends Component {
               />
             </div>
             <div className="col-3 text-right total_text_value">
-              {/* {(
-                (this.state.totalcost -
-                  this.state.totalcost * (this.state.discount / 100)) *
-                (this.state.tax / 100)
-              ).toFixed(2)} */}
-              {salesTaxdisp}
-              &nbsp;$
+              $&nbsp;{salesTaxdisp.toFixed(2)}
             </div>
           </div>
           <div className="row">
@@ -1204,8 +1346,7 @@ class Pos extends Component {
                   this.state.totalcost * (this.state.discount / 100)) *
                 (this.state.processingFee / 100)
               ).toFixed(2)} */}
-              {processingFeedisp}
-              &nbsp;$
+              $&nbsp;{processingFeedisp.toFixed(2)}
             </div>
           </div>
 
@@ -1225,8 +1366,7 @@ class Pos extends Component {
                   this.state.totalcost * (this.state.discount / 100)) *
                   (this.state.processingFee / 100)
               ).toFixed(2)} */}
-              {grandTotaldisp}
-              &nbsp;$
+              $&nbsp;{grandTotaldisp}
             </div>
           </div>
           <div className="row">
@@ -1323,27 +1463,11 @@ class Pos extends Component {
       </div>
     );
 
-    let buyItemsPanel;
-
-    if (this.state.itemToBuyFlag) {
-      buyItemsPanel = (
-        <div className="cost_panel_placement">
-          <div className="row">
-            <div className="col text-left cost_cell_placement">
-              &nbsp;Item:{" "}
-              <font color="#1844a3">
-                <b>{this.state.selectedItemName}</b>
-              </font>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-6 text-left cost_cell_placement">
-              &nbsp;Price:&nbsp;&nbsp;{this.state.selectedItemPrice}
-            </div>
-            <div className="col-6 text-left cost_cell_placement">
-              Available:&nbsp;&nbsp;{this.state.selectedItemInventory}
-            </div>
-          </div>
+    let qtyInputPanel;
+    console.log('>>>>>>> this.state.selectedItemInventory: ', this.state.selectedItemInventory);
+    if (this.state.selectedItemInventory > 0) {
+      qtyInputPanel = (
+        <div>
           <div className="row">
             <div className="col-6 text-left cost_cell_placement">
               &nbsp;Quantity: &nbsp;&nbsp;
@@ -1365,6 +1489,52 @@ class Pos extends Component {
               </font>
             </div>
           </div>
+        </div>
+      );
+    } else {
+      qtyInputPanel = (
+        <div>
+          <div className="row">
+            <div className="col text-center cost_cell_placement">
+              <font color="red">No Inventory to Sell</font>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    let buyItemErrPanel;
+    if (this.state.buyItemErrFlag) {
+      buyItemErrPanel = (
+        <div className="text-center buy_item_err">
+          Can not sell more than the stock
+        </div>
+      );
+    } else {
+      buyItemErrPanel = null;
+    }
+
+    let buyItemsPanel;
+    if (this.state.itemToBuyFlag) {
+      buyItemsPanel = (
+        <div className="cost_panel_placement">
+          <div className="row">
+            <div className="col text-left cost_cell_placement">
+              &nbsp;Item:{" "}
+              <font color="#1844a3">
+                <b>{this.state.selectedItemName}</b>
+              </font>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-6 text-left cost_cell_placement">
+              &nbsp;Price:&nbsp;&nbsp;{this.state.selectedItemPrice}
+            </div>
+            <div className="col-6 text-left cost_cell_placement">
+              Available:&nbsp;&nbsp;{this.state.selectedItemInventory}
+            </div>
+          </div>
+          {qtyInputPanel}
           <div className="row">
             <div className="col-6">
               <div
@@ -1397,10 +1567,24 @@ class Pos extends Component {
               </button>
             </div>
           </div>
+          {buyItemErrPanel}
         </div>
       );
     } else {
       buyItemsPanel = null;
+    }
+
+    let searchErrMsgPanel;
+    if (this.state.searchAndEditErrorFlag) {
+      searchErrMsgPanel = (
+        <div className="row">
+          <div className="col text-center pos_input_msg_err">
+            {this.state.searchAndEditMsg}
+          </div>
+        </div>
+      );
+    } else {
+      searchErrMsgPanel = null;
     }
 
     let yourCartPanel;
@@ -1427,7 +1611,7 @@ class Pos extends Component {
                 )}
               </div>
             </div>
-
+            {searchErrMsgPanel}
             {this.state.itemsInCart.map((obj, i) => (
               <div key={i}>
                 <div className="row">
@@ -1499,7 +1683,7 @@ class Pos extends Component {
 
     let posOutputPanel;
     if (this.state.reviewFlag) {
-      console.log('Going to PosReview');
+      console.log("Going to PosReview");
       posOutputPanel = (
         <div>
           <PosReview
@@ -1511,7 +1695,7 @@ class Pos extends Component {
         </div>
       );
     } else if (this.state.customerHandlingFlag) {
-      console.log("This is where we need to get customer info and finalize");
+      // console.log("This is where we need to get customer info and finalize");
       posOutputPanel = (
         <div>
           <PosFinish

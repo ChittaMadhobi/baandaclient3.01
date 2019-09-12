@@ -48,7 +48,6 @@ div.fixedsize_catalog {
   margin-bottom: 10px;
 }
 
-
 .catalog_input_msg {
   width: 80%;
   font-size: 1em;
@@ -71,7 +70,7 @@ div.fixedsize_catalog {
 }
 
 .input_textarea_desc {
-  margin-top: 10px;  
+  margin-top: 10px;
   font-size: 1em;
   color: blue;
   width: 82%;
@@ -148,7 +147,7 @@ div.fixedsize_catalog {
 }
 
 .pic_caption_textarea {
-  padding-top: 5px;  
+  padding-top: 5px;
   font-size: 0.9em;
   width: 80%;
   margin-top: -6px;
@@ -223,7 +222,7 @@ div.fixedsize_catalog {
 }
 
 .input_price_field {
-  font-size: .8em;
+  font-size: 0.8em;
   color: blue;
   width: 90%;
   margin-left: -2%;
@@ -258,7 +257,7 @@ div.fixedsize_catalog {
 }
 
 .select_item_msg {
-  font-size: .75em;
+  font-size: 0.75em;
   color: #085e5e;
 }
 
@@ -267,6 +266,22 @@ div.fixedsize_catalog {
   color: red;
 }
 
+.spacing_catalog_panel {
+  height: 110px;
+}
+
+.save_catalog_msg {
+  margin-top: 30px;
+  font-size: 1em;
+  font-weight: 750;
+}
+
+.save_catalog_msg_err {
+  margin-top: 30px;
+  font-size: 1em;
+  font-weight: 750;
+  color: red;
+}
 
 @media only screen and (max-device-width: 480px) {
   /* styles for mobile browsers smaller than 480px; (iPhone) */
@@ -372,7 +387,7 @@ div.fixedsize_catalog {
 
   .catalog_input_msg_err {
     margin-top: -2px;
-    font-size: .7em;
+    font-size: 0.7em;
     color: red;
   }
 
@@ -479,31 +494,40 @@ div.fixedsize_catalog {
   }
 
   .input_price_field {
-    font-size: .75em;
+    font-size: 0.75em;
   }
 
-  
   .item-select {
-    font-size: .8em;
+    font-size: 0.8em;
     margin-left: 2%;
     margin-right: 15px;
     margin-bottom: 5px;
     width: 80%;
   }
 
-
   .div_item_select {
-    font-size: .9em;
+    font-size: 0.9em;
   }
-  
+
   .select_item_msg {
     margin-top: -5px;
-    font-size: .85em;
+    font-size: 0.85em;
   }
 
   .select_item_msg_err {
+    font-size: 0.75em;
+  }
+
+  .save_catalog_msg {
+    margin-top: 25px;
     font-size: .75em;
-    color: red;
+    font-weight: 650;
+  }
+  
+  .save_catalog_msg_err {
+    margin-top: 25px;
+    font-size: .75em;
+    font-weight: 650;
   }
 }
 
@@ -611,7 +635,7 @@ div.fixedsize_catalog {
   }
 
   .input_price_field {
-    font-size: .75em;
+    font-size: 0.75em;
     margin-left: -7px;
   }
 
@@ -622,31 +646,41 @@ div.fixedsize_catalog {
   .item-select {
     width: 80%;
   }
-  
+
   .div_item_select {
-    font-size: .85em;
+    font-size: 0.85em;
   }
-  
+
   .select_item_msg {
-    font-size: .85em;
+    font-size: 0.85em;
     color: #085e5e;
   }
 
   .select_item_msg_err {
-    font-size: .7em;
-    color: red;
+    font-size: 0.7em;
   }
 
   .header_text_style {
     padding-top: 4px;
-    font-size: .9em;
+    font-size: 0.9em;
     font-weight: 650;
     color: #3c5438;
+  }
+
+  .save_catalog_msg {
+    margin-top: 25px;
+    font-size: .65em;
+    font-weight: 600;
+  }
+  
+  .save_catalog_msg_err {
+    margin-top: 25px;
+    font-size: .65em;
+    font-weight: 600;
   }
 }
 
 @media only screen and (device-width: 768px) {
-
   /* default iPad screens */
 }
 
@@ -733,7 +767,7 @@ div.fixedsize_catalog {
 
   .catalog_input_msg_err {
     margin-top: -4px;
-    font-size: .9em;
+    font-size: 0.9em;
     color: red;
   }
 
@@ -809,11 +843,11 @@ div.fixedsize_catalog {
   .item-select {
     width: 80%;
   }
-  
+
   .div_item_select {
     font-size: 1em;
   }
-  
+
   .select_item_msg {
     font-size: 1em;
     color: #085e5e;
@@ -821,7 +855,18 @@ div.fixedsize_catalog {
 
   .select_item_msg_err {
     font-size: 1em;
-    color: red;
+  }
+
+  .save_catalog_msg {
+    margin-top: 25px;
+    font-size: 1em;
+    font-weight: 750;
+  }
+  
+  .save_catalog_msg_err {
+    margin-top: 25px;
+    font-size: 1em;
+    font-weight: 750;
   }
 
 }

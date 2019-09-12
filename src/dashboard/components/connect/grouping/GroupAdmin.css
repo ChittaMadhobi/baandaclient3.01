@@ -127,11 +127,26 @@ div.fixedsize_grouping {
 .group_input_msg {
   font-size: 1em;
   color: black;
+  font-weight: 750;
 }
 
 .group_input_msg_err {
   font-size: 1em;
   color: red;
+  font-weight: 750;
+}
+
+.group_input_msg_m {
+  margin-top: 10px;
+  font-size: 1em;
+  color: black;
+  font-weight: 750;
+}
+
+.group_input_msg_m_err {
+  font-size: 1em;
+  color: red;
+  font-weight: 750;
 }
 
 .input_textarea_grouping {
@@ -221,7 +236,7 @@ hr.adjust {
   div.fixedsize_grouping {
     height: 500px;
     width: 110%;
-    margin-left: -14px;
+    margin-left: -1%;
     overflow-x: hidden;
     overflow-y: auto;
   }
@@ -329,17 +344,31 @@ hr.adjust {
 
   .group_input_msg {
     font-size: 0.75em;
-    color: black;
-    margin-left: -3%;
+    margin-left: 5%;
     margin-top: -3px;
     margin-bottom: -1px;
-    margin-left: 9px;
+    font-weight: 650;
   }
 
   .group_input_msg_err {
     font-size: 0.75em;
-    color: red;
+    margin-left: 5%;
+    font-weight: 650;
+  }
+
+  .group_input_msg_m {
+    font-size: 0.75em;
     margin-left: -3%;
+    margin-top: 3px;
+    margin-bottom: -1px;
+    font-weight: 700;
+  }
+
+  .group_input_msg_m_err {
+    font-size: 0.75em;
+    margin-left: -3%;
+    margin-top: 3px;
+    font-weight: 700;
   }
 
   .input_textarea_grouping {
@@ -441,7 +470,7 @@ hr.adjust {
   div.fixedsize_grouping {
     height: 580px;
     width: 110%;
-    margin-left: -14px;
+    margin-left: 1%;;
     overflow-x: hidden;
     overflow-y: auto;
   }
@@ -498,12 +527,25 @@ hr.adjust {
 
   .group_input_msg {
     font-size: 0.7em;
-    color: black;
+    font-weight: 650;
   }
 
   .group_input_msg_err {
     font-size: 0.7em;
-    color: red;
+    font-weight: 650;
+  }
+
+  
+  .group_input_msg_m {
+    margin-top: 3px;
+    font-size: 0.7em;
+    font-weight: 650;
+  }
+
+  .group_input_msg_m_err {
+    margin-top: 3px;
+    font-size: 0.7em;
+    font-weight: 650;
   }
 
   .create_button_placement {

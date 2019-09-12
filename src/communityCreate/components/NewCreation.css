@@ -47,7 +47,7 @@ p.intent_msg {
 }
 
 .save_review_msg {
-  margin-top: 30px;
+  /* margin-top: 30px; */
   font-size: 1em;
 }
 
@@ -59,15 +59,13 @@ p.intent_msg {
   font-size: 0.8em;
   width: 100%;
   margin-top: -12px;
+  text-align: center;
 }
 
 .main {
   width: 100%;
-  /* background: gray; */
-  /* display: inline; */
-  margin-left: -4px;
   padding-right: 10px;
-  margin-right: 5px;
+  text-align: center;
 }
 
 .main > textarea {
@@ -194,6 +192,11 @@ p.intent_msg {
   height: 100px;
 }
 
+.input_text {
+  font-size: 1em;
+  /* text-align: center; */
+}
+
 .pic_msg_placement {
   margin-top: 15px;
   margin-left: 10px;
@@ -223,6 +226,26 @@ p.intent_msg {
   width: 100%;
   margin-left: 5px;
   margin-top: 5px;
+}
+
+.picture_msg {
+  font-size: 1em;
+}
+
+.picture_msg_err {
+  font-size: 1em;
+  color: red;
+}
+
+.save_review_msg_whole {
+  margin-top: 20px;
+  font-size: 1em;
+}
+
+.save_review_msg_whole_err {
+  margin-top: 20px;
+  font-size: 1em;
+  color: red;
 }
 
 /* Media specific adjustments */
@@ -260,7 +283,8 @@ p.intent_msg {
   }
 
   .input_text {
-    font-size: 0.9em;
+    font-size: 0.8em;
+    /* text-align: center; */
   }
 
   .input_text_search {
@@ -274,7 +298,7 @@ p.intent_msg {
   }
 
   .input_textarea {
-    font-size: 0.85em;
+    font-size: 1em;
   }
 
   .input_text_searchtags {
@@ -322,6 +346,14 @@ p.intent_msg {
     margin-top: 5px;
   }
 
+  .picture_msg {
+    font-size: .7em;
+  }
+
+  .picture_msg_err {
+    font-size: .7em;
+  }
+
   .dropzone {
     height: 120px;
     width: 150px;
@@ -343,7 +375,7 @@ p.intent_msg {
     font-size: 0.68em;
     margin-top: 2px;
     margin-left: -10px;
-    font-weight: 650;
+    font-weight: 600;
   }
 
   .pic_caption_msg {
@@ -408,6 +440,16 @@ p.intent_msg {
     margin-left: 8px;
     margin-top: -15px;
   }
+
+  .save_review_msg_whole {
+    margin-top: 25px;
+    font-size: .7em;
+  }
+  
+  .save_review_msg_whole_err {
+    margin-top: 25px;
+    font-size: .7em;
+  }
 }
 
 @media only screen and (max-device-width: 320px) {
@@ -436,6 +478,10 @@ p.intent_msg {
     margin-top: 20px;
   }
 
+  .file_load_btn_positions {
+    margin-top: -3px;
+  }
+
   .Icon {
     opacity: 0.8;
     height: 75px;
@@ -449,6 +495,10 @@ p.intent_msg {
 
   .save_review_msg_err {
     font-size: .7em;
+  }
+
+  .input_textarea {
+    font-size: .9em;
   }
 
   .input_text_street {
@@ -469,6 +519,16 @@ p.intent_msg {
   .input_text_address {
     margin-left: 5px;
     margin-top: -15px;
+  }
+
+  .save_review_msg_whole {
+    margin-top: 25px;
+    font-size: .7em;
+  }
+  
+  .save_review_msg_whole_err {
+    margin-top: 25px;
+    font-size: .7em;
   }
 }
 
@@ -566,5 +626,15 @@ p.intent_msg {
   .input_text_address {
     margin-left: 10px;
     margin-top: -15px;
+  }
+
+  .save_review_msg_whole {
+    margin-top: 25px;
+    font-size: 1em;
+  }
+  
+  .save_review_msg_whole_err {
+    margin-top: 25px;
+    font-size: 1em;
   }
 }

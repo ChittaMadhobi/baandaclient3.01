@@ -181,10 +181,10 @@ class Inventory extends Component {
       isValid=false;
       errMsg = errMsg + 'No Adjust quantity entered. '
     }
-    if ( this.state.adjustmentComment.length < 15) {
-      isValid = false;
-      errMsg = errMsg + `Minimum comment length must be 15 chars (now ${this.state.adjustmentComment.length} chrs) `;
-    }
+    // if ( this.state.adjustmentComment.length < 15) {
+    //   isValid = false;
+    //   errMsg = errMsg + `Minimum comment length must be 15 chars (now ${this.state.adjustmentComment.length} chrs) `;
+    // }
     console.log('validateAndSave isValid before updateInventory:', isValid);
     if ( isValid ) {
       await this.updateInventory();
@@ -393,7 +393,7 @@ class Inventory extends Component {
           <div className="row inventory_row_placement">
             <div className="col-5 text-left ">
               <b>Inventory Now: </b>
-              {this.state.inventory} &nbsp; #
+              {this.state.inventory} &nbsp;
             </div>
             <div className="col-2"><b>Adjust:</b></div>
             <div className="col-5 text-left">
@@ -419,7 +419,7 @@ class Inventory extends Component {
               <textarea
                 name="adjustmentComment"
                 maxLength="1000"
-                placeholder="Write short adjustment description (min 15 chars)."
+                placeholder="Write short adjustment description."
                 rows="3"
                 wrap="hard"
                 spellCheck="true"
@@ -489,6 +489,7 @@ class Inventory extends Component {
         {searchPanel}
         <div>{adjustPanel}</div>
         <div>{updateSuccessPanel}</div>
+        <div className="inventory_spacing" />
       </div>
     );
   }

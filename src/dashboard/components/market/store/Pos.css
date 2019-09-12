@@ -17,6 +17,7 @@ div.fixedsize_pos {
   box-shadow: 3px 3px 0px 0px black;
   border-radius: 5px;
   margin-top: -10px;
+  margin-left: -30px;
 }
 
 .btn_costPanel_add {
@@ -428,6 +429,13 @@ div.paypanel_spacing {
   margin-bottom: 10px;
 }
 
+.buy_item_err {
+  margin-top: 5px;
+  color: red;
+  font-weight: 700;
+  font-size: 1em;
+}
+
 @media only screen and (max-device-width: 480px) {
   /* styles for mobile browsers smaller than 480px; (iPhone) */
   div.fixedsize_pos {
@@ -514,7 +522,7 @@ div.paypanel_spacing {
   }
 
   .input_text_pos {
-    margin-top: -5px;
+    margin-top: 2px;
     font-size: 1em;
     width: 90%;
     margin-left: -5%;
@@ -562,7 +570,7 @@ div.paypanel_spacing {
     font-size: 0.8em;
     color: green;
     margin-left: -20px;
-    margin-top: 4px;
+    margin-top: 10px;
   }
 
   .show_items {
@@ -777,6 +785,13 @@ div.paypanel_spacing {
     font-size: .85em;
     margin-bottom: 12px;
   }
+
+  .buy_item_err {
+    margin-top: 10px;
+    color: red;
+    font-weight: 650;
+    font-size: .9em;
+  }
 }
 
 @media only screen and (max-device-width: 320px) {
@@ -862,7 +877,7 @@ div.paypanel_spacing {
   }
 
   .input_text_pos {
-    margin-top: 5px;
+    margin-top: 2px;
     font-size: 0.9em;
     color: blue;
     width: 90%;
@@ -1057,6 +1072,13 @@ div.paypanel_spacing {
     margin-top: -20px;
     font-size: .8em;
     margin-bottom: 12px;
+  }
+
+  .buy_item_err {
+    margin-top: 10px;
+    color: red;
+    font-weight: 650;
+    font-size: .9em;
   }
 }
 

@@ -41,10 +41,10 @@ class GroupAdmin extends Component {
       viewGroupFlag: false,
 
       groupName: "",
-      groupNameMsg: "A unique group name (5-to-50 chars)",
+      groupNameMsg: "A unique group name (Minimum 3 chars)",
       groupNameErrFlag: false,
       groupDescription: "",
-      groupDescriptionMsg: "Enter a description for the group (25-250 chrs)",
+      groupDescriptionMsg: "Enter a description for the group (Minimum 15)",
       groupDescriptionErrFlag: false,
       groupCreatedFlag: false,
       groupId: 0,
@@ -308,28 +308,28 @@ class GroupAdmin extends Component {
   validateNewGroup = async () => {
     let isValid = true;
 
-    if (this.state.groupName.length < 5) {
+    if (this.state.groupName.length < 3) {
       await this.setState({
-        groupNameMsg: "Group name too short. Min 5 chars.",
+        groupNameMsg: "Group name too short. Min 3 chars.",
         groupNameErrFlag: true
       });
       isValid = false;
     } else {
       await this.setState({
-        groupNameMsg: "A unique group name (5-to-50 chars)",
+        groupNameMsg: "A unique group name (Minimum 3 chars)",
         groupNameErrFlag: false
       });
     }
 
-    if (this.state.groupDescription.length < 25) {
+    if (this.state.groupDescription.length < 15) {
       await this.setState({
-        groupDescriptionMsg: "Description is too short. Min 25 chars.",
+        groupDescriptionMsg: "Description is too short. Min 15 chars.",
         groupDescriptionErrFlag: true
       });
       isValid = false;
     } else {
       await this.setState({
-        groupDescriptionMsg: "Enter a description for the group (25-250 chrs)",
+        groupDescriptionMsg: "Enter a description for the group (Minimum 15 chrs)",
         groupDescriptionErrFlag: false
       });
     }
@@ -357,7 +357,7 @@ class GroupAdmin extends Component {
           isValid = false;
         } else {
           await this.setState({
-            createGroupMsg: "Create a new group.",
+            createGroupMsg: "Create another group.",
             createGroupMsgErrFlag: false
           });
         }
@@ -678,16 +678,17 @@ class GroupAdmin extends Component {
               </div>
             </div>
           </div>
-          <div className="row create_button_placement">
+          {/* <div className="row create_button_placement"> */}
+          <div className="row">
             <div className="col-9">
               <div
                 className={`${
                   !this.state.createGroupMsgErrFlag
-                    ? "group_input_msg text-center"
-                    : "group_input_msg_err text-center"
+                    ? "group_input_msg_m text-center"
+                    : "group_input_msg_m_err text-center"
                 }`}
               >
-                {this.state.createGroupMsg}
+                {this.state.createGroupMsg} 
               </div>
             </div>
             <div className="col-3 text-left">{groupOpsBtn}</div>

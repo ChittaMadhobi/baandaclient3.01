@@ -68,11 +68,11 @@ class Store extends Component {
           {
             step: "Finance",
             stepNote:
-              "This is for your account paybale and receivable. By default, it is set to receviable. For cash paments, your (creators) acceptance is accepted as received."
+              "This is your accounts payable and receivable. By default, it is set to receivable. For cash payments, your (creators) acceptance is accepted as received."
           }
         ],
         footnote:
-          "Assume this to be your own market space (your business). Everything you need to do in your store should be available here. If/when you want to request new functions, please head to your MyAccount and send Request Improvement to Baanda team."
+          "This is your own market space (your business). Everything you need to do in your store is available here. If/when you want to request new functions, please head to your MyAccount and send Request Improvement to Baanda team."
       },
       Footer: "This is the footer"
     };

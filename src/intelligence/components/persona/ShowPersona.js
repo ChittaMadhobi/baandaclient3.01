@@ -129,7 +129,7 @@ class ShowPersona extends Component {
       Body: {
         oneLineSummary: `This is your today's <${
           this.state.date
-        }> personality overview based on Big-5 (OCEAN) technique. This is a widely used, and vetted technique including adopted by intelligence communities around  the world. This has been tested to transcend culturs, values and seems to be aligned to ones DNA.`,
+        }> personality overview based on Big-5 (OCEAN) technique; this is a widely used, and vetted technique including adopted by intelligence communities around  the world. This has been tested to transcend culturs, values and seems to be aligned to ones DNA.`,
         steps: [
           {
             step: "O: (Openness vs. Closed to experience)",

@@ -15,7 +15,7 @@ class Toolbar extends Component {
   render() {
     // let isAuthenticated = this.props.isAuthenticated;
     const { isAuthenticated, user } = this.props.auth;
-    // console.log('Toolbar props:', this.props);
+    console.log('Toolbar props:', this.props);
     // let isAuthenticated = true;
     // let user1 = this.props.user;
     // let user = { name: "Sarbojit Mukherjee" };
@@ -95,7 +95,7 @@ class Toolbar extends Component {
               <DrawerToggleButton click={this.props.drawerClickHandler} />
             </div>
             <div className="toolbar_logo">
-              <a href="/">Baanda</a>&nbsp; <font size="2" color="powderblue"><i>Your Friend</i></font>
+              <a href="/">Baanda</a>&nbsp; 
             </div>
             <div className="spacer" />
             <div className="toolbar_navigation-items">{navbardisp}</div>

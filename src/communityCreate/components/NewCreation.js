@@ -17,6 +17,7 @@ import { optionsIntent } from "./data/selectOptions";
 import { optionsBizIntent } from "./data/bizOptions";
 import { optionsColiveIntent } from "./data/coliveOptions";
 import { optionsFunstuffIntent } from "./data/funstuffOptions";
+import ReactLoading from "react-loading";
 
 import Review from "./Review";
 
@@ -67,9 +68,9 @@ class NewCreation extends Component {
       searchTags: "",
       uploadFileType: "",
       uploadBtnClicked: false,
-      uploadMsg: "",
+      uploadDirection: "Uploading a picture is required for publishing",
       saveReviewMsg:
-        "Please Review and Publish if satisfied. You can Edit later even post publishing.",
+        "Press Review and Publish when done. You can always come back and edit.",
 
       hightlight: false,
       currFilename: "",
@@ -85,8 +86,8 @@ class NewCreation extends Component {
 
       intentErrFlg: false,
       commNameMsg: "A unique reference name (2-to-20 Chars).",
-      commCaptionMsg: "A caption to capture the attention of a viewer.",
-      commDescriptionMsg: "Describe the community for the viewers.",
+      commCaptionMsg: "A caption to capture the attention of viewers.",
+      commDescriptionMsg: "Describe your community.",
 
       streetAddress: "",
       streetAddressMsg: "Enter street address with unit number (optional)",
@@ -100,10 +101,13 @@ class NewCreation extends Component {
       restAddressErrFlag: false,
 
       intentMsg: "Select an intent & focus for the community.",
-      searchTagMsg: "Search tags comma (,) delimited (max 100 Chars).",
+      searchTagMsg: "Search words, or phrases, separated by commas.",
       picCaptionMsg: "",
       picturesMsg: "Please upload a picture and provide a caption.",
       pictureErrFlag: false,
+      fileUploadMsg: '',
+      uploadErrFlag: false,
+      loadingFlag: false,
 
       saveValidFlag: false,
       reviewValidFlag: false,
@@ -145,6 +149,9 @@ class NewCreation extends Component {
     // console.log("retdata: ", retdata);
   }
   uploadToS3 = async e => {
+    await this.setState({
+      loadingFlag: true
+    });
     let dirname = "bid" + this.props.auth.user.baandaId;
     let config = {
       bucketName: s3BucketName,
@@ -190,6 +197,7 @@ class NewCreation extends Component {
         fileUploads: update(this.state.fileUploads, {
           0: { $set: s3fileObject }
         }),
+        loadingFlag: false,
         fileNameToDisplay: filename + " successfully upload",
         saveReviewMsg:
           "File uploaded. Please Save. Review and publish now, or later when ready."
@@ -305,7 +313,7 @@ class NewCreation extends Component {
     await this.setState({
       uploadFileType: type,
       uploadBtnClicked: true,
-      uploadMsg: "Click, Tap, or Darg'n-Drop."
+      uploadMsg: "Click / Tap File Dropzone, or Darg'n-Drop."
     });
   };
 
@@ -315,7 +323,7 @@ class NewCreation extends Component {
       await this.setState({
         saveValidFlag: false,
         saveReviewMsg:
-          "Please Review and Publish if satisfied. You can Edit later even post publishing."
+          "Please Review and Publish if done. You can Edit later even post publishing."
       });
     } else {
       await this.setState({
@@ -381,7 +389,7 @@ class NewCreation extends Component {
       isValid = false;
     } else {
       await this.setState({
-        commDescriptionMsg: "Describe the community for the viewers.",
+        commDescriptionMsg: "Describe your community.",
         commDecriptionErrFlag: false
       });
     }
@@ -408,15 +416,19 @@ class NewCreation extends Component {
     //   this.state.fileUploads[0].s3Url
     // );
     if (this.state.fileUploads[0].s3Url === "") {
+      console.log('I should have error for no s3Url: ', this.state.fileUploads[0].s3Url);
       await this.setState({
         picturesMsg: "Please upload the picture.",
-        pictureErrFlag: true
+        pictureErrFlag: true,
+        uploadErrFlag: true,
       });
       isValid = false;
     } else {
+      console.log('This is not right. s3Url:', this.state.fileUploads[0].s3Url);
       await this.setState({
         picturesMsg: "Upload a picture and provide a caption.",
-        pictureErrFlag: false
+        pictureErrFlag: false,
+        uploadErrFlag: false
       });
     }
 
@@ -487,7 +499,7 @@ class NewCreation extends Component {
           savedFlag: true,
           reviewFlag: false,
           saveReviewMsg:
-            "Successfully published. It will now be available in Home->Engage."
+            "Successfully published. It will now be available to Engage in your Dashboard."
         });
       } 
     } catch (err) {
@@ -562,7 +574,7 @@ class NewCreation extends Component {
     await this.setState({
       reviewFlag: true,
       saveReviewMsg:
-        "To be available in your dashboard for details setup, please Publish first.",
+        "This community has not been published yet.",
       reviewObject: revobj
     });
   };
@@ -574,8 +586,25 @@ class NewCreation extends Component {
   };
 
   render() {
-    // console.log("NewCreation.js this.state create: ", this.state);
+    console.log("NewCreation.js this.state create: ", this.state);
     // console.log('accesskey:' , awsAccessKeyId);
+
+    let uploadingSpin;
+
+    if (this.state.loadingFlag) {
+      uploadingSpin = (
+        <div>
+          <ReactLoading
+            type={"spokes"}
+            color={"#195670"}
+            height={30}
+            width={30}
+          />
+        </div>
+      )
+    } else {
+      uploadingSpin = null;
+    }
 
     let fileLoadBtn;
     fileLoadBtn = (
@@ -597,7 +626,7 @@ class NewCreation extends Component {
             onClick={() => this.setUploadType("vedio")}
             disabled
           >
-            <b>Vedio</b>
+            <b>Video</b>
           </button>
           &nbsp;&nbsp;
           <button
@@ -609,6 +638,16 @@ class NewCreation extends Component {
             <b>Audio</b>
           </button>
         </span>
+        {/* <p className="text-center picture_msg">{this.state.uploadDirection}</p> */}
+        <div
+            className={`${
+              !this.state.uploadErrFlag
+                ? "picture_msg text-center"
+                : "picture_msg_err text-center"
+            }`}
+          >
+            {this.state.uploadDirection}
+          </div>
       </div>
     );
     // console.log('this.state.reviewFlag:', this.state.reviewFlag);
@@ -669,7 +708,7 @@ class NewCreation extends Component {
               onClick={this.savedNowClose}
               style={{ cursor: this.state.disabled ? "default" : "pointer" }}
             >
-              <b>Close</b>
+              <b>Home</b>
             </button>
           </div>
         );
@@ -734,6 +773,9 @@ class NewCreation extends Component {
                   <b>Upload</b>
                 </button>
               </span>
+              <div>
+                {uploadingSpin}
+              </div>
             </div>
           </div>
           <div
@@ -866,7 +908,7 @@ class NewCreation extends Component {
         </div>
       );
     }
-    topInputPanel = (
+    topInputPanel = ( 
       <div>
         <div className="row">
           <div className="col-md-6 input_text_creation_caption">
@@ -899,7 +941,7 @@ class NewCreation extends Component {
               size="40"
               maxLength="50"
               className="input_text"
-              placeholder="A enticing caption for others ..."
+              placeholder="A enticing caption for others to see."
             />
             <div
               className={`${
@@ -917,7 +959,7 @@ class NewCreation extends Component {
             <textarea
               name="commDescription"
               maxLength="500"
-              placeholder="Write short description about your community or catalog."
+              placeholder="Write a short description about your community or catalog."
               rows="4"
               wrap="hard"
               spellCheck="true"
@@ -949,7 +991,7 @@ class NewCreation extends Component {
                   checked={this.state.joinProcess === "Private"}
                   onChange={this.handleJoinProcess}
                 />{" "}
-                Private (on invite)
+                Private 
               </label>
             </div>
             <div className="form-check form-check-inline">
@@ -968,7 +1010,7 @@ class NewCreation extends Component {
         </div>
         <div className="row">
           <div className="col text-center radio-fonts">
-            <strong>Geo-Location: &nbsp;&nbsp;</strong>
+            <strong>Location: &nbsp;&nbsp;</strong>
             <div className="form-check form-check-inline">
               <label className="form-check-label">
                 <input
@@ -1009,7 +1051,7 @@ class NewCreation extends Component {
         </div>
         {postalAddressPanel}
         <p align="justify" className="intent_msg">
-          Please select your intent and intent's focus:
+          Please select your intent & focus:
         </p>
         <div className="row">
           <div className="col-md-6">
@@ -1059,11 +1101,11 @@ class NewCreation extends Component {
             <div
               className={`${
                 !this.state.saveValidFlag
-                  ? "save_review_msg"
-                  : "save_review_msg_err"
+                  ? "save_review_msg_whole"
+                  : "save_review_msg_whole_err"
               }`}
             >
-              <b>{this.state.saveReviewMsg}&nbsp;{this.state.saveValidFlag}</b>
+              <b>{this.state.saveReviewMsg}</b> 
             </div>
           </div>
           <div className="col-5">{saveReviewPanel}</div>
@@ -1083,11 +1125,11 @@ class NewCreation extends Component {
             <div
               className={`${
                 !this.state.saveValidFlag
-                  ? "save_review_msg"
-                  : "save_review_msg_err"
+                  ? "save_review_msg_whole"
+                  : "save_review_msg_whole_err"
               }`}
             >
-              {this.state.saveReviewMsg}
+             <b> {this.state.saveReviewMsg} </b> 
             </div>
           </div>
           <div className="col-5">{saveReviewPanel}</div>

@@ -1,30 +1,30 @@
 export const optionsWeekOfDay = [
     {
-      value: "monday",
+      value: "Mon",
       label: "Monday"
     },
     {
-      value: "tuesday",
+      value: "Tue",
       label: "Tuesday"
     },
     {
-      value: "wednesday",
+      value: "Wed",
       label: "Wednesday"
     },
     {
-      value: "thursday",
+      value: "Thu",
       label: "Thursday"
     },
     {
-      value: "friday",
+      value: "Fri",
       label: "Friday"
     },
     {
-      value: "saturday",
+      value: "Sat",
       label: "Saturday"
     },
     {
-      value: "sunday",
+      value: "Sun",
       label: "Sunday"
     }
   ];

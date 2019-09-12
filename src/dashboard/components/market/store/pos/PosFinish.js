@@ -3,6 +3,7 @@ import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import axios from "axios";
+import moment from 'moment';
 
 import "./PosFinish.css";
 
@@ -68,6 +69,9 @@ class PosFinish extends Component {
   };
 
   handleFind = async () => {
+    // this.createPayDueDateMo('monthly');
+    // this.createPayDueDateWe('weekly');
+
     // #1 load membersRaw from DB
     await this.loadRawMemberData();
     // #2 Remmove duplicate member entries in raw
@@ -241,20 +245,88 @@ class PosFinish extends Component {
     }
   };
 
+  createPayDueDateMo = (type) => {
+    let today = moment();
+    let month = today.month();
+    let year = today.year();
+    // let day = today.date();
+    let day = this.props.posState.installmentDateOfMonth;
+    let currMoDate = moment({ year: year, month: month, day:day});
+    let payday;
+    console.log('>>>>>>>>>>>>>>>>>>> type:', type);
+    if ( this.props.posState.installmentType.value === 'monthly') {
+      payday = currMoDate.add(1, 'month'); 
+      // console.log('=============================================');
+      // console.log( 'Current Month date:', currMoDate.format('ll') );
+      // console.log( 'Next month paydate:', payday.format('ll'));  
+      // console.log('============================================='); 
+    } else {
+      payday = currMoDate.add(2, 'month');
+      // console.log('=============================================');
+      // console.log( 'Current Month date:', currMoDate.format('ll') );
+      // console.log( 'Next month paydate:', currMoDate.add(2, 'month').format('ll'));  
+      // console.log('=============================================');  
+    }
+
+    return payday;
+  }
+
+  createPayDueDateWe = (type) => {
+    let today = moment();
+    let dow = [ 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+    let todaydow = today.format('ddd');
+    let tardatdow = this.props.posState.installmentDayOfWeek.value;
+    console.log('*******************');
+    console.log('tardatdow:', tardatdow, ' type:', type);
+    let i=0, j=0, k=0;
+    dow.forEach(elm => {
+      // console.log(i, '. elm:', elm);
+      if ( elm === todaydow) {
+        j = i
+      }
+      if ( elm === tardatdow) {
+        k = i;
+      }
+      i++;
+    });
+    let diff;
+    if ( j <= k ) {
+      diff = (k-j) ;
+    } else {
+      diff = (6 - k) ;
+    }
+
+    let payday;
+    console.log('***** todaydow:', todaydow, ' j=',j , ' k=', k); 
+    // if ( type === "weekly") {
+      if ( this.props.posState.installmentType.value === "weekly") {
+      payday = today.add( diff+7, 'day');
+    } else  {
+      payday = today.add( diff+14, 'day');
+    } 
+    console.log('------------->>>> diff:', diff);
+    console.log('Weekly next payday:', payday.format('ll'));
+    console.log('*******************');
+    return payday;
+  }
+
   packageDataForDB = () => {
     let instType = "";
     let payByDoM = "";
     let payByDoW = "";
     let paidamt = 0;
-    if (this.props.posState.paySchedule === "installment") {
+    let nextpayday = null;
+    if (this.props.posState.paySchedule.value === "installment") {
       instType = this.props.posState.installmentType.value;
       if (
         this.props.posState.installmentType.value === "monthly" ||
-        this.props.posState.installmentType.value === "monthly"
+        this.props.posState.installmentType.value === "bi-monthly"
       ) {
         payByDoM = this.props.posState.installmentDateOfMonth;
+        nextpayday = this.createPayDueDateMo(this.props.posState.installmentDateOfMonth);
       } else {
         payByDoW = this.props.posState.installmentDayOfWeek.value;
+        nextpayday = this.createPayDueDateWe(this.props.posState.installmentDayOfWeek.value)
       }
     }
 
@@ -265,11 +337,15 @@ class PosFinish extends Component {
     } else {
       paidamt = this.props.posState.amountPaid;
     }
-    let nextpayday = null;
-    if (this.props.posState.paySchedule === "partpay") {
+    
+
+    if (this.props.posState.paySchedule.value === "partpay") {
+      // console.log('Inside partpay this.props.posState.payByDate:', this.props.posState.payByDate.format('lll'));
       nextpayday = this.props.posState.payByDate;
       lastpaymentday = Date.now();
-    }
+    }  
+
+    console.log('nextpayday: ', nextpayday.format('MM-DD-YYYY'));
 
     let itemsArray = [];
     let itemObj = {};
@@ -296,7 +372,7 @@ class PosFinish extends Component {
         installmentType: instType,
         payByDateOfMonth: payByDoM,
         payByDayOfWeek: payByDoW,
-        nextSchedulePayDay: nextpayday
+        nextSchedulePayDay: nextpayday.format('MM-DD-YYYY')
       },
       finBreakdown: {
         totalInvoiceAmount: this.props.posState.toPayTotal,
@@ -310,6 +386,8 @@ class PosFinish extends Component {
       invoiceNote: this.state.customerNote,
       updatedBy: this.props.auth.user.baandaId
     };
+    
+    console.log('&&&&&&&&&&  ExportData:', exportData);
 
     return exportData;
   };
@@ -320,8 +398,8 @@ class PosFinish extends Component {
   }
 
   render() {
-    console.log("props:", this.props);
-    console.log("state:", this.state);
+    console.log("posfinish props:", this.props);
+    console.log("posfinish state:", this.state);
     let selheight = this.state.members.length;
     if (selheight > 7) selheight = 7;
 
@@ -532,7 +610,12 @@ class PosFinish extends Component {
       );
     }
 
-    return <div>{posFinishOutput}</div>;
+    return (
+    // <div className="fixedsize_pos_finish">
+    <div>
+    {posFinishOutput}
+    <div className="pos_finish_spacing" />
+    </div>);
   }
 }
 

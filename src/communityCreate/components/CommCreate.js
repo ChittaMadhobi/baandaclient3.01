@@ -173,7 +173,7 @@ class CommCreate extends Component {
       <div>
         <div className="row page-top">
           <div className="col-8 dash_header">
-            Create & Edit Communities
+            Create & Edit Your Communities
           </div>
           <div className="col-4">{createEditToggleButton}</div>
         </div>

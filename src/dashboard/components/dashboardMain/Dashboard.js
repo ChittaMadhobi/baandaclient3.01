@@ -44,23 +44,21 @@ class Dashboard extends Component {
     let msg = {
       Header: "Engage - Your Communities",
       Body: {
-        oneLineSummary: `The list shows the communities you created, adminster or participate. <${
-          this.state.date
-        }> personality overview based on Big-5 (OCEAN) technique. This is a widely used, and vetted technique including adopted by intelligence communities around  the world. This has been tested to transcend culturs, values and seems to be aligned to ones DNA.`,
+        oneLineSummary: `The list shows the communities you created, adminster or participate in.`,
         steps: [
           {
             step: "1: Identify",
             stepNote:
-              "Identify the community you want to work on (your interest now)."
+              "Identify the community you want to work on."
           },
           {
             step: "2: Proceed to enagage",
             stepNote:
-              "Click Go> buttton to enter into the selected community realm."
+              "Click Go> buttton to enter into the selected community."
           }
         ],
         footnote:
-          "In the begining, the access list shows latest community (by date) you have created, adminster, or joined. Coming soon when you can filter and order the access list and set that as your default."
+          "This displays your communities based onthe most recent usage. You will be able to filter and order based on your preference and set that as your default."
       },
       Footer: "This is the footer"
     };
@@ -268,7 +266,7 @@ class Dashboard extends Component {
     let engageLandingPanel = (
       <div>
         <div className="row page-top">
-          <div className="col-6 access_list_header">Engagements</div>
+          <div className="col-6 access_list_header">Engage</div>
           <div className="col-6">
             <button
               className="btn_mirror_dash"

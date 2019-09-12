@@ -47,7 +47,7 @@ class PosReview extends Component {
     this.props.returnToPos();
   };
   render() {
-    console.log("PosReview.js props:", this.props);
+    // console.log("PosReview.js props:", this.props);
 
     let installmentSpec;
     if (
@@ -102,15 +102,15 @@ class PosReview extends Component {
             <div className="col-4 text-right label_format">Amt Now:&nbsp;</div>
             <div className="col-8 text-left data_format">
               {/* {Number.parseFloat(this.props.posState.amountPaid).toFixed(2)} */}
-              {this.props.posState.amountPaid}
-              &nbsp;$
+              $&nbsp;{this.props.posState.amountPaid}
+              
             </div>
           </div>
           <div className="row">
             <div className="col-4 text-right label_format">Amt IOU:&nbsp;</div>
             <div className="col-8 text-left data_format">
-              {Number.parseFloat(this.props.posState.amountPending).toFixed(2)}
-              &nbsp;$
+              $&nbsp;{Number.parseFloat(this.props.posState.amountPending).toFixed(2)}
+              
             </div>
           </div>
           <div className="row">
@@ -130,8 +130,8 @@ class PosReview extends Component {
             <div className="col-4 text-right label_format">Amt Now:&nbsp;</div>
             <div className="col-8 text-left data_format">
               {/* {Number.parseFloat(this.props.posState.amountPaid).toFixed(2)} */}
-              {this.props.posState.amountPaid}
-              &nbsp;$
+              $&nbsp;{this.props.posState.amountPaid}
+              
             </div>
           </div>
           <div className="row">
@@ -143,10 +143,10 @@ class PosReview extends Component {
           <div className="row">
             <div className="col-4 text-right label_format">Amount:&nbsp;</div>
             <div className="col-8 text-left data_format">
-              {Number.parseFloat(
+              $&nbsp;{Number.parseFloat(
                 this.props.posState.amountPerIstallment
               ).toFixed(2)}
-              &nbsp;$ per payment.
+              &nbsp;per payment.
             </div>
           </div>
           <div className="row">
@@ -204,14 +204,14 @@ class PosReview extends Component {
                 <i className="fas fa-shopping-cart" />
               </button>
               &nbsp;&nbsp;
-              <button
+              {/* <button
                 className="btn_proceed_err"
                 type="button"
                 // onClick={this.handleProceed}
               >
                 Proceed&nbsp;
                 <i className="far fa-handshake" />
-              </button>
+              </button> */}
             </div>
           </div>
         </div>
@@ -242,7 +242,7 @@ class PosReview extends Component {
         </div>
         <hr className="review_divide_line" />
         <div className="row">
-          <div className="col-4 text-right label_format">Item Total:&nbsp;</div>
+          <div className="col-4 text-right label_format">Total Amount:&nbsp;</div>
           <div className="col-8 text-left data_format">
             {parseFloat(this.props.posState.totalcost).toFixed(2)}&nbsp;$
           </div>
@@ -250,21 +250,21 @@ class PosReview extends Component {
         <div className="row">
           <div className="col-4 text-right label_format">Discount:&nbsp;</div>
           <div className="col-8 text-left data_format">
-            {parseFloat(this.props.posState.toPayDiscount).toFixed(2)}
-            &nbsp;$
+            $&nbsp;{parseFloat(this.props.posState.toPayDiscount).toFixed(2)}
+            
           </div>
         </div>
         <div className="row">
           <div className="col-4 text-right label_format">Tax:&nbsp;</div>
           <div className="col-8 text-left data_format">
-            {parseFloat(this.props.posState.toPayTax).toFixed(2)}&nbsp;$
+            $&nbsp;{parseFloat(this.props.posState.toPayTax).toFixed(2)}
           </div>
         </div>
         <div className="row">
           <div className="col-4 text-right label_format">To be paid:&nbsp;</div>
           <div className="col-8 text-left data_format">
-            {parseFloat(this.props.posState.toPayTotal).toFixed(2)}
-            &nbsp;$
+            $&nbsp;{parseFloat(this.props.posState.toPayTotal).toFixed(2)}
+            
           </div>
         </div>
         <hr className="review_divide_line" />

@@ -43,22 +43,23 @@ class Review extends Component {
     let locationPanel = null;
     if (this.props.reviewObj.locationType === "Current") {
       // console.log("======>> Current:", this.props.reviewObj.locationCurr);
-      let loc = this.props.reviewObj.locationCurr;
-      locationPanel = (
-        <div>
-          <p align="justify">City:&nbsp;{loc.city}</p>
-          <p align="justify">Country:&nbsp;{loc.country_name}</p>
-          <p align="justify">Currency:&nbsp;{loc.currency}</p>
-          <p align="justify">Language:&nbsp;{loc.languages}</p>
-          <p align="justify">Latitude:&nbsp;{loc.latitude}</p>
-          <p align="justify">Longitude:&nbsp;{loc.longitude}</p>
-          <p align="justify">Region:&nbsp;{loc.region}</p>
-          <p align="justify">Zip code:&nbsp;{loc.postal}</p>
-          <p align="justify">
-            Time zone:&nbsp;{loc.timezone} with GMT offset {loc.utc_offset}
-          </p>
-        </div>
-      );
+      // let loc = this.props.reviewObj.locationCurr;
+      // locationPanel = (
+      //   <div>
+      //     <p align="justify">City:&nbsp;{loc.city}</p>
+      //     <p align="justify">Country:&nbsp;{loc.country_name}</p>
+      //     <p align="justify">Currency:&nbsp;{loc.currency}</p>
+      //     <p align="justify">Language:&nbsp;{loc.languages}</p>
+      //     <p align="justify">Latitude:&nbsp;{loc.latitude}</p>
+      //     <p align="justify">Longitude:&nbsp;{loc.longitude}</p>
+      //     <p align="justify">Region:&nbsp;{loc.region}</p>
+      //     <p align="justify">Zip code:&nbsp;{loc.postal}</p>
+      //     <p align="justify">
+      //       Time zone:&nbsp;{loc.timezone} with GMT offset {loc.utc_offset}
+      //     </p>
+      //   </div>
+      // );
+      locationPanel = null;
     } else if (this.props.reviewObj.locationType === "Postal") {
       let pa = this.props.reviewObj.postalAddress;
       locationPanel = (
@@ -79,66 +80,67 @@ class Review extends Component {
     return (
       <div className="review_text">
         <div className="row">
-          <div className="col-3 text-left">
+          <div className="col-3 text-right">
             <b>Ref. Name:</b>
           </div>
-          <div className="col-9">
+          <div className="col-9 review_info_text">
             <p align="justify">{this.props.reviewObj.commName}</p>
           </div>
         </div>
         <div className="row">
-          <div className="col-3 text-left">
+          <div className="col-3 text-right">
             <b>Caption:</b>
           </div>
-          <div className="col-9">
+          <div className="col-9 review_info_text">
             <p align="justify">{this.props.reviewObj.commCaption}</p>
           </div>
         </div>
         <div className="row">
-          <div className="col-3 text-left">
+          <div className="col-3 text-right">
             <b>Description:</b>
           </div>
-          <div className="col-9">
+          <div className="col-9 review_info_text">
             <p align="justify">{this.props.reviewObj.commDescription}</p>
           </div>
         </div>
         <div className="row">
-          <div className="col-3 text-left">
+          <div className="col-3 text-right">
             <b>Intent:</b>
           </div>
-          <div className="col-9">
+          <div className="col-9 review_info_text">
             <p align="justify">{this.props.reviewObj.intent.label} </p>
           </div>
         </div>
         <div className="row">
-          <div className="col-3 text-left">
-            <b>Focus:&nbsp;</b>
+          <div className="col-3 text-right">
+            <b>Focus:</b>
           </div>
-          <div className="col-9">
+          <div className="col-9 review_info_text">
             <p align="justify">{this.props.reviewObj.subIntent.label}</p>
           </div>
         </div>
         <div className="row">
-          <div className="col-3 text-left">
-            <b>Search Tags:&nbsp;</b>
+          <div className="col-3 text-right">
+            <b>Search Tags:</b>
           </div>
-          <div className="col-9">
+          <div className="col-9 review_info_text">
             <p align="justify">{this.props.reviewObj.searchTags}</p>
           </div>
         </div>
         <div className="row">
-          <div className="col-3 text-left">
-            <b>Location:&nbsp;</b>
+          <div className="col-3 text-right">
+            <b>Location:</b>
           </div>
-          <div className="col-9">
-            <p align="justify">{this.props.reviewObj.locationType}</p>
+          <div className="col-9 review_info_text">
+            <p align="justify">{this.props.reviewObj.locationType} &nbsp;&nbsp;({this.props.reviewObj.locationCurr.city}) </p>
           </div>
         </div>
         <div className="row">
-          <div className="col-3 text-left">
-            <b>Details:&nbsp;</b>
+          <div className="col-3 text-right">
+            {/* <b>Details:&nbsp;</b> */}
+            &nbsp;
           </div>
-          <div className="col-9 location_position">{locationPanel}</div>
+          <div className="col-9 location_position review_info_text">{locationPanel}</div>
         </div>
         <div className="spaces" />
         <hr />
