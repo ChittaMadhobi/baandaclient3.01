@@ -1181,7 +1181,7 @@ class Pos extends Component {
         <div className="row">
           <div className="col-1">&nbsp;</div>
           <div className="col-10 amount_paid_col">
-            Number of Installment:&nbsp;$&nbsp;&nbsp;
+            Number of Installment:&nbsp;&nbsp;&nbsp;
             <input
               name="noOfInstallment"
               type="number"
