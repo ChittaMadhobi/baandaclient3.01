@@ -840,7 +840,7 @@ class Pos extends Component {
 
       totalcost: 0.0,
       discount: 0.0,
-      tax: 7.5,
+      tax: 0.0,
       processingFee: 0.25,
       toPayTotal: 0.0,
       amountPending: 0.0,

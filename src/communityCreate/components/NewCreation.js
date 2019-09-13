@@ -152,7 +152,9 @@ class NewCreation extends Component {
     await this.setState({
       loadingFlag: true
     });
-    let dirname = "bid" + this.props.auth.user.baandaId;
+    // let dirname = "baanda-qa" + this.props.auth.user.baandaId;
+    let dirname = "baanda-qa";
+
     let config = {
       bucketName: s3BucketName,
       dirName: dirname,

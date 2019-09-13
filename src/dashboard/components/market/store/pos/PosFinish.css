@@ -120,6 +120,15 @@ div.fixedsize_pos_finish {
   margin-top: 100px;
 }
 
+.pos_customer_input_msg {
+  font-size: 1em;
+}
+
+.pos_customer_input_msg_err {
+  font-size: 1em;
+  color: red;
+}
+
 @media only screen and (max-device-width: 480px) {
   .btn_goPosCustomerFind {
     width: 40px;
@@ -150,7 +159,7 @@ div.fixedsize_pos_finish {
 
   .input_customer_name {
     margin-top: -5px;
-    font-size: 1em;
+    font-size: .9em;
     width: 90%;
     margin-left: -5%;
   }
@@ -193,6 +202,14 @@ div.fixedsize_pos_finish {
     margin-top: 15px;
     width: 100%;
   }
+
+  .pos_customer_input_msg {
+    font-size: .9em;
+  }
+  
+  .pos_customer_input_msg_err {
+    font-size: .9em;
+  }
 }
 
 @media only screen and (max-device-width: 320px) {
@@ -227,6 +244,15 @@ div.fixedsize_pos_finish {
     border-radius: 5px;
     margin-top: 10px;
     margin-right: 5px;
+  }
+
+  
+  .pos_customer_input_msg {
+    font-size: .85em;
+  }
+  
+  .pos_customer_input_msg_err {
+    font-size: .85em;
   }
 }
 
@@ -263,5 +289,14 @@ div.fixedsize_pos_finish {
     border-radius: 5px;
     margin-top: 15px;
     margin-right: 30px;
+  }
+
+  
+  .pos_customer_input_msg {
+    font-size: 1em;
+  }
+  
+  .pos_customer_input_msg_err {
+    font-size: 1em;
   }
 }

@@ -315,7 +315,7 @@ class PosFinish extends Component {
     let payByDoM = "";
     let payByDoW = "";
     let paidamt = 0;
-    let nextpayday = null;
+    let nextpayday = moment();
     if (this.props.posState.paySchedule.value === "installment") {
       instType = this.props.posState.installmentType.value;
       if (
@@ -333,7 +333,7 @@ class PosFinish extends Component {
     let lastpaymentday = null;
     if (this.props.posState.paySchedule.value === "fullpay") {
       paidamt = this.props.posState.toPayTotal;
-      lastpaymentday = Date.now();
+      lastpaymentday = moment();
     } else {
       paidamt = this.props.posState.amountPaid;
     }
@@ -342,7 +342,7 @@ class PosFinish extends Component {
     if (this.props.posState.paySchedule.value === "partpay") {
       // console.log('Inside partpay this.props.posState.payByDate:', this.props.posState.payByDate.format('lll'));
       nextpayday = this.props.posState.payByDate;
-      lastpaymentday = Date.now();
+      lastpaymentday = moment();
     }  
 
     console.log('nextpayday: ', nextpayday.format('MM-DD-YYYY'));
