@@ -95,7 +95,7 @@ class Lobby extends Component {
   };
 
   render() {
-    console.log('this.props: ', this.props);
+    // console.log('this.props: ', this.props);
     // let joinMsg = "2 Invites, 1 Match";
     // let dashMsg = "3 New Messages";
     let joinMsg = "";

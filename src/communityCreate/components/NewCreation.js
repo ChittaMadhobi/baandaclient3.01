@@ -36,6 +36,7 @@ const awsAccessKeyId = process.env.REACT_APP_ACCESS_KEY_ID;
 const awsSecretAccessKey = process.env.REACT_APP_SECRET_ACCESS_KEY;
 const awsRegion = process.env.REACT_APP_AWS_REGION;
 const s3BucketName = process.env.REACT_APP_S3_BUCKET_NAME;
+const s3DirName = process.env.REACT_APP_S3_BUCKET_DIR;
 
 const baandaServer = process.env.REACT_APP_BAANDA_SERVER;
 const checkifexistsAPI = "/routes/create/ifCommunityExists?"; // This is a GET
@@ -153,7 +154,8 @@ class NewCreation extends Component {
       loadingFlag: true
     });
     // let dirname = "baanda-qa" + this.props.auth.user.baandaId;
-    let dirname = "baanda-qa";
+    let dirname = s3DirName + this.props.auth.user.baandaId;
+    // let dirname = "baanda-qa";
 
     let config = {
       bucketName: s3BucketName,
@@ -163,7 +165,7 @@ class NewCreation extends Component {
       secretAccessKey: awsSecretAccessKey
     };
     // console.log("Uplading file: ", this.state.currFilename);
-    // console.log("config: ", config);
+    console.log("AWS S3 config: ", config);
     // let index;
     // // pic=0, vedio=1, & audio=2 -- only three kinds now & pic is active.
     // if (this.state.uploadFileType === "pic") {
@@ -189,7 +191,7 @@ class NewCreation extends Component {
       if (s3fileObject.key) {
         filename = s3fileObject.key.split(/(\\|\/)/g).pop();
       }
-      // console.log("Data:", data, " s3fileObject:", s3fileObject);
+      console.log("Data:", data, " s3fileObject:", s3fileObject);
       // this.setState(prevState => ({
       //   fileUploads: {
       //     ...prevState.fileUploads, [prevState.fileUploads[index]]: s3fileObject
@@ -206,6 +208,13 @@ class NewCreation extends Component {
       });
     } catch (err) {
       console.log("uploadng Error:", err);
+      await this.setState({
+        fileUploads: null,
+        loadingFlag: false,
+        fileNameToDisplay: "Failed to upload successfully",
+        saveReviewMsg:
+          "Error: Contact Baanda support jit@baanda.com with error: " + err.message
+      })
     }
   };
 

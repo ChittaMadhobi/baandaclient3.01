@@ -385,12 +385,12 @@ class Pos extends Component {
     try {
       let ret = await axios.get(url);
       if (ret.data.status === "Error") {
-        // console.log("msg:", ret.data.Msg);
+        console.log("1. msg:", ret.data.Msg);
         throw new Error(`No items found with this entry.`);
       } else {
         // console.log("ret msg:", ret.data.Msg);
         if (ret.data.Msg.length === 0) {
-          // console.log(">>>>>>>>>>> Length of 0");
+          // console.log("1.a  >>>>>>>>>>> Length of 0");
           await this.setState({
             itemSelectToBuyFlag: false,
             searchAndEditMsg:
@@ -399,7 +399,7 @@ class Pos extends Component {
           });
         } else if (ret.data.Msg.length === 1) {
           // display the item for edit
-          // console.log(">>>>>> item Id:", ret.data.Msg[0].itemId);
+          // console.log("2. length=1 >>>>>> item Id:", ret.data.Msg[0].itemId);
           let ifExist = false;
           this.state.itemsInCart.forEach(elm => {
             if (elm.itemId === ret.data.Msg[0].itemId) {
@@ -407,6 +407,12 @@ class Pos extends Component {
             }
           });
           if (!ifExist) {
+            // console.log('3.1 One record in items and not in cart - going to prepForSell');
+            // console.log(
+            //   "3.2 ret.data.Msg[0]:",
+            //   ret.data.Msg[0],
+            //   " heading to prepForSell()"
+            // );
             this.prepForSell(ret.data.Msg[0]);
           } else {
             await this.setState({
@@ -416,6 +422,7 @@ class Pos extends Component {
             });
           }
         } else {
+          // console.log("4. length of returned items > 1");
           let option = {};
           options = [];
           let infoMsg = false;
@@ -438,26 +445,28 @@ class Pos extends Component {
             }
             // console.log("obj:", obj, " itemId:", obj.itemId);
           });
-          console.log("option", options);
+          // console.log("4.a infoMsg:", infoMsg);
+          // console.log("4.b option", options);
           if (infoMsg) {
-            console.log('options.length: ', options.length);
-            console.log('options: ', options);
-            if (options.length === 1) {
+            // console.log(
+            //   "4.c inside infoMSg=true options.length: ",
+            //   options.length
+            // );
+            // console.log("4.d options: ", options);
+            if (options.length === 0) {
+              // console.log("4.d.1  >>>>>>>>>>> Length of 0");
               await this.setState({
                 itemSelectToBuyFlag: false,
-                itemToBuyFlag: true,
-                selectedItemName: options[0].label.itemName,
-                selectedItemId: options[0].label.itemId,
-                selectedItemPrice: options[0].label.itemPrice,
-                calculatedItemCost: 0.0,
-                itemQty: "",
-                selectedItemInventory: options[0].label.currentInventory,
-                costPanelMessage: "Enter quantity please.",
-                showTheCartFlag: true
+                searchAndEditMsg:
+                  "No item found with your entry. Try again please.",
+                searchAndEditErrorFlag: true
               });
-              
-              console.log('@@@ this.state:', this.state);
-              this.prepForSell(options);
+            } else if (options.length === 1) {
+              // console.log("4.e .... ");
+              // console.log("4.f @@@ heading to prepForSell:", options);
+              let data = options[0].label;
+              // this.prepForSell(options);
+              this.prepForSell(data);
             } else {
               await this.setState({
                 itemSelectToBuyFlag: true,
@@ -618,7 +627,8 @@ class Pos extends Component {
   };
 
   prepForSell = async data => {
-    console.log("prepForSell data:", data);
+    console.log("4.f.1. prepForSell data:", data);
+
     await this.setState({
       itemSelectToBuyFlag: false,
       itemToBuyFlag: true,
@@ -875,7 +885,7 @@ class Pos extends Component {
 
   render() {
     // console.log("Pos.js props:", this.props);
-    console.log("Pos.js state:", this.state);
+    // console.log("Pos.js state:", this.state);
 
     // This section is for item search drop down
     // **************************************************
@@ -1464,7 +1474,10 @@ class Pos extends Component {
     );
 
     let qtyInputPanel;
-    console.log('>>>>>>> this.state.selectedItemInventory: ', this.state.selectedItemInventory);
+    console.log(
+      ">>>>>>> this.state.selectedItemInventory: ",
+      this.state.selectedItemInventory
+    );
     if (this.state.selectedItemInventory > 0) {
       qtyInputPanel = (
         <div>

@@ -43,7 +43,7 @@ class Catalog extends Component {
       merchandiseType: "Goods",
 
       itemName: "",
-      itemNameMsg: "A unique item name (Minimum 2 chars)",
+      itemNameMsg: "A unique item name (Case sensitive - min 2 chars)",
       itemNameErrFlag: false,
       searchItemName: "",
 
@@ -143,7 +143,8 @@ class Catalog extends Component {
     await this.setState({
       createCatalogFlag: true,
       searchCatalogFlag: false,
-      itemNameMsg: "A unique item name between 10 to 100 chars."
+      itemSelectToEditFlag: false,
+      itemNameMsg: "A unique item name (Case sensitive - min 2 chars)."
     });
   };
 
@@ -243,7 +244,7 @@ class Catalog extends Component {
       merchandiseType: data.itemType,
       itemName: data.itemName,
       itemIdToEdit: data.itemId,
-      itemNameMsg: "A unique item name between 10 to 100 chars",
+      itemNameMsg: "A unique item name (Case sensitive - min 2 chars)",
       itemNameErrFlag: false,
       itemCategory: data.itemCategory,
       itemCategoryMsg: "Item category. May be same for set of entry.",
@@ -272,12 +273,12 @@ class Catalog extends Component {
   };
 
   handleCreate = async () => {
-    alert("Will handle create - initialize input values - set flags");
+    // alert("Will handle create - initialize input values - set flags");
     await this.setState({
       merchandiseType: "Goods",
 
       itemName: "",
-      itemNameMsg: "A unique item name (min 2 chars).",
+      itemNameMsg: "A unique item name (Case sensitive - min 2 chars).",
       itemNameErrFlag: false,
       searchItemName: "",
 
@@ -363,7 +364,7 @@ class Catalog extends Component {
       } else {
         await this.setState({
           itemNameErrFlag: false,
-          itemNameMsg: "A unique item name (Minimum 2 chars)."
+          itemNameMsg: "A unique item name (Case sensitive - min 2 chars)"
         });
       }
     } else {
@@ -486,7 +487,7 @@ class Catalog extends Component {
   }
 
   validateAndSave = async () => {
-    // alert("validateAndSave function");
+    alert("validateAndSave function");
     let price = 0;
     if (_.isString(this.state.itemPrice)) {
       // console.log ('this is string:', this.state.itemPrice)
@@ -534,7 +535,7 @@ class Catalog extends Component {
       }
     }
 
-    // console.log("data:", data);
+    console.log("data:", data, ' this.state.itemSelectToEditFlag:' ,this.state.itemSelectToEditFlag);
 
     let valid = await this.validateItem(data);
         // console.log("valid:", valid);
@@ -575,7 +576,7 @@ class Catalog extends Component {
     // Check item Name
     if (data.itemName.length < 2) {
       await this.setState({
-        itemNameMsg: "Item name should be at least 2 chars long.",
+        itemNameMsg: "A unique item name (Case sensitive - min 2 chars)",
         itemNameErrFlag: true
       });
       isValid = false;
@@ -589,7 +590,7 @@ class Catalog extends Component {
         isValid = false;
       } else {
         await this.setState({
-          itemNameMsg: "A unique item name between 10 to 100 chars.",
+          itemNameMsg: "A unique item name (Case sensitive - min 2 chars)",
           itemNameErrFlag: false
         });
       }
@@ -692,7 +693,7 @@ class Catalog extends Component {
 
   render() {
     // console.log("catalog props:", this.props);
-    // console.log("state:", this.state);
+    console.log("state:", this.state);
 
     let catalogbuttons;
     if (this.state.createCatalogFlag) {

@@ -15,7 +15,7 @@ class Toolbar extends Component {
   render() {
     // let isAuthenticated = this.props.isAuthenticated;
     const { isAuthenticated, user } = this.props.auth;
-    console.log('Toolbar props:', this.props);
+    // console.log('Toolbar props:', this.props);
     // let isAuthenticated = true;
     // let user1 = this.props.user;
     // let user = { name: "Sarbojit Mukherjee" };
