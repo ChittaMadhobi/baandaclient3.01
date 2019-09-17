@@ -28,9 +28,9 @@ class EditInvite extends Component {
 
       subject: "Invitation to join the group <" + this.props.groupName + ">",
       inviteBody:
-        "This system (Baanda) will process your operational information upon your consent. I am inviting you to join the group so we can handle operation. When you register in the Baanda system using the same email, you will be able to view, ask, provide multidimensional feedback andmuch more so Baanda can provide individualized services.\r\n \r\nNote: You are not required to register in Baanda now. Upon consent, you will be taken to baanda web-site if you are interested to know more.",
+        "This system (Baanda) will process your operational information upon your consent. I am inviting you to join the group so we can handle operation. When you register in the Baanda system using the same email, you will be able to view, ask, provide multi-dimensional feedback and much more so Baanda can provide individualized services.\r\n \r\nNote: You are not required to register in Baanda now. Upon consent, you will be taken to baanda web-site if you are interested to know more.",
       acceptLinkMsg: "Please click the picture below to accept the invitation.",
-      signature: "Jane Doe \r\n Group Creator & Organizaer",
+      signature: "Creator Name \r\nCommunity & Group Creator",
       revImgSrc: "https://baandadev1.s3-us-west-2.amazonaws.com/herbpic5.jpg",
       saveLetterMsg: '',
 
