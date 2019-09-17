@@ -487,7 +487,7 @@ class Catalog extends Component {
   }
 
   validateAndSave = async () => {
-    alert("validateAndSave function");
+    // alert("validateAndSave function");
     let price = 0;
     if (_.isString(this.state.itemPrice)) {
       // console.log ('this is string:', this.state.itemPrice)
